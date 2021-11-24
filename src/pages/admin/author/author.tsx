@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Table, Button, Spin, Avatar } from 'antd';
+import { Table, Button, Spin} from 'antd';
 import { useQuery } from '@apollo/client';
 import { getAuthors } from '../../../graphql-client/query';
 import { Link } from 'react-router-dom';
