@@ -44,7 +44,7 @@ const Author: React.FC = (props: Props) => {
         return <Spin size="large" />
     }
     if (error) {
-        return <p>error book ...</p>
+        return <p>error authors ...</p>
     }
     const start = () => {
         setTimeout(() => {
