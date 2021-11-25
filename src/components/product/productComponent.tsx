@@ -1,9 +1,9 @@
-import React from 'react'
-import './index.css'
-import { Link } from 'react-router-dom';
-import { Spin } from 'antd';
 import { useQuery } from '@apollo/client';
+import { Spin } from 'antd';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { getBooks } from '../../graphql-client/query';
+import './index.css';
 interface Props {
 
 }

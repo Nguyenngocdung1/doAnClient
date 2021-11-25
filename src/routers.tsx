@@ -6,7 +6,6 @@ import Addauthor from "./pages/admin/author/addauthor";
 import Author from "./pages/admin/author/author";
 import { Addbook } from "./pages/admin/book/addbook";
 import Book from "./pages/admin/book/book";
-import { Editbook } from "./pages/admin/book/editbook";
 import Home from "./pages/home/home";
 
 type Props = {

@@ -1,13 +1,5 @@
-import React from 'react'
 import { Carousel } from 'antd';
-
-const contentStyle: any = {
-    height: '300px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    background: '#364d79',
-};
+import React from 'react';
 
 interface Props {
 

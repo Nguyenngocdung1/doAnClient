@@ -1,14 +1,13 @@
-import React from 'react'
-import { Input, Space, Row, Col, Typography } from 'antd';
 import { HeartOutlined, ShoppingOutlined, SwapOutlined } from '@ant-design/icons';
+import { Col, Input, Row, Typography } from 'antd';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './header.css'
+import './header.css';
 const { Search } = Input;
 interface Props {
 
 }
 
-const active:any = "active"
 
 const Header = (props: Props) => {
     const onSearch = (value: string) => console.log(value);
