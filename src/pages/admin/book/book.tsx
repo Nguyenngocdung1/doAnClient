@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, Button, Spin} from 'antd';
 import { useQuery } from '@apollo/client';
 import { getBooks } from '../../../graphql-client/query';
 import { Link } from 'react-router-dom';
+import { BookState, fetchBooks } from "../../../features/books/bookSlice";
+import { useDispatch, useSelector } from 'react-redux';
+import formatprice from '../../../common/formatprice';
+
 interface Props {
 
 }
@@ -15,6 +19,10 @@ const columns = [
     {
         title: 'Thể loại truyện',
         dataIndex: 'genre',
+    },
+    {
+        title: 'Giá tiền',
+        dataIndex: 'price',
     },
     {
         title: 'Ảnh',
@@ -37,9 +45,17 @@ const columns = [
 
 
 const Book: React.FC = (props: Props) => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        // Gọi đến hàm fetchProduct
+        dispatch(fetchBooks());
+    }, [dispatch]);
+
+    const products = useSelector((state: BookState) => state.books.books);
+    console.log("products", products);
+    
     const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string>>([])
     const { loading, error, data } = useQuery(getBooks)
-    console.log(data);
     
     if (loading) {
         return <Spin size="large" />
@@ -55,12 +71,14 @@ const Book: React.FC = (props: Props) => {
 
     const data1: any[] | undefined = [];
     for (let i = 0; i < data.books.length; i++) {
-        const link = 'editbook/' + data.books[i].id
+        const link = '/admin/editbook/' + data.books[i].slug
+        const image = JSON.parse(data.books[i].image)[0]
         data1.push({
             key: data.books[i].id,
             name: data.books[i].name,
             genre: data.books[i].genre,
-            image: <img src={data.books[i].image} width="100" alt="" />,
+            price: formatprice(data.books[i].price),
+            image: <img src={image} width="100" alt="" />,
             des: data.books[i].des,
             author: data.books[i].author.name,
             btnEdit: <Button type="primary"><Link to={link}>Sửa sản phẩm</Link></Button>,

@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { Spin } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getBooks } from '../../graphql-client/query';
+import { getBooks } from '../../../graphql-client/query';
 import './index.css';
 interface Props {
 
@@ -29,7 +29,7 @@ const ProductComponent = (props: Props) => {
                                 <figure className="book">
                                     <ul className="hardcover_front">
                                         <li>
-                                            <img src={book.image} alt="" width="100%" height="100%" />
+                                            <img src={JSON.parse(book.image)} alt="" width="100%" height="100%" />
                                         </li>
                                         <li />
                                     </ul>

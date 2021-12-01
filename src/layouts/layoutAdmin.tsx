@@ -11,7 +11,7 @@ const LayoutAdmin: React.FC = () => {
         console.log('click ', e);
     };
     return (
-        <Layout style={{height: '100vh', overflow: 'hidden'}}>
+        <Layout>
             <Header className="header">
                 
             </Header>

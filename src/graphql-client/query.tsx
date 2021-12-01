@@ -9,6 +9,7 @@ const getBooks = gql`
             genre
             image
             slug
+            price
             author {
                 name
                 slug
@@ -18,8 +19,8 @@ const getBooks = gql`
 `
 
 const getSingleBook = gql`
-    query getSingleBookQuery($id: ID!){
-        book(id: $id){
+    query getSingleBookQuery($slug: String!){
+        book(slug: $slug){
             id
             name
             des
@@ -27,6 +28,7 @@ const getSingleBook = gql`
             image
             field
             slug
+            price
             author {
                 id
                 name
@@ -45,7 +47,6 @@ const getAuthors = gql`
         authors {
             id
             name
-            age
             address
             phone
             email
@@ -54,4 +55,14 @@ const getAuthors = gql`
     }
 `
 
-export { getBooks, getAuthors, getSingleBook}
+const getUser = gql`
+    query getUsersQuery {
+        users {
+            id
+            name
+            email
+        }
+    }
+`
+
+export { getBooks, getAuthors, getSingleBook, getUser}
