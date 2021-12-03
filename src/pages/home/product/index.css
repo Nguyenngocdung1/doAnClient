@@ -29,14 +29,9 @@ html {
   font-size: 100%;
 }
 
-.container {
-  background: #1e1d32;
-  color: #ecf0f1;
-  font-family: "Lato", "Arial", sans-serif;
-  font-weight: 400;
-  line-height: 1.2;
+.component-product{
+  background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/fs/c221c957092339.59c8dfa58d6d7.jpg');
 }
-
 ul {
   margin: 0;
   padding: 0;

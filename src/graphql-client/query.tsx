@@ -42,6 +42,26 @@ const getSingleBook = gql`
     }
 `
 
+const getSingleAuthor = gql`
+    query getSingleAuthorQuery($slug: String!){
+        author(slug: $slug){
+            id
+            name
+            slug
+            books {
+                id
+                name
+                des
+                genre
+                image
+                field
+                slug
+                price
+            }
+        }
+    }
+`
+
 const getAuthors = gql`
     query getAuthorsQuery {
         authors {
@@ -65,4 +85,4 @@ const getUser = gql`
     }
 `
 
-export { getBooks, getAuthors, getSingleBook, getUser}
+export { getBooks, getAuthors, getSingleBook, getUser, getSingleAuthor}

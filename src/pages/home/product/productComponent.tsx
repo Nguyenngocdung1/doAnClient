@@ -19,8 +19,8 @@ const ProductComponent = (props: Props) => {
         return <p>error book ...</p>
     }
     return (
-        <div className="container">
-            <div className="component">
+        <div className="" style={{width: '100%'}}>
+            <div className="component-product">
                 <ul className="align">
                     {/* 1 sản phẩm */}
                     {
