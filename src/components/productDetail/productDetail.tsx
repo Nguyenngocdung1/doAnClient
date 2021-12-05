@@ -1,9 +1,12 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Spin } from 'antd';
 import { useQuery } from '@apollo/client';
 import { getSingleBook } from '../../graphql-client/query';
 import { useParams } from 'react-router';
 import './productDetail.css'
+import formatprice from '../../common/formatprice';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 interface Props {
 
 }
@@ -11,12 +14,13 @@ interface Props {
 const ProductDetail = (props: Props) => {
     const { slugProduct } = useParams()
     const [count, setCount] = useState(1)
+    const [imageFocus, setImageFocus] = useState<any>('')
+    const refImage = useRef(null)
     const { loading, error, data } = useQuery(getSingleBook, {
         variables: {
             slug: slugProduct,
         }
     })
-    // console.log(data);
 
     if (loading) {
         return <Spin size="large" />
@@ -33,18 +37,20 @@ const ProductDetail = (props: Props) => {
     }
 
     const handleClickGiam = () => {
-        if(count > 1) {
+        if (count > 1) {
             setCount(count - 1)
-        }else{
+        } else {
             setCount(1)
         }
     }
     let images = [];
-    if(data.book){
+    if (data.book) {
         images = JSON.parse(data.book.image)
     }
-    console.log(images);
-    
+    const addImageFocus = (image: String) => {
+        setImageFocus(image)
+    }
+
     return (
         <div>
             <div className="container-fuild header-bottom">
@@ -76,41 +82,44 @@ const ProductDetail = (props: Props) => {
                         <div className="row">
                             <div className="col-5">
                                 <div className="product-img">
-                                    <img src={images[0]} alt="" width="100%" />
+                                    <img  src={imageFocus? imageFocus : images[0]} alt="" width="100%" />
                                 </div>
-                                <div className="d-flex pt-2">
-                                    <div className="img pe-3">
-                                        <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="100%" />
-                                    </div>
-                                    <div className="img pe-3">
-                                        <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="100%" />
-                                    </div>
-                                    <div className="img pe-3">
-                                        <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="100%" />
-                                    </div>
-                                    <div className="img">
-                                        <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="100%" />
-                                    </div>
+
+                                <div className="pt-2">
+                                    <Swiper
+                                        modules={[Navigation, Pagination, Scrollbar, A11y]}
+                                        spaceBetween={10}
+                                        slidesPerView={4}
+                                        // navigation
+                                    >
+                                        {images.map((image: string) =>(
+                                            <SwiperSlide key={image} onClick={() => addImageFocus(image)}>
+                                                <div style={{cursor: 'pointer'}}>
+                                                    <div className="img-about-slide">
+                                                        <img width="100%" src={image} alt="" />
+                                                    </div>
+                                                </div>
+                                             </SwiperSlide> 
+                                        ))}
+                                    </Swiper>
                                 </div>
                             </div>
                             <div className="col-7">
                                 <div className="product-title">
-                                    <h1 style={{ color: 'black' }}>{data.book.name}</h1>
+                                    <h1 style={{ color: 'black', textAlign: 'left' }}>{data.book.name}</h1>
                                 </div>
                                 <div className="product-price">
-                                    <span>$180.00</span>
+                                    <span style={{ display: 'block', textAlign: 'left' }}>{formatprice(data.book.price)}</span>
                                 </div>
                                 <div className="product-description mt-3">
-                                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                                        diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                                        aliquyam erat, sed diam voluptua.</span>
+                                    <span style={{ display: 'block', textAlign: 'left' }}>{data.book.des}</span>
                                 </div>
                                 <div className="d-flex align-items-center baseline mt-5">
                                     <div className="num-block skin-6">
                                         <div className="num-in me-3 d-flex align-items-center">
                                             <span onClick={handleClickGiam} className="minus dis">-</span>
                                             <input onChange={handleChange} value={count} type="number" min="1" max="20" className="in-num num1234 form-control" />
-                                            <span onClick={handleClickTang} className="plus">+</span> 
+                                            <span onClick={handleClickTang} className="plus">+</span>
                                         </div>
 
                                     </div>
@@ -133,12 +142,12 @@ const ProductDetail = (props: Props) => {
                                         <p ><i className="fas fa-list-ul pe-2" />Compare</p>
                                     </div>
                                 </div>
-                                <div className="product-description-content mt-3">
+                                <div className="product-description-content mt-3 d-flex">
                                     <div>
-                                        <span>SKU: WVN-02</span>
+                                        <span>Thể loại: {data.book.genre}</span>
                                     </div>
-                                    <div>
-                                        <span>Category: <p >Category Name 01</p></span>
+                                    <div className="mx-4">
+                                        <span>Tác giả: <p >{data.book.author.name}</p></span>
                                     </div>
                                     <div className="tag">
                                         <span>Tags: <p >Tag 0-1</p></span>

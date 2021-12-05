@@ -1,16 +1,14 @@
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import {
     Button, Form,
-    Input, Space
+    Input, Spin
 } from 'antd';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './form.css'
-import { useMutation } from '@apollo/client';
+import { toastDefault } from '../../../common/toast';
 import { addSingleAuthor } from '../../../graphql-client/mutations';
 import { getAuthors } from '../../../graphql-client/query';
-import { Spin } from 'antd';
-import { toastDefault } from '../../../common/toast';
+import './form.css';
 interface Props {
 
 }
@@ -21,6 +19,7 @@ const Addauthor: React.FC = (props: Props) => {
     const [add, Mutation] = useMutation<any>(addSingleAuthor);
     const onFinish = (values: any) => {
         values.field = JSON.stringify(values.field)
+        values.phone = Number(values.phone)
         add(
             {
                 variables: values,
@@ -28,6 +27,8 @@ const Addauthor: React.FC = (props: Props) => {
             },
         )
     };
+    console.log(add);
+    
     if (Mutation.loading) {
         return <Spin size="large" />
     }
@@ -51,40 +52,6 @@ const Addauthor: React.FC = (props: Props) => {
                 <Form.Item name="phone" label="Số điện thoại" rules={[{ required: true, message: 'Bạn phải nhập số điện thoại' }]}>
                     <Input type="tel" />
                 </Form.Item>
-                <Form.List name="field">
-                    {(fields, { add, remove }) => (
-                        <>
-                            {fields.map(({ key, name, fieldKey, ...restField }) => (
-                                <Space key={key} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }} align="baseline">
-                                    <Form.Item
-                                        style={{ width: '400px', height: '40px' }}
-                                        {...restField}
-                                        name={[name, 'name']}
-                                        fieldKey={[fieldKey, 'name']}
-                                        rules={[{ required: true, message: 'Missing first name' }]}
-                                    >
-                                        <Input placeholder="Tên trường" />
-                                    </Form.Item>
-                                    <Form.Item
-                                        style={{ width: '400px', height: '40px' }}
-                                        {...restField}
-                                        name={[name, 'value']}
-                                        fieldKey={[fieldKey, 'value']}
-                                        rules={[{ required: true, message: 'Missing last name' }]}
-                                    >
-                                        <Input placeholder="Value" />
-                                    </Form.Item>
-                                    <MinusCircleOutlined style={{ lineHeight: '40px' }} onClick={() => remove(name)} />
-                                </Space>
-                            ))}
-                            <Form.Item>
-                                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                    Add field
-                                </Button>
-                            </Form.Item>
-                        </>
-                    )}
-                </Form.List>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Submit

@@ -33,7 +33,6 @@ const Editbook: React.FC = (props: Props) => {
             slug: slug,
         }
     })
-    
     const navigate = useNavigate();
     const [add, Mutation] = useMutation<any>(updateSingleBook);
     const [imageFile, setImageFile] = useState<any>([]);
@@ -49,15 +48,8 @@ const Editbook: React.FC = (props: Props) => {
     }
     
     const onFinish = async (values: any) => {
-        let refField = [];
-        if(data1.book.field){
-            refField = JSON.parse(data1.book.field)
-        }
-        refField.push(values.field);
-        values.field = JSON.stringify(refField)
         values.price = Number(values.price)
-        values.slug = data1.book.slug
-        
+        values.id = data1.book.id
         const storage = getStorage();
         const uploadImagePromise = (image: any) => {
             return new Promise(function (resolve, reject) {
@@ -85,19 +77,14 @@ const Editbook: React.FC = (props: Props) => {
         )
     };
 
-    console.log(data1);
-    
+   
     if (Mutation.loading) {
         return <Spin size="large" />
     }
     if (Mutation.data) {
-        toastDefault('Thêm sách thành công')
+        toastDefault('Sửa sách thành công')
         navigate('/admin/books')
     }
-    // let refField = [];
-    // if(data1.book.field){
-    //     refField = JSON.parse(data1.book.field)
-    // }
     return (
         <div>
             <Form style={{ overflow: 'auto' }} name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
@@ -114,7 +101,7 @@ const Editbook: React.FC = (props: Props) => {
                     <Input defaultValue={data1.book.genre} />
                 </Form.Item>
                 <Form.Item name="image" label="Thêm ảnh">
-                    <Uploadimage uploadImageState={uploadImageState} />
+                    <Uploadimage imageData={data1.book.image} uploadImageState={uploadImageState} />
                 </Form.Item>
                 <Form.Item name="authorId" label="Tác giả" rules={[{ required: true, message: 'Bạn phải nhập thể loại truyện' }]}>
                     <Select defaultValue="lucy">
@@ -122,47 +109,6 @@ const Editbook: React.FC = (props: Props) => {
                         {data.authors.map((author: any) => (<Option key={author.id} value={author.id}>{author.name}</Option>))}
                     </Select>
                 </Form.Item>
-                {/* {refField && refField.map((filed: any) => (
-                        <Form.Item key={filed} name={filed.name} label={filed.name}>
-                            <Input defaultValue={filed.value} />
-                        </Form.Item>
-                    ))
-                } */}
-
-                <Form.List name="field">
-                    {(fields, { add, remove }) => (
-                        <>
-                            {fields.map(({ key, name, fieldKey, ...restField }) => (
-                                <Space key={key} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }} align="baseline">
-                                    <Form.Item
-                                        style={{ width: '400px', height: '40px' }}
-                                        {...restField}
-                                        name={[name, 'name']}
-                                        fieldKey={[fieldKey, 'name']}
-                                        rules={[{ required: true, message: 'Missing first name' }]}
-                                    >
-                                        <Input placeholder="Tên trường" />
-                                    </Form.Item>
-                                    <Form.Item
-                                        style={{ width: '400px', height: '40px' }}
-                                        {...restField}
-                                        name={[name, 'value']}
-                                        fieldKey={[fieldKey, 'value']}
-                                        rules={[{ required: true, message: 'Missing last name' }]}
-                                    >
-                                        <Input placeholder="Value" />
-                                    </Form.Item>
-                                    <MinusCircleOutlined style={{ lineHeight: '40px' }} onClick={() => remove(name)} />
-                                </Space>
-                            ))}
-                            <Form.Item>
-                                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                    Add field
-                                </Button>
-                            </Form.Item>
-                        </>
-                    )}
-                </Form.List>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Submit

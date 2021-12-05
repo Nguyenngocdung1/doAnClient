@@ -1,8 +1,10 @@
 import { HeartOutlined, ShoppingOutlined, SwapOutlined } from '@ant-design/icons';
-import { Col, Input, Row, Typography } from 'antd';
+import { Col, Input, Row, Typography, Spin } from 'antd';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { getUserQuery } from '../../graphql-client/query';
 import './header.css';
+import { useQuery } from '@apollo/client';
 const { Search } = Input;
 interface Props {
 
@@ -10,6 +12,24 @@ interface Props {
 
 
 const Header = (props: Props) => {
+    const user: any = localStorage.getItem('user');
+    const {email} = JSON.parse(user)
+    const { loading, error, data } = useQuery(getUserQuery, {
+        variables: {
+            email: email,
+        }
+    })
+    // console.log(data);
+
+    if (loading) {
+        return <Spin size="large" />
+    }
+    if (error) {
+        return <p>error book ...</p>
+    }
+    console.log(data);
+    
+
     const onSearch = (value: string) => console.log(value);
     return (
         <div className="header">

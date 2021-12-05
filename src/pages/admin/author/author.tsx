@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Table, Button, Spin} from 'antd';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { getAuthors } from '../../../graphql-client/query';
 import { Link } from 'react-router-dom';
+import { deleteAuthor } from '../../../graphql-client/mutations';
+import { toastDefault } from '../../../common/toast';
 interface Props {
 
 }
@@ -35,7 +37,7 @@ const columns = [
 const Author: React.FC = (props: Props) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string>>([])
     const { loading, error, data } = useQuery(getAuthors)
-
+    const [add, Mutation] = useMutation<any>(deleteAuthor);
     if (loading) {
         return <Spin size="large" />
     }
@@ -47,10 +49,16 @@ const Author: React.FC = (props: Props) => {
             setSelectedRowKeys([]);
         }, 1000);
     };
+    if (Mutation.loading) {
+        return <Spin size="large" />
+    }
+    // if (Mutation.loading) {
+    //     toastDefault('Xóa tác giả thành công')
+    // }
 
     const data1: any[] | undefined = [];
     for (let i = 0; i < data.authors.length; i++) {
-        const link = 'editauthor/' + data.authors[i].id
+        const link = '/admin/editauthor/' + data.authors[i].slug
         data1.push({
             key: data.authors[i].id,
             name: data.authors[i].name,
@@ -69,6 +77,14 @@ const Author: React.FC = (props: Props) => {
     const onRemove = () => {
         if(window.confirm('Are you sure you want to remove')){
             console.log('id', selectedRowKeys)
+            selectedRowKeys.forEach(id => {
+                add({
+                    variables: {id},
+                    refetchQueries: [{ query: getAuthors }]
+                },)
+            })
+            setSelectedRowKeys([])
+            toastDefault('Xóa tác giả thành công')
         }
     }
 

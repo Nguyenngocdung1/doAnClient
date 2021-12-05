@@ -11,6 +11,10 @@ import AuthorPage from './pages/author/authorPage';
 
 import ProductDetail from "./components/productDetail/productDetail";
 import Editbook from "./pages/admin/book/editbook";
+import Login from "./pages/auth/login";
+import Editauthor from "./pages/admin/author/editauthor";
+import User from './pages/admin/user/user';
+
 
 type Props = {
 
@@ -26,14 +30,16 @@ const Router: React.FC<Props> = (props) => {
             <Route index element={<AuthorPage />} />
             <Route path=":slugProduct" element={<ProductDetail />} />
           </Route>
-
+          <Route path="/login" element={<Login />} />
         </Route>
 
         <Route path="admin/*" element={<LayoutAdmin />}>
           <Route index element={<Navigate to="dashboard" />} />
           <Route path="dashboard" element={<div>Admin Dashboard</div>} />
+          <Route path="user" element={<User />} />
           <Route path="authors" element={<Author />} />
           <Route path="addauthor" element={<Addauthor />} />
+          <Route path="editauthor/:slug" element={<Editauthor />} />
           <Route path="books" element={<Book />} />
           <Route path="addbook" element={<Addbook />} />
           <Route path="editbook/:slug" element={<Editbook />} />

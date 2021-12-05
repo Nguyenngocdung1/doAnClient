@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import formatprice from '../../../common/formatprice';
 import { toastDefault } from '../../../common/toast';
 import { deleteBook } from '../../../graphql-client/mutations';
-import { getBooks} from '../../../graphql-client/query';
+import {getUsers} from '../../../graphql-client/query';
 
 interface Props {
 
@@ -13,40 +13,28 @@ interface Props {
 
 const columns = [
     {
-        title: 'Tên sách',
+        title: 'Tên khách hàng',
         dataIndex: 'name',
     },
     {
-        title: 'Thể loại truyện',
-        dataIndex: 'genre',
+        title: 'Email',
+        dataIndex: 'email',
     },
     {
-        title: 'Giá tiền',
-        dataIndex: 'price',
+        title: 'Avatar',
+        dataIndex: 'avatar',
     },
     {
-        title: 'Ảnh',
-        dataIndex: 'image',
-    },
-    {
-        title: 'Mô tả',
-        dataIndex: 'des',
-    },
-    {
-        title: 'Tên tác giả',
-        dataIndex: 'author',
-    },    
-    {
-        title: 'Action',
-        dataIndex: 'btnEdit',
+        title: 'Quyền',
+        dataIndex: 'role',
     },    
 ];
 
 
 
-const Book: React.FC = (props: Props) => {
+const User: React.FC = (props: Props) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string>>([])
-    const { loading, error, data } = useQuery(getBooks)
+    const { loading, error, data } = useQuery(getUsers)
     const [add, Mutation] = useMutation<any>(deleteBook);
     if (loading) {
         return <Spin size="large" />
@@ -63,19 +51,20 @@ const Book: React.FC = (props: Props) => {
     console.log(data);
     
     const data1: any[] | undefined = [];
-    for (let i = 0; i < data.books.length; i++) {
-        const link = '/admin/editbook/' + data.books[i].slug
-        const image = JSON.parse(data.books[i].image)[0]
-        const author = data.books[i].author.name
+    for (let i = 0; i < data.users.length; i++) {
+        const showRole = data.users[i].role === 1 ? <div>   
+            <Button type="primary" disabled>Admin</Button>
+            <Button type="primary" onClick={() => RemoveAdmin(data.users[i].id)}danger>Remove admin</Button>
+        </div> : <div>
+            <Button type="primary" disabled>User</Button>
+            <Button onClick={() => UpdateAdmin(data.users[i].id)} type="primary" danger>Update admin</Button>
+        </div>
         data1.push({
-            key: data.books[i].id,
-            name: data.books[i].name,
-            genre: data.books[i].genre,
-            price: formatprice(data.books[i].price),
-            image: <img src={image} width="100" alt="" />,
-            des: data.books[i].des,
-            author: author,
-            btnEdit: <Button type="primary"><Link to={link}>Sửa sản phẩm</Link></Button>,
+            key: data.users[i].id,
+            name: data.users[i].name,
+            email: data.users[i].email,
+            avatar: <img src={data.users[i].avatar} width="100" alt="" />,
+            role: showRole
         });
     }
 
@@ -84,16 +73,16 @@ const Book: React.FC = (props: Props) => {
         setSelectedRowKeys(selectedRowKeys);
     };
 
-    const onRemove = () => {
-        if(window.confirm('Are you sure you want to remove')){
-            selectedRowKeys.forEach(id => {
-                add({
-                    variables: {id},
-                    refetchQueries: [{ query: getBooks }]
-                },)
-            })
-            setSelectedRowKeys([])
-            toastDefault('Xóa sách thành công')
+    const RemoveAdmin = (id: String) => {
+        if(window.confirm('Bạn có muốn bỏ quyền admin không?')){
+            console.log(id);
+            // toastDefault('Xóa sách thành công')
+        }
+    }
+    const UpdateAdmin = (id: String) => {
+        if(window.confirm('Bạn có muốn thêm quyền admin không?')){
+            console.log(id);
+            // toastDefault('Xóa sách thành công')
         }
     }
 
@@ -108,9 +97,6 @@ const Book: React.FC = (props: Props) => {
                 <Button type="primary" onClick={start} disabled={!hasSelected} loading={false}>
                     Bỏ chọn
                 </Button>
-                <Button danger style={{ marginLeft: 20}} type="primary" onClick={onRemove} disabled={!hasSelected} loading={false}>
-                    Xóa
-                </Button>
                 <span style={{ marginLeft: 8 }}>
                     {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
                 </span>
@@ -119,4 +105,4 @@ const Book: React.FC = (props: Props) => {
         </div>
     )
 }
-export default Book
+export default User

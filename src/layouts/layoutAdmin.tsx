@@ -1,19 +1,40 @@
 import {
     AppstoreOutlined, SettingOutlined, UserOutlined
 } from '@ant-design/icons';
-import { Col, Layout, Menu, Row } from 'antd';
+import { useQuery } from '@apollo/client';
+import { Col, Layout, Menu, Row, Spin } from 'antd';
 import { Content, Header } from 'antd/lib/layout/layout';
 import React from "react";
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { toastError } from '../common/toasterror';
+import { getUserQuery } from '../graphql-client/query';
 const { SubMenu } = Menu;
 const LayoutAdmin: React.FC = () => {
+    const navigate = useNavigate();
+    const useLocal: any = localStorage.getItem('user')
+    const user = JSON.parse(useLocal);
+    const { loading, error, data } = useQuery(getUserQuery, {
+        variables: {
+            email: user.email,
+        }
+    })
+
+    if (loading) {
+        return <Spin size="large" />
+    }
+    if (data) {
+        if (data.user.role === 0) {
+            navigate('/')
+            toastError('Bạn không có quyền truy cập trang này !!!')
+        }
+    }
     const handleClick = (e: any) => {
         console.log('click ', e);
     };
     return (
         <Layout>
             <Header className="header">
-                
+
             </Header>
             <Row>
                 <Col span={5}>
