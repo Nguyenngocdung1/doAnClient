@@ -72,5 +72,16 @@ const signIn = gql`
     }
 `
 
+const createOrder = gql`
+    mutation CreateOrder($name: String, $email: String, $address: String, $phone: Int, $listOrder: String){
+        createOrder(input: {
+            name: $name, email: $email, address: $address, phone: $phone, listOrder: $listOrder
+        }){
+            id
+            listOrder
+        }
+    }
+`
 
-export { addSingleBook, addSingleAuthor, updateSingleBook, signIn, updateSingleAuthor, deleteAuthor, deleteBook }
+
+export { addSingleBook, addSingleAuthor, updateSingleBook, signIn, updateSingleAuthor,  deleteAuthor, deleteBook, createOrder }

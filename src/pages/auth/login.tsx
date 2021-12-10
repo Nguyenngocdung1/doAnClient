@@ -13,6 +13,8 @@ import { useMutation } from '@apollo/client';
 import { signIn } from "../../graphql-client/mutations";
 import { getUserQuery } from "../../graphql-client/query";
 import { toastDefault } from '../../common/toast';
+import { useDispatch } from 'react-redux';
+import { login } from '../../features/auths/authSlice';
 const provider1 = new FacebookAuthProvider();
 const provider2 = new GoogleAuthProvider();
 
@@ -29,6 +31,7 @@ provider2.setCustomParameters({
 // email
 
 function Login() {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const auth = getAuth();
   const refInputEmail = useRef<any>("");
@@ -40,7 +43,7 @@ function Login() {
   }
   if (Mutation.data) {
       console.log(Mutation.data);
-      toastDefault('Đăng kí thành công')
+      toastDefault('Đăng nhập thành công')
       navigate('/')
   }
 
@@ -83,8 +86,8 @@ function Login() {
           const newUser = {
             name: displayName, email, avatar: photoURL, password: uid
           };
-          localStorage.setItem("user", JSON.stringify(newUser));
           localStorage.setItem("token", JSON.stringify(token));
+          dispatch(login(newUser));
           add(
             {
                 variables: newUser,
@@ -105,7 +108,9 @@ function Login() {
   const handleEmailLogin = () => {
     const email = refInputEmail.current.valueOf();
     const password = refInputPassword.current.valueOf();
+    
     const newUser = {email, password, avatar: null, name: email}
+    dispatch(login(newUser))
     add(
       {
           variables: newUser,

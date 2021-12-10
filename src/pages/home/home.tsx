@@ -14,9 +14,9 @@ const Home = (props: Props) => {
     return (
         <div>
             <CarouselComponent />
-            <ProductComponent />
+            <ProductComponent page={0} />
             <AboutComponent />
-            <ProductComponent />
+            <ProductComponent page={1} />
             <Footerhover />
             <Aboutfooter />
         </div>

@@ -32,10 +32,13 @@ const getSingleBook = gql`
             author {
                 id
                 name
+                slug
                 books{
                     id
                     name
                     slug
+                    price
+                    image
                 }
             }
         }
@@ -99,5 +102,30 @@ const getUserQuery = gql`
         }
     }
 `
+const getOrders = gql`
+    query getOrdersQuery{
+        orders {
+            id
+            name
+            email
+            address
+            phone
+            listOrder
+        }
+    }
+`
 
-export { getBooks, getAuthors, getSingleBook, getUsers, getSingleAuthor, getUserQuery}
+const getSingleOrder = gql`
+    query getOrder($id: ID!){
+        order(id: $id) {
+            id
+            name
+            email
+            address
+            phone
+            listOrder
+        }
+    }
+`
+
+export { getBooks, getAuthors, getSingleBook, getUsers, getSingleAuthor, getUserQuery, getOrders, getSingleOrder}

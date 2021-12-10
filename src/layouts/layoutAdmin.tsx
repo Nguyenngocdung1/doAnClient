@@ -5,14 +5,14 @@ import { useQuery } from '@apollo/client';
 import { Col, Layout, Menu, Row, Spin } from 'antd';
 import { Content, Header } from 'antd/lib/layout/layout';
 import React from "react";
+import { useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { toastError } from '../common/toasterror';
 import { getUserQuery } from '../graphql-client/query';
 const { SubMenu } = Menu;
 const LayoutAdmin: React.FC = () => {
     const navigate = useNavigate();
-    const useLocal: any = localStorage.getItem('user')
-    const user = JSON.parse(useLocal);
+    const user = useSelector((state: any) => state.auth.user)
     const { loading, error, data } = useQuery(getUserQuery, {
         variables: {
             email: user.email,
@@ -64,6 +64,11 @@ const LayoutAdmin: React.FC = () => {
                             </Menu.Item>
                             <Menu.Item key="5">
                                 <Link to="/admin/addbook">Thêm sách</Link>
+                            </Menu.Item>
+                        </SubMenu>
+                        <SubMenu key="sub6" icon={<SettingOutlined />} title="Đơn đặt hàng">
+                            <Menu.Item key="10">
+                                <Link to="/admin/cart">Thống đơn đặt hàng</Link>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu key="sub4" icon={<SettingOutlined />} title="Doanh thu">

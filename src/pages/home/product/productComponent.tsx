@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom';
 import { getBooks } from '../../../graphql-client/query';
 import './index.css';
 interface Props {
-
+    page: number;
 }
 
 const ProductComponent = (props: Props) => {
+    const {page} = props;
     const { loading, error, data } = useQuery(getBooks)
     console.log(data);
 
@@ -18,13 +19,19 @@ const ProductComponent = (props: Props) => {
     if (error) {
         return <p>error book ...</p>
     }
+    const productPage = [];
+    if(data?.books){
+        for (let i = page*4; i < 4 + page*4; i++) {
+            productPage.push(data.books[i])
+        }
+    }
     return (
         <div className="" style={{width: '100%'}}>
             <div className="component-product">
                 <ul className="align">
                     {/* 1 sản phẩm */}
                     {
-                        data && data.books.map((book: any) => (
+                        data && productPage.map((book: any) => (
                             <li key={book.id}>
                                 <figure className="book">
                                     <ul className="hardcover_front">
@@ -53,7 +60,7 @@ const ProductComponent = (props: Props) => {
                                     <figcaption>
                                         <h1>{book.name}</h1>
                                         <span>By {book.author.name}</span>
-                                        <p>
+                                        <p style={{color: "white"}}>
                                             {book.des}
                                         </p>
                                     </figcaption>

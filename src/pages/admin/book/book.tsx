@@ -48,6 +48,7 @@ const Book: React.FC = (props: Props) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string>>([])
     const { loading, error, data } = useQuery(getBooks)
     const [add, Mutation] = useMutation<any>(deleteBook);
+    const [page, setPage] = useState({current: 1, pageSize: 3})
     if (loading) {
         return <Spin size="large" />
     }
@@ -102,6 +103,10 @@ const Book: React.FC = (props: Props) => {
         selectedRowKeys,
         onChange: onSelectChange,
     };
+
+    const handleTableChange = (pagination: any) => {
+        setPage(pagination)
+      };
     return (
         <div>
             <div style={{ marginBottom: 16 }}>
@@ -115,7 +120,7 @@ const Book: React.FC = (props: Props) => {
                     {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
                 </span>
             </div>
-            <Table rowSelection={rowSelection} columns={columns} dataSource={data1} />
+            <Table rowSelection={rowSelection} onChange={handleTableChange} pagination={page} columns={columns} dataSource={data1} />
         </div>
     )
 }

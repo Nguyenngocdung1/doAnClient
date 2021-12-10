@@ -1,12 +1,32 @@
 import React from 'react'
 import './about.css'
-import { Row, Col, Typography } from 'antd';
+import { Row, Col, Typography, Spin } from 'antd';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { getBooks } from '../../../graphql-client/query';
+import formatprice from '../../../common/formatprice';
 interface Props {
 
 }
 
 const AboutComponent = (props: Props) => {
+    const { loading, error, data } = useQuery(getBooks)
+    console.log(data);
+
+    if (loading) {
+        return <Spin size="large" />
+    }
+    if (error) {
+        return <p>error book ...</p>
+    }
+    const productPage = [];
+    if(data?.books){
+        for (let i = 0; i < 4; i++) {
+            productPage.push(data.books[i])
+        }
+    }
+    console.log(productPage);
+    
     return (
         <div className="about">
             <div className="image-about">
@@ -54,50 +74,19 @@ const AboutComponent = (props: Props) => {
                 </Col>
                 <Col span={8}>
                     <Row>
-                        <Col span={12}>
-                            <Link to="/">
-                                <img width="100%" src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-11-1.jpg" alt="" />
-                                <Typography.Title level={5} style={{margin: 0}}>
-                                    Virtual Product 001
-                                </Typography.Title>
-                                <Typography.Title level={4} style={{margin: 0}}>
-                                    $180.000
-                                </Typography.Title>
-                            </Link>
-                        </Col>
-                        <Col span={12}>
-                            <Link to="/">
-                                <img width="100%" src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-11-1.jpg" alt="" />
-                                <Typography.Title level={5} style={{margin: 0}}>
-                                    Virtual Product 001
-                                </Typography.Title>
-                                <Typography.Title level={4} style={{margin: 0}}>
-                                    $180.000
-                                </Typography.Title>
-                            </Link>
-                        </Col>
-                        <Col span={12}>
-                            <Link to="/">
-                                <img width="100%" src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-11-1.jpg" alt="" />
-                                <Typography.Title level={5} style={{margin: 0}}>
-                                    Virtual Product 001
-                                </Typography.Title>
-                                <Typography.Title level={4} style={{margin: 0}}>
-                                    $180.000
-                                </Typography.Title>
-                            </Link>
-                        </Col>
-                        <Col span={12}>
-                            <Link to="/">
-                                <img width="100%" src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-11-1.jpg" alt="" />
-                                <Typography.Title level={5} style={{margin: 0}}>
-                                    Virtual Product 001
-                                </Typography.Title>
-                                <Typography.Title level={4} style={{margin: 0}}>
-                                    $180.000
-                                </Typography.Title>
-                            </Link>
-                        </Col>
+                        {productPage.length > 0 && productPage.map((book) => (
+                            <Col key={book.id} span={12} style={{boxSizing: 'border-box'}}>
+                                <Link to={book.author.slug + "/" + book.slug} className="mx-2">
+                                    <img width="150" height="220" src={JSON.parse(book.image)} alt="" />
+                                    <Typography.Title level={5} style={{margin: 0}}>
+                                        {book.name}
+                                    </Typography.Title>
+                                    <Typography.Title level={4} style={{margin: 0}}>
+                                        {formatprice(book.price)}
+                                    </Typography.Title>
+                                </Link>
+                            </Col>
+                        ))}
                     </Row>
                 </Col>
             </Row>

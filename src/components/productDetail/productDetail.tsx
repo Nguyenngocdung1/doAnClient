@@ -1,28 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Spin } from 'antd';
+import { Card, Spin, Button } from 'antd';
 import { useQuery } from '@apollo/client';
-import { getSingleBook } from '../../graphql-client/query';
+import { getBooks, getSingleBook } from '../../graphql-client/query';
 import { useParams } from 'react-router';
 import './productDetail.css'
 import formatprice from '../../common/formatprice';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import book from '../../pages/admin/book/book';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../features/cart/cartSlide';
+import image from 'antd/lib/image';
+import { toastDefault } from '../../common/toast';
 interface Props {
 
 }
 
 const ProductDetail = (props: Props) => {
     const { slugProduct } = useParams()
+    const dispatch = useDispatch()
     const [count, setCount] = useState(1)
     const [imageFocus, setImageFocus] = useState<any>('')
-    const refImage = useRef(null)
     const { loading, error, data } = useQuery(getSingleBook, {
         variables: {
             slug: slugProduct,
         }
     })
-
-    if (loading) {
+    const { loading: loading1, error: error1, data: data1 } = useQuery(getBooks)
+    if (loading || loading1) {
         return <Spin size="large" />
     }
     if (error) {
@@ -33,14 +39,21 @@ const ProductDetail = (props: Props) => {
         setCount(e.target.value)
     }
     const handleClickTang = () => {
-        setCount(count + 1)
+        setCount((Number(count)) + 1)
     }
 
     const handleClickGiam = () => {
         if (count > 1) {
-            setCount(count - 1)
+            setCount((Number(count)) - 1)
         } else {
             setCount(1)
+        }
+    }
+
+    const bookTopQuery: any[] = [];
+    if (data1?.books) {
+        for (let i = 0; i < 4; i++) {
+            bookTopQuery.push(data1.books[i])
         }
     }
     let images = [];
@@ -49,6 +62,31 @@ const ProductDetail = (props: Props) => {
     }
     const addImageFocus = (image: String) => {
         setImageFocus(image)
+    }
+    let dataBookQuery = [];
+    if (data?.book?.author?.books) {
+        dataBookQuery = data.book.author.books.filter((book: any) => book.id !== data.book.id)
+    }
+    console.log("dataBookQuery",dataBookQuery);
+    
+    const handleClickAdd = () => {
+        const cart = {
+            quantity: Number(count),
+            book: {
+                slug: data.book.slug,
+                name: data.book.name,
+                id: data.book.id,
+                price: data.book.price,
+                author: {
+                    name: data.book.author.name,
+                    slug: data.book.author.slug
+                },
+                image: JSON.parse(data.book.image)[0]
+            }
+        }
+        dispatch(addToCart(cart))
+        setCount(1)
+        toastDefault("Thêm sách vào giỏ hàng thành công")
     }
 
     return (
@@ -82,7 +120,7 @@ const ProductDetail = (props: Props) => {
                         <div className="row">
                             <div className="col-5">
                                 <div className="product-img">
-                                    <img  src={imageFocus? imageFocus : images[0]} alt="" width="100%" />
+                                    <img src={imageFocus ? imageFocus : images[0]} alt="" width="100%" />
                                 </div>
 
                                 <div className="pt-2">
@@ -90,16 +128,16 @@ const ProductDetail = (props: Props) => {
                                         modules={[Navigation, Pagination, Scrollbar, A11y]}
                                         spaceBetween={10}
                                         slidesPerView={4}
-                                        // navigation
+                                    // navigation
                                     >
-                                        {images.map((image: string) =>(
+                                        {images.map((image: string) => (
                                             <SwiperSlide key={image} onClick={() => addImageFocus(image)}>
-                                                <div style={{cursor: 'pointer'}}>
+                                                <div style={{ cursor: 'pointer' }}>
                                                     <div className="img-about-slide">
                                                         <img width="100%" src={image} alt="" />
                                                     </div>
                                                 </div>
-                                             </SwiperSlide> 
+                                            </SwiperSlide>
                                         ))}
                                     </Swiper>
                                 </div>
@@ -124,7 +162,9 @@ const ProductDetail = (props: Props) => {
 
                                     </div>
                                     <div className="button-addtocard">
-                                        <button className="btn">ADD TO CARD</button>
+                                        <Button onClick={handleClickAdd} className="btn">
+                                            ADD TO CARD
+                                        </Button>
                                     </div>
                                 </div>
                                 <div className="
@@ -191,189 +231,86 @@ const ProductDetail = (props: Props) => {
                             {/* End Mô tả */}
                             <div className="container mt-5">
                                 <div className="relateProduct-content text-center">
-                                    <h1>RELATED PRODUCTS</h1>
+                                    <h1 style={{ color: "black" }}>Sản phẩm liên quan</h1>
                                 </div>
                                 <div className="d-flex mt-5">
-                                    <div className="row justify-content-between">
-                                        <div className=" col-3 product-relate-content">
-                                            <div className="text-center">
-                                                <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="80%" />
-                                            </div>
-                                            <div className="fw-bold">
-                                                <p >Downloadable Product 001</p>
-                                            </div>
-                                            <div className="d-flex justify-content-between"><div className="ratings text-center">
-                                                <p><i className="rate fa fa-star" /></p>
-                                                <p title="2/5"><i className="rate rated fa fa-star" /></p>
-                                                <p title="3/5"><i className="rate fa fa-star" /></p>
-                                                <p title="4/5"><i className="rate fa fa-star" /></p>
-                                                <p title="5/5"><i className="rate fa fa-star" /></p>
-                                            </div>
-                                                <div className="price fw-bold text-center">
-                                                    <p >$290,00</p>
-                                                </div></div>
-                                        </div>
-                                        <div className=" col-3 product-relate-content">
-                                            <div className="text-center">
-                                                <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="80%" />
-                                            </div>
-                                            <div className="fw-bold">
-                                                <p >Downloadable Product 001</p>
-                                            </div>
-                                            <div className="d-flex justify-content-between"><div className="ratings text-center">
-                                                <p><i className="rate fa fa-star" /></p>
-                                                <p title="2/5"><i className="rate rated fa fa-star" /></p>
-                                                <p title="3/5"><i className="rate fa fa-star" /></p>
-                                                <p title="4/5"><i className="rate fa fa-star" /></p>
-                                                <p title="5/5"><i className="rate fa fa-star" /></p>
-                                            </div>
-                                                <div className="price fw-bold text-center">
-                                                    <p >$290,00</p>
-                                                </div></div>
-                                        </div>
-                                        <div className=" col-3 product-relate-content">
-                                            <div className="text-center">
-                                                <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="80%" />
-                                            </div>
-                                            <div className="fw-bold">
-                                                <p style={{ color: 'black' }}>Downloadable Product 001</p>
-                                            </div>
-                                            <div className="d-flex justify-content-between"><div className="ratings text-center">
-                                                <p><i className="rate fa fa-star" /></p>
-                                                <p title="2/5"><i className="rate rated fa fa-star" /></p>
-                                                <p title="3/5"><i className="rate fa fa-star" /></p>
-                                                <p title="4/5"><i className="rate fa fa-star" /></p>
-                                                <p title="5/5"><i className="rate fa fa-star" /></p>
-                                            </div>
-                                                <div className="price fw-bold text-center">
-                                                    <p >$290,00</p>
-                                                </div></div>
-                                        </div>
-                                        <div className=" col-3 product-relate-content">
-                                            <div className="text-center">
-                                                <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="80%" />
-                                            </div>
-                                            <div className="fw-bold">
-                                                <p >Downloadable Product 001</p>
-                                            </div>
-                                            <div className="d-flex justify-content-between"><div className="ratings text-center">
-                                                <p><i className="rate fa fa-star" /></p>
-                                                <p title="2/5"><i className="rate rated fa fa-star" /></p>
-                                                <p title="3/5"><i className="rate fa fa-star" /></p>
-                                                <p title="4/5"><i className="rate fa fa-star" /></p>
-                                                <p title="5/5"><i className="rate fa fa-star" /></p>
-                                            </div>
-                                                <div className="price fw-bold text-center">
-                                                    <p >$290,00</p>
-                                                </div></div>
-                                        </div>
-                                    </div>
+                                    <Swiper
+                                        modules={[Navigation, Pagination, Scrollbar, A11y]}
+                                        spaceBetween={20}
+                                        slidesPerView={3}
+                                        navigation
+                                    >
+                                        {dataBookQuery.length > 0 && dataBookQuery.map((book: any) => (
+                                            <SwiperSlide key={book.id}>
+                                                <Card hoverable>
+                                                    <Link to={"/" + data.book.author.slug + "/" + book.slug}className="product-relate-content">
+                                                        <div className="text-center">
+                                                            <img width="100%" height="270" style={{objectFit: 'cover'}} src={JSON.parse(book.image)[0]} alt="" />
+                                                        </div>
+                                                        <div className="fw-bold mt-2">
+                                                            <p>{book.name}</p>
+                                                        </div>
+                                                        <div className="d-flex justify-content-between"><div className="ratings text-center">
+                                                            <p><i className=" fa fa-star" /></p>
+                                                            <p title="2/5"><i className="fa fa-star" /></p>
+                                                            <p title="3/5"><i className="fa fa-star" /></p>
+                                                            <p title="4/5"><i className=" fa fa-star" /></p>
+                                                            <p title="5/5"><i className=" fa fa-star" /></p>
+                                                        </div>
+                                                            <div className="price fw-bold text-center">
+                                                                <p>{formatprice(book.price)}</p>
+                                                            </div></div>
+                                                    </Link>
+                                                </Card>
+                                            </SwiperSlide>
+                                        ))}
+
+                                    </Swiper>
                                 </div>
                             </div>
                             {/* End sản phẩm liên quan */}
                         </div>
                     </div>
                     <div className="col-3">
-                        <div className="top-rate">
-                            <div className="top-rate-title">
-                                <h5>TOP RATED PRODUCTS</h5>
+                        <div className="top-">
+                            <div className="top--title">
+                                <h5>TOP SẢN PHẨM</h5>
                             </div>
                             <div className="d-grid justify-content-between">
                                 <div className="row">
-                                    <div className="d-flex col-12 mt-3">
-                                        <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="40%" />
-                                        <div className="fw-bold">
-                                            <p >Downloadable Product 001</p>
-                                            <div className="ratings ">
-                                                <p><i className="rate fa fa-star" /></p>
-                                                <p title="2/5"><i className="rate rated fa fa-star" /></p>
-                                                <p title="3/5"><i className="rate fa fa-star" /></p>
-                                                <p title="4/5"><i className="rate fa fa-star" /></p>
-                                                <p title="5/5"><i className="rate fa fa-star" /></p>
-                                            </div>
-                                            <div className="price fw-bold ">
-                                                <p >$290,00</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex col-12 mt-3">
-                                        <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="40%" />
-                                        <div className="fw-bold">
-                                            <p >Downloadable Product 001</p>
-                                            <div className="ratings ">
-                                                <p><i className="rate fa fa-star" /></p>
-                                                <p title="2/5"><i className="rate rated fa fa-star" /></p>
-                                                <p title="3/5"><i className="rate fa fa-star" /></p>
-                                                <p title="4/5"><i className="rate fa fa-star" /></p>
-                                                <p title="5/5"><i className="rate fa fa-star" /></p>
-                                            </div>
-                                            <div className="price fw-bold ">
-                                                <p >$290,00</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex col-12 mt-3">
-                                        <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="40%" />
-                                        <div className="fw-bold">
-                                            <p >Downloadable Product 001</p>
-                                            <div className="ratings ">
-                                                <p><i className="rate fa fa-star" /></p>
-                                                <p title="2/5"><i className="rate rated fa fa-star" /></p>
-                                                <p title="3/5"><i className="rate fa fa-star" /></p>
-                                                <p title="4/5"><i className="rate fa fa-star" /></p>
-                                                <p title="5/5"><i className="rate fa fa-star" /></p>
-                                            </div>
-                                            <div className="price fw-bold ">
-                                                <p >$290,00</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex col-12 mt-3">
-                                        <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="40%" />
-                                        <div className="fw-bold">
-                                            <p >Downloadable Product 001</p>
-                                            <div className="ratings ">
-                                                <p><i className="rate fa fa-star" /></p>
-                                                <p title="2/5"><i className="rate rated fa fa-star" /></p>
-                                                <p title="3/5"><i className="rate fa fa-star" /></p>
-                                                <p title="4/5"><i className="rate fa fa-star" /></p>
-                                                <p title="5/5"><i className="rate fa fa-star" /></p>
-                                            </div>
-                                            <div className="price fw-bold ">
-                                                <p >$290,00</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex col-12 mt-3">
-                                        <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/05/product-3-1.jpg" alt="" width="40%" />
-                                        <div className="fw-bold">
-                                            <p >Downloadable Product 001</p>
-                                            <div className="ratings ">
-                                                <p><i className="rate fa fa-star" /></p>
-                                                <p title="2/5"><i className="rate rated fa fa-star" /></p>
-                                                <p title="3/5"><i className="rate fa fa-star" /></p>
-                                                <p title="4/5"><i className="rate fa fa-star" /></p>
-                                                <p title="5/5"><i className="rate fa fa-star" /></p>
-                                            </div>
-                                            <div className="price fw-bold ">
-                                                <p >$290,00</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {bookTopQuery.length > 0 && bookTopQuery.map((book) => (
+                                        <Card key={book.id} hoverable className="mb-2">
+                                            <Link to={"/" + book.author.slug + "/" + book.slug}className="d-flex col-12 mt-3">
+                                                <div className="me-2">
+                                                    <img src={JSON.parse(book.image)} alt="" width="100" />
+                                                </div>
+                                                <div className="fw-bold">
+                                                    <p >{book.name}</p>
+                                                    <div className="ratings ">
+                                                        <p><i className=" fa fa-star" /></p>
+                                                        <p title="2/5"><i className=" d fa fa-star" /></p>
+                                                        <p title="3/5"><i className=" fa fa-star" /></p>
+                                                        <p title="4/5"><i className=" fa fa-star" /></p>
+                                                        <p title="5/5"><i className=" fa fa-star" /></p>
+                                                    </div>
+                                                    <div className="price fw-bold ">
+                                                        <p >{formatprice(book.price)}</p>
+                                                    </div>
+                                                    <div className="price fw-bold ">
+                                                        <p >Tác giả: {book.author.name}</p>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        </Card>
+
+                                    ))}
+
                                 </div>
                                 {/* End Sản phẩm nổi bật */}
                                 <div className=" mt-4">
                                     <h4>COMPARE</h4>
                                     <div>
                                         <span>No products to compare</span>
-                                    </div>
-                                    <div className="d-flex mt-2">
-                                        <div className="justify-content-center pe-5">
-                                            <p >Clear all</p>
-                                        </div>
-                                        <div>
-                                            <button className="btn btn-dark">COMPARE</button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

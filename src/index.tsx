@@ -8,8 +8,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {store} from './store';
+import { store } from './store';
 import 'react-toastify/dist/ReactToastify.css';
+import persistor from './store';
+import { PersistGate } from 'redux-persist/integration/react'
 // khởi tạo apollo client
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -19,11 +21,13 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </BrowserRouter>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
+      </BrowserRouter>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );
