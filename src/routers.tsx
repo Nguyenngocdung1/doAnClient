@@ -25,6 +25,11 @@ import About from "./pages/about/about";
 import Cart from "./pages/cart/cart";
 import CartAdmin from './pages/admin/cart/cartAdmin';
 import CartDetail from './pages/admin/cart/cartDetail';
+import History from "./pages/user/history/history";
+import HistoryDetail from "./pages/user/history/historyDetail";
+import UserPage from './pages/user/user';
+import Profile from "./pages/user/profile/profile";
+
 
 
 type Props = {
@@ -51,6 +56,13 @@ const Router: React.FC<Props> = (props) => {
           <Route path="/usedbooks" element={<Usedbooks />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/contact-us" element={<Concact />} />
+          
+          <Route path="/user/*" element={<UserPage />}>
+            <Route index element={<Navigate to="profile" />}/>
+            <Route path="profile" element={<Profile />} />
+            <Route path="history" element={<History />} />
+            <Route path="history/:id" element={<HistoryDetail />} />
+          </Route>    
         </Route>
 
         <Route path="admin/*" element={<LayoutAdmin />}>

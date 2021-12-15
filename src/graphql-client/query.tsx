@@ -111,6 +111,8 @@ const getOrders = gql`
             address
             phone
             listOrder
+            status
+            date
         }
     }
 `
@@ -124,8 +126,29 @@ const getSingleOrder = gql`
             address
             phone
             listOrder
+            status
+            date
         }
     }
 `
 
-export { getBooks, getAuthors, getSingleBook, getUsers, getSingleAuthor, getUserQuery, getOrders, getSingleOrder}
+const getOrderByEmail = gql`
+    query getOrderByEmail($email: String!){
+        orders(email: $email) {
+            id
+            name
+            email
+            address
+            phone
+            listOrder
+            status
+            date
+            danhgia
+            comments
+        }
+    }
+`
+
+
+export { getBooks, getAuthors, getSingleBook, getOrderByEmail,
+getUsers, getSingleAuthor, getUserQuery, getOrders, getSingleOrder}

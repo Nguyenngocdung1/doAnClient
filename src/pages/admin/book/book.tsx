@@ -60,24 +60,23 @@ const Book: React.FC = (props: Props) => {
             setSelectedRowKeys([]);
         }, 1000);
     };
-
-    console.log(data);
-    
     const data1: any[] | undefined = [];
-    for (let i = 0; i < data.books.length; i++) {
-        const link = '/admin/editbook/' + data.books[i].slug
-        const image = JSON.parse(data.books[i].image)[0]
-        const author = data.books[i].author.name
-        data1.push({
-            key: data.books[i].id,
-            name: data.books[i].name,
-            genre: data.books[i].genre,
-            price: formatprice(data.books[i].price),
-            image: <img src={image} width="100" alt="" />,
-            des: data.books[i].des,
-            author: author,
-            btnEdit: <Button type="primary"><Link to={link}>Sửa sản phẩm</Link></Button>,
-        });
+    if(data.books.length > 0){
+        for (let i = 0; i < data.books.length; i++) {
+            const link = '/admin/editbook/' + data.books[i].slug
+            const image = JSON.parse(data.books[i].image)[0]
+            const author = data.books[i].author.name
+            data1.push({
+                key: data.books[i].id,
+                name: data.books[i].name,
+                genre: data.books[i].genre,
+                price: formatprice(data.books[i].price),
+                image: <img src={image} width="100" alt="" />,
+                des: data.books[i].des,
+                author: author,
+                btnEdit: <Button type="primary"><Link to={link}>Sửa sản phẩm</Link></Button>,
+            });
+        }
     }
 
     const onSelectChange = (selectedRowKeys: any) => {

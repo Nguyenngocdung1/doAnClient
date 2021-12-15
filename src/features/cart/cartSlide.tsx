@@ -4,7 +4,6 @@ export interface cartState {
     error: String;
     loading: boolean;
     carts: any;
-    
   }
   const initialState: cartState = {
     error: "",

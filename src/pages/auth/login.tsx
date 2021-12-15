@@ -10,7 +10,7 @@ import React, { useRef } from "react";
 import '../../common/firebase/index'
 import { useNavigate } from "react-router-dom";
 import { useMutation } from '@apollo/client';
-import { signIn } from "../../graphql-client/mutations";
+import { logIn } from "../../graphql-client/mutations";
 import { getUserQuery } from "../../graphql-client/query";
 import { toastDefault } from '../../common/toast';
 import { useDispatch } from 'react-redux';
@@ -37,14 +37,23 @@ function Login() {
   const refInputEmail = useRef<any>("");
   const refInputPassword = useRef<any>("");
   
-  const [add, Mutation] = useMutation<any>(signIn);
+  const [add, Mutation] = useMutation<any>(logIn);
   if (Mutation.loading) {
       return <Spin size="large" />
   }
-  if (Mutation.data) {
-      console.log(Mutation.data);
+
+  console.log(Mutation.data);
+  
+  if (Mutation.data?.login) {
+      const user = Mutation.data.login;
+      dispatch(login(user));
       toastDefault('Đăng nhập thành công')
-      navigate('/')
+      if(user.role === 1){
+        navigate('/admin')
+      }else{
+        navigate('/')
+      }
+      
   }
 
   //   facebook
@@ -81,16 +90,11 @@ function Login() {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        const { displayName, email, photoURL, uid } = user;
+        const { displayName, email } = user;
         if (displayName && email) {
-          const newUser = {
-            name: displayName, email, avatar: photoURL, password: uid
-          };
-          localStorage.setItem("token", JSON.stringify(token));
-          dispatch(login(newUser));
           add(
             {
-                variables: newUser,
+                variables: {name: displayName, email},
                 refetchQueries: [{ query:  getUserQuery}]
             },
           )

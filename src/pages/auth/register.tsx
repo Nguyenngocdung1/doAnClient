@@ -1,18 +1,19 @@
+import { useMutation } from '@apollo/client';
 import { Button, Col, Input, Row, Spin } from 'antd';
 import {
-  createUserWithEmailAndPassword,
   FacebookAuthProvider,
   getAuth,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithPopup
 } from "firebase/auth";
 import React, { useRef } from "react";
-import '../../common/firebase/index'
+import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { useMutation } from '@apollo/client';
+import '../../common/firebase/index';
+import { toastDefault } from '../../common/toast';
+import { register } from '../../features/auths/authSlice';
 import { signIn } from "../../graphql-client/mutations";
 import { getUserQuery } from "../../graphql-client/query";
-import { toastDefault } from '../../common/toast';
 const provider1 = new FacebookAuthProvider();
 const provider2 = new GoogleAuthProvider();
 
@@ -31,6 +32,7 @@ provider2.setCustomParameters({
 function Register() {
   const navigate = useNavigate();
   const auth = getAuth();
+  const dispatch = useDispatch()
   const refInputEmail = useRef<any>("");
   const refInputPassword = useRef<any>("");
   const refInputUserName = useRef<any>("");
@@ -38,8 +40,9 @@ function Register() {
   if (Mutation.loading) {
       return <Spin size="large" />
   }
-  if (Mutation.data) {
-      console.log(Mutation.data);
+  if (Mutation.data?.createUser) {
+      const user = Mutation.data?.createUser;
+      dispatch(register(user))
       toastDefault('Đăng kí thành công')
       navigate('/')
   }

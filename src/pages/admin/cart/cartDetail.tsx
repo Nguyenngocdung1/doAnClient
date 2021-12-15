@@ -35,10 +35,6 @@ const columns = [
         title: 'Tổng tiền',
         dataIndex: 'totalBook',
     },
-    {
-        title: 'Xóa',
-        dataIndex: 'delete',
-    },
 ];
 
 const CartDetail = (props: Props) => {
@@ -69,7 +65,6 @@ const CartDetail = (props: Props) => {
             </div>
             ,
             totalBook: formatprice(orderItem.quantity * orderItem.book.price),
-            delete: <Button type="primary" danger><DeleteOutlined /></Button>,
         });
     })
     

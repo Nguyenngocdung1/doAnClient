@@ -1,4 +1,4 @@
-import { CloseCircleOutlined, HeartOutlined, LogoutOutlined, ProfileOutlined, ShoppingOutlined, SwapOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, CloseCircleOutlined, HeartOutlined, LogoutOutlined, ProfileOutlined, ShoppingOutlined, SwapOutlined, UserOutlined } from '@ant-design/icons';
 import { useQuery } from '@apollo/client';
 import { Button, Col, Dropdown, Input, InputNumber, Menu, Row, Spin, Typography } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
@@ -17,6 +17,7 @@ interface Props {
 const Header = (props: Props) => {
     const dispatch = useDispatch()
     const carts = useSelector((state: any) => state.cart.carts)
+    const notifications = useSelector((state: any) => state.notifications.notifications);
     const user = useSelector((state: any) => state.auth.user)
     let total = 0;
     if (carts.length > 0) {
@@ -75,18 +76,13 @@ const Header = (props: Props) => {
         setIsLoading(false)
         setIsShowViewSearch(false)
     }
-
-    const updateQuantity = (id: String) => {
-        console.log(id)
-    }
-
     const handleLogout = () => {
         dispatch(logout({}))
     }
     const menu = (
         <Menu onClick={handleMenuClick}>
             <Menu.Item key="1" icon={<ProfileOutlined />}>
-                <Link to="/profile">Xem profile</Link>
+                <Link to="user/profile">Xem profile</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<HeartOutlined />}>
                 <Link to="/favorite">Sách yêu thích</Link>
@@ -126,7 +122,7 @@ const Header = (props: Props) => {
                 }
 
             </div>
-            {carts.length > 0 && 
+            {carts.length > 0 &&
                 <div className="d-flex mx-2 align-items-center justify-content-between">
                     <h5>Tổng tiền: {formatprice(total)}</h5>
                     <Button>
@@ -135,8 +131,23 @@ const Header = (props: Props) => {
                         </Link>
                     </Button>
                 </div>
-            
+
             }
+        </Menu>
+    )
+
+    const Notification = (
+        <Menu onClick={handleMenuClick}>
+            <h4 className="my-2 text-center">Thông báo mới nhận</h4>
+            <div className="header-scroll">
+                {notifications.length > 0 && notifications.map((item: any) => (
+                    <Link to="user/history" key={item.order.id} className="notification-item">
+                        <img width="80" className='me-2' src="http://hanoimoi.com.vn/Uploads/image/News/Thumbnails/2021/5/Thumbnails25462021044620icon.png" alt="" />
+                        <div>{item.message}</div>
+                    </Link>
+                ))}
+            </div>
+            <Link to="/user/notifications" className="text-center d-block">Xem chi tiết</Link>
         </Menu>
     )
 
@@ -185,37 +196,26 @@ const Header = (props: Props) => {
                 <Col span={8}>
                     <img width="200" src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/12/logo.png" alt="" />
                 </Col>
-                <Col span={2}>
-                    <Row>
-                        <Col span={6}>
-                            <HeartOutlined />
-                        </Col>
-                        <Col span={18}>
-                            <Typography.Text>
-                                My Wishlist
-                            </Typography.Text>
-                        </Col>
-                        <Col span={6}>
-                            <SwapOutlined />
-                        </Col>
-                        <Col span={18}>
-                            <Typography.Text style={{ textAlign: 'left' }}>
-                                My Wishlist
-                            </Typography.Text>
-                        </Col>
-                    </Row>
 
-                </Col>
-                <Col span={8}>
+                <Col span={10}>
                     <Row style={{ alignItems: 'center' }}>
-                        <Col span={14}>
+                        <Col span={7}>
+                            <span className="header-in-number">{notifications.length}</span>
+                            <Dropdown.Button overlay={Notification} placement="bottomRight" icon={<BellOutlined />}>
+                                <Link to="/user/notifications">
+                                    Thông báo
+                                </Link>
+                            </Dropdown.Button>
+                        </Col>
+                        <Col span={9}>
+                            <span className="header-quanlity-number">{carts.length}</span>
                             <Dropdown.Button overlay={cartView} placement="bottomRight" icon={<ShoppingOutlined />}>
                                 <Link to="/cart">
                                     Giỏ hàng của bạn
                                 </Link>
                             </Dropdown.Button>
                         </Col>
-                        <Col span={10}>
+                        <Col span={8}>
                             {user?.name ? <Dropdown.Button style={{ height: '100%' }} overlay={menu} placement="bottomCenter" icon={<UserOutlined />}>
                                 {user.name}
                             </Dropdown.Button> :

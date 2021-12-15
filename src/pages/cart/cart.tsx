@@ -7,8 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import formatprice from '../../common/formatprice';
 import { toastDefault } from '../../common/toast';
 import { decreaseCart, increaseCart, removeCart } from '../../features/cart/cartSlide';
+import {addNotification} from '../../features/notifications/notificationSlide'
 import { createOrder } from '../../graphql-client/mutations';
-import { getOrders } from '../../graphql-client/query';
+import { getOrderByEmail, getOrders } from '../../graphql-client/query';
 import './cart.css';
 interface Props {
 
@@ -47,6 +48,7 @@ const columns = [
 
 const Cart = (props: Props) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string>>([])
+    const email = useSelector((state: any) => state.auth.user.email)
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const carts = useSelector((state: any) => state.cart.carts)
@@ -62,6 +64,10 @@ const Cart = (props: Props) => {
         return <Spin size="large" />
     }
 
+    console.log("Mutation", Mutation);
+    if(Mutation.data?.createOrder){
+        dispatch(addNotification(Mutation.data?.createOrder))
+    }
     const data: any[] | undefined = [];
     for (let i = 0; i < carts.length; i++) {
 
@@ -111,11 +117,13 @@ const Cart = (props: Props) => {
         onChange: onSelectChange,
     };
 
+
     const onFinish = (values: any) => {
         values.phone = Number(values.phone)
         const data = {
             ...values,
-            listOrder: JSON.stringify(selectedRowKeys)
+            listOrder: JSON.stringify(selectedRowKeys),
+            status: 1
         }
         selectedRowKeys.forEach((cart: any) => {
             dispatch(removeCart(cart.book.id))
@@ -123,7 +131,7 @@ const Cart = (props: Props) => {
         setTotal(0)
         add({
             variables: data,
-            refetchQueries: [{query: getOrders}]
+            refetchQueries: [{query: getOrderByEmail, variables: {email}}]
         },)
         setSelectedRowKeys([])
         setTimeout(() => {

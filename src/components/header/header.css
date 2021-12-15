@@ -184,3 +184,38 @@
 .header-quantity{
     width: 100px;
 }
+.header-quanlity-number{
+    position: absolute;
+    top: -10px;
+    right: 0px;
+    width: 20px;
+    height: 20px;
+    background-color: red !important;
+    color: white;
+    border-radius: 50%;
+    z-index: 1000;
+}
+.header-in-number{
+    position: absolute;
+    top: -10px;
+    right: 0px;
+    width: 20px;
+    height: 20px;
+    background-color: red !important;
+    color: white;
+    border-radius: 50%;
+    z-index: 1000;
+}
+.notification-item{
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    transition: background-color 0.3s linear;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.notification-item:hover{
+    background-color: aliceblue;
+}

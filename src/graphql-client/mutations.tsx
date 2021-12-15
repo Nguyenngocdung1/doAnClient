@@ -68,20 +68,69 @@ const signIn = gql`
         }){
             id
             name
+            avatar
+            email
+            role
         }
     }
 `
 
+const logIn = gql`
+    mutation loginMutation($name: String, $email: String){
+        login(name: $name, email: $email){
+            id
+            name
+            avatar
+            email
+            role
+        }
+    }
+`
+
+
 const createOrder = gql`
-    mutation CreateOrder($name: String, $email: String, $address: String, $phone: Int, $listOrder: String){
+    mutation CreateOrder($name: String, $email: String, $address: String, $phone: Int, $listOrder: String, $status: Int){
         createOrder(input: {
-            name: $name, email: $email, address: $address, phone: $phone, listOrder: $listOrder
+            name: $name, email: $email, address: $address, phone: $phone, listOrder: $listOrder, status: $status
         }){
             id
             listOrder
+            name
+            phone
+            email
+            address
+            status
         }
     }
 `
+const updateStatusOrder = gql`
+    mutation UpdateStatusOrder($id: ID!, $status: Int){
+        updateStatusOrder(id: $id, status: $status){
+            name
+            listOrder
+            date
+        }
+    }
+` 
+
+const deleteStatusOrder = gql`
+    mutation DeleteStatusOrder($id: ID!){
+        deleteStatusOrder(id: $id){
+            name
+            listOrder
+            date
+        }
+    }
+`
+const danhGiaOrder = gql`
+    mutation DanhGiaOrder($id: ID!, $comments: String, $danhgia: Int){
+        danhGiaOrder(id: $id, comments: $comments, danhgia: $danhgia){
+            name
+            listOrder
+            date
+        }
+    }
+` 
 
 
-export { addSingleBook, addSingleAuthor, updateSingleBook, signIn, updateSingleAuthor,  deleteAuthor, deleteBook, createOrder }
+export { addSingleBook, addSingleAuthor, updateSingleBook, signIn, updateSingleAuthor,  deleteAuthor, deleteBook, createOrder, updateStatusOrder, deleteStatusOrder, danhGiaOrder, logIn }
