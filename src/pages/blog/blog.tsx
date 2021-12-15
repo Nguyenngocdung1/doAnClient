@@ -1,7 +1,7 @@
-import React from 'react'
+import { Button, Pagination } from 'antd';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './index.css';
-import { Button, Pagination } from 'antd';
 interface Props {
     
 }

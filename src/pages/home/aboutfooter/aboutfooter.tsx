@@ -1,9 +1,9 @@
-import React from 'react'
 import { Row, Typography } from 'antd';
+import React from 'react';
+import { A11y, Navigation, Pagination, Scrollbar } from 'swiper';
 // import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
-import './aboutfooter.css'
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import './aboutfooter.css';
 
 interface Props {
 

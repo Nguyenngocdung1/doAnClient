@@ -1,7 +1,7 @@
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Col, Row, Form, Input, Button, Avatar, Upload } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Avatar, Button, Col, Form, Input, Row, Upload } from 'antd';
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAvatar } from '../../../features/auths/authSlice';
 

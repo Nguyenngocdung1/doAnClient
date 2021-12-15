@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import formatprice from '../../common/formatprice';
 import { toastDefault } from '../../common/toast';
 import { decreaseCart, increaseCart, removeCart } from '../../features/cart/cartSlide';
-import {addNotification} from '../../features/notifications/notificationSlide'
+import { addNotification } from '../../features/notifications/notificationSlide';
 import { createOrder } from '../../graphql-client/mutations';
-import { getOrderByEmail, getOrders } from '../../graphql-client/query';
+import { getOrderByEmail } from '../../graphql-client/query';
 import './cart.css';
 interface Props {
 

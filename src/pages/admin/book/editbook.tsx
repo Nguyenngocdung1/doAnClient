@@ -1,26 +1,21 @@
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useMutation, useQuery } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
-import '../../../common/firebase/index'
 import {
     Button, Form,
-    Input, Select, Space, Spin
+    Input, Select, Spin
 } from 'antd';
+import {
+    getDownloadURL, getStorage,
+    ref, uploadBytes, uploadBytesResumable
+} from "firebase/storage";
 import React, { useCallback, useState } from 'react';
-import {updateSingleBook } from '../../../graphql-client/mutations';
+import { useNavigate, useParams } from 'react-router-dom';
+import '../../../common/firebase/index';
+import { toastDefault } from '../../../common/toast';
+import { updateSingleBook } from '../../../graphql-client/mutations';
 import { getAuthors, getBooks, getSingleBook } from '../../../graphql-client/query';
 import Uploadimage from '../uploadimage';
 import './form.css';
 
-import {
-    getStorage,
-    ref,
-    uploadBytesResumable,
-    getDownloadURL,
-    uploadBytes,
-} from "firebase/storage";
-import { toastDefault } from '../../../common/toast';
-import { useParams } from 'react-router-dom';
 const { Option } = Select;
 interface Props {
 

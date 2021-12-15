@@ -1,14 +1,14 @@
-import React, { useRef, useState } from 'react'
-import { Avatar, Button, Col, Input, Modal, Rate, Row } from 'antd';
-import { Link } from 'react-router-dom';
-import './item.css'
-import formatprice from '../../../common/formatprice';
 import { useMutation } from '@apollo/client';
+import { Avatar, Button, Col, Input, Modal, Rate, Row } from 'antd';
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import formatprice from '../../../common/formatprice';
+import { toastDefault } from '../../../common/toast';
+import { addNotification } from '../../../features/notifications/notificationSlide';
 import { createOrder, danhGiaOrder, deleteStatusOrder, updateStatusOrder } from '../../../graphql-client/mutations';
 import { getOrderByEmail, getOrders } from '../../../graphql-client/query';
-import { toastDefault } from '../../../common/toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { addNotification } from '../../../features/notifications/notificationSlide'
+import './item.css';
 interface Props {
     order: any
 }

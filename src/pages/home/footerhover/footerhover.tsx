@@ -1,6 +1,6 @@
-import React from 'react'
-import { Row, Col } from 'antd';
-import './footerhover.css'
+import { Col, Row } from 'antd';
+import React from 'react';
+import './footerhover.css';
 interface Props {
     
 }

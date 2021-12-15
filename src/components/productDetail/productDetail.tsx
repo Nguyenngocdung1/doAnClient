@@ -1,18 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Card, Spin, Button } from 'antd';
 import { useQuery } from '@apollo/client';
-import { getBooks, getSingleBook } from '../../graphql-client/query';
-import { useParams } from 'react-router';
-import './productDetail.css'
-import formatprice from '../../common/formatprice';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import book from '../../pages/admin/book/book';
-import { Link } from 'react-router-dom';
+import { Button, Card, Spin } from 'antd';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../features/cart/cartSlide';
-import image from 'antd/lib/image';
+import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
+import { A11y, Navigation, Pagination, Scrollbar } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import formatprice from '../../common/formatprice';
 import { toastDefault } from '../../common/toast';
+import { addToCart } from '../../features/cart/cartSlide';
+import { getBooks, getSingleBook } from '../../graphql-client/query';
+import './productDetail.css';
 interface Props {
 
 }

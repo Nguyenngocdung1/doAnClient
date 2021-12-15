@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import { useQuery } from '@apollo/client';
+import { Button, Card, Pagination, Spin } from 'antd';
+import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { getSingleAuthor } from '../../graphql-client/query';
-import './index.css'
-import { useQuery } from '@apollo/client';
-import { Spin, Button, Card } from 'antd';
 import formatprice from '../../common/formatprice';
-import { getAuthors } from '../../graphql-client/query';
-import { Pagination } from 'antd';
+import { getAuthors, getSingleAuthor } from '../../graphql-client/query';
+import './index.css';
 interface Props {
 
 }

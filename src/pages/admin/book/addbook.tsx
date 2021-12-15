@@ -1,8 +1,7 @@
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useMutation, useQuery } from '@apollo/client';
 import {
     Button, Form,
-    Input, Select, Space, Spin
+    Input, Select, Spin
 } from 'antd';
 import {
     getDownloadURL, getStorage,

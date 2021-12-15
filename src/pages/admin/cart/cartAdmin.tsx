@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { Button, Spin, Table } from 'antd';
-import React, { useState } from 'react'
-import { getOrders } from '../../../graphql-client/query';
-import formatprice from '../../../common/formatprice';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import formatprice from '../../../common/formatprice';
 import { deleteStatusOrder, updateStatusOrder } from '../../../graphql-client/mutations';
+import { getOrders } from '../../../graphql-client/query';
 
 interface Props {
     

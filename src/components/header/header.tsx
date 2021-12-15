@@ -1,12 +1,12 @@
-import { BellOutlined, CloseCircleOutlined, HeartOutlined, LogoutOutlined, ProfileOutlined, ShoppingOutlined, SwapOutlined, UserOutlined } from '@ant-design/icons';
+import { BellOutlined, HeartOutlined, LogoutOutlined, ProfileOutlined, ShoppingOutlined, UserOutlined } from '@ant-design/icons';
 import { useQuery } from '@apollo/client';
-import { Button, Col, Dropdown, Input, InputNumber, Menu, Row, Spin, Typography } from 'antd';
+import { Button, Col, Dropdown, Input, Menu, Row, Spin, Typography } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import formatprice from '../../common/formatprice';
 import { logout } from '../../features/auths/authSlice';
-import { getBooks, getUserQuery } from '../../graphql-client/query';
+import { getBooks } from '../../graphql-client/query';
 import './header.css';
 const { Search } = Input;
 interface Props {
@@ -66,11 +66,6 @@ const Header = (props: Props) => {
     if (keySearch !== "") {
         dataFilter = data1.books.filter((book: any) => book.name.toLowerCase().includes(keySearch.toLowerCase()))
     }
-
-    const handleMenuClick = () => {
-
-    }
-
     const handleClickRemove = () => {
         setKeySearch('');
         setIsLoading(false)
@@ -80,7 +75,7 @@ const Header = (props: Props) => {
         dispatch(logout({}))
     }
     const menu = (
-        <Menu onClick={handleMenuClick}>
+        <Menu>
             <Menu.Item key="1" icon={<ProfileOutlined />}>
                 <Link to="user/profile">Xem profile</Link>
             </Menu.Item>
@@ -94,7 +89,7 @@ const Header = (props: Props) => {
     );
 
     const cartView = (
-        <Menu onClick={handleMenuClick}>
+        <Menu>
             <h4 className="my-2 text-center">Giỏ hàng của bạn</h4>
             <div className="header-scroll">
                 {carts.length > 0 ? carts.map((cart: any, index: number) => (
@@ -137,7 +132,7 @@ const Header = (props: Props) => {
     )
 
     const Notification = (
-        <Menu onClick={handleMenuClick}>
+        <Menu>
             <h4 className="my-2 text-center">Thông báo mới nhận</h4>
             <div className="header-scroll">
                 {notifications.length > 0 && notifications.map((item: any) => (

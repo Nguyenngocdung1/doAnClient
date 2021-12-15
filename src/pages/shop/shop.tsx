@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { Spin, Button, Pagination, Card } from 'antd'
+import { Button, Card, Pagination, Spin } from 'antd'
 import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import formatprice from '../../common/formatprice'

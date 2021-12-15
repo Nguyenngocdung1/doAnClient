@@ -1,10 +1,10 @@
-import React from 'react'
-import './about.css'
-import { Row, Col, Typography, Spin } from 'antd';
-import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { getBooks } from '../../../graphql-client/query';
+import { Col, Row, Spin, Typography } from 'antd';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import formatprice from '../../../common/formatprice';
+import { getBooks } from '../../../graphql-client/query';
+import './about.css';
 interface Props {
 
 }

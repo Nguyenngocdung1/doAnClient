@@ -1,10 +1,9 @@
-import { useQuery } from '@apollo/client'
-import { Spin, Row, Col } from 'antd';
-import React, { useRef, useState } from 'react'
+import { useQuery } from '@apollo/client';
+import { Col, Row, Spin } from 'antd';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom'
-import { getOrderByEmail } from '../../../graphql-client/query'
-import './history.css'
+import { getOrderByEmail } from '../../../graphql-client/query';
+import './history.css';
 import HistoryItem from './historyItem';
 interface Props {
 

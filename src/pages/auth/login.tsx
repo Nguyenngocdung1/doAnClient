@@ -1,20 +1,19 @@
+import { useMutation } from '@apollo/client';
 import { Button, Col, Input, Row, Spin } from 'antd';
 import {
-  createUserWithEmailAndPassword,
   FacebookAuthProvider,
   getAuth,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithPopup
 } from "firebase/auth";
 import React, { useRef } from "react";
-import '../../common/firebase/index'
+import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { useMutation } from '@apollo/client';
+import '../../common/firebase/index';
+import { toastDefault } from '../../common/toast';
+import { login } from '../../features/auths/authSlice';
 import { logIn } from "../../graphql-client/mutations";
 import { getUserQuery } from "../../graphql-client/query";
-import { toastDefault } from '../../common/toast';
-import { useDispatch } from 'react-redux';
-import { login } from '../../features/auths/authSlice';
 const provider1 = new FacebookAuthProvider();
 const provider2 = new GoogleAuthProvider();
 

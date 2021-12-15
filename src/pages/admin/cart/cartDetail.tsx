@@ -1,6 +1,5 @@
-import { DeleteOutlined } from '@ant-design/icons';
 import { useQuery } from '@apollo/client';
-import { Button, Spin, Table } from 'antd';
+import { Spin, Table } from 'antd';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import formatprice from '../../../common/formatprice';
