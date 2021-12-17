@@ -219,3 +219,7 @@
 .notification-item:hover{
     background-color: aliceblue;
 }
+.fa-star{
+    color: yellow; 
+  }
+  
