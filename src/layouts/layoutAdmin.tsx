@@ -13,6 +13,10 @@ const { SubMenu } = Menu;
 const LayoutAdmin: React.FC = () => {
     const navigate = useNavigate();
     const user = useSelector((state: any) => state.auth.user)
+    if(!user?.email){
+        navigate('/')
+        toastError('Bạn không có quyền truy cập trang này !!!')
+    }
     const { loading, error, data } = useQuery(getUserQuery, {
         variables: {
             email: user.email,
