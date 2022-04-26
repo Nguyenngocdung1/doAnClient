@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../../common/firebase/index';
 import { toastDefault } from '../../../common/toast';
 import { addSingleBook } from '../../../graphql-client/mutations';
-import { getAuthors, getBooks } from '../../../graphql-client/query';
+import { getAuthors, getBooks, getGenres } from '../../../graphql-client/query';
 import Uploadimage from '../uploadimage';
 import './form.css';
 
@@ -29,6 +29,7 @@ const Addbook: React.FC = (props: Props) => {
         setImageFile(image)
     }, [])
     const { loading, error, data } = useQuery(getAuthors)
+    const { loading: loading1, error: error1, data: data1 } = useQuery(getGenres)
     if (loading) {
         return <Spin size="large" />
     }
@@ -36,7 +37,9 @@ const Addbook: React.FC = (props: Props) => {
         return <p>error authors ...</p>
     }
     const onFinish = async(values: any) => {
+        // debugger;
         values.price = Number(values.price)
+        values.quantity = Number(values.quantity);
         const storage = getStorage();
         const uploadImagePromise = (image:any) => {
             return new Promise(function (resolve, reject) {
@@ -55,10 +58,11 @@ const Addbook: React.FC = (props: Props) => {
             });
         }
         values.image = JSON.stringify(listImageUrl);
+        // debugger;
         add(
             {
                 variables: values,
-                refetchQueries: [{query: getBooks}]
+                // refetchQueries: [{query: getBooks}]
             },
         )
     };
@@ -81,11 +85,17 @@ const Addbook: React.FC = (props: Props) => {
                 <Form.Item name="price" label="Giá tiền" rules={[{ required: true, message: 'Bạn phải nhập giá tiền cho sản phẩm này' }]}>
                     <Input type="number" />
                 </Form.Item>
-                <Form.Item name="genre" label="Thể loại chuyện" rules={[{ required: true, message: 'Bạn phải nhập thể loại truyện' }]}>
-                    <Input />
+                <Form.Item name="genreId" label="Thể loại chuyện" rules={[{ required: true, message: 'Bạn phải nhập thể loại truyện' }]}>
+                    <Select defaultValue="lucy">
+                        <Option value="lucy" disabled>Chọn thể loại</Option>
+                        {data1?.genres.map((genre: any) => (<Option key={genre.id} value={genre.id}>{genre.name}</Option>))}
+                    </Select>
                 </Form.Item>
                 <Form.Item name="image" label="Thêm ảnh">
                     <Uploadimage imageData={''} uploadImageState={uploadImageState} />
+                </Form.Item>
+                <Form.Item name="quantity" label="Thêm số lượng">
+                    <Input type="number" />
                 </Form.Item>
                 <Form.Item name="authorId" label="Tác giả" rules={[{ required: true, message: 'Bạn phải nhập thể loại truyện' }]}>
                     <Select defaultValue="lucy">

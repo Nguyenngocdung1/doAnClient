@@ -92,6 +92,9 @@ const Editbook: React.FC = (props: Props) => {
                 <Form.Item name="price" label="Giá tiền" >
                     <Input type="number" defaultValue={Number(data1.book.price)} />
                 </Form.Item>
+                <Form.Item name="quantity" label="Số lượng" >
+                    <Input type="number" defaultValue={Number(data1.book.price)} />
+                </Form.Item>
                 <Form.Item name="genre" label="Thể loại chuyện" >
                     <Input defaultValue={data1.book.genre} />
                 </Form.Item>

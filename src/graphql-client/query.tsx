@@ -6,10 +6,15 @@ const getBooks = gql`
             name
             id
             des
-            genre
+            genre {
+                id
+                name
+                slug
+            }
             image
             slug
             price
+            quantity
             author {
                 id
                 name
@@ -25,7 +30,11 @@ const getSingleBook = gql`
             id
             name
             des
-            genre
+            genre {
+                id
+                name
+                slug
+            }
             image
             slug
             price
@@ -149,6 +158,16 @@ const getOrderByEmail = gql`
     }
 `
 
+const getGenres = gql`
+    query getGenresQuery{
+        genres {
+            id
+            name
+            slug
+        }
+    }
+`
+
 
 export { getBooks, getAuthors, getSingleBook, getOrderByEmail,
-getUsers, getSingleAuthor, getUserQuery, getOrders, getSingleOrder}
+getUsers, getSingleAuthor, getUserQuery, getOrders, getSingleOrder, getGenres}

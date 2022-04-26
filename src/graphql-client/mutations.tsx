@@ -1,7 +1,15 @@
 import { gql } from '@apollo/client';
 const addSingleBook = gql`
-    mutation CreateBook($name: String, $genre: String, $des: String, $image: String, $price: Int, $authorId: ID!){
-        createBook(input: {name: $name, genre: $genre, des: $des, image: $image, authorId: $authorId, price: $price}){
+    mutation CreateBook(
+        $name: String,
+        $genreId: ID!,
+        $des: String,
+        $image: String, 
+        $price: Int, 
+        $quantity: Int, 
+        $authorId: ID!
+    ){
+        createBook(input: {name: $name, genreId: $genreId, des: $des, image: $image, authorId: $authorId, quantity: $quantity, price: $price}){
             id
             name
         }
@@ -45,8 +53,8 @@ const deleteAuthor = gql`
 `
 
 const updateSingleBook = gql`
-    mutation UpdateBook($id: ID!, $name: String, $genre: String, $des: String, $image: String, $price: Int, $authorId: ID!){
-        updateBook(id: $id, input: {name: $name, genre: $genre, price: $price, authorId: $authorId, image: $image, des: $des}){
+    mutation UpdateBook($id: ID!, $name: String, $genreId: ID!, $des: String, $image: String, $price: Int, $authorId: ID!,  $quantity: Int ){
+        updateBook(id: $id, input: {name: $name, genreId: $genreId, price: $price, authorId: $authorId, image: $image, des: $des, quantity: $quantity}){
             id
             name
         }
