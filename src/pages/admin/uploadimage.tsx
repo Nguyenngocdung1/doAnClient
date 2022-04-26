@@ -7,9 +7,9 @@ interface Props {
 
 const Uploadimage = (props: Props) => {
     const {uploadImageState, imageData} = props;
-    let imageState = []
+    let imageState : any[] = []
     if(imageData !== '' ){
-        imageState = JSON.parse(imageData)
+        imageState = []
     }
     const [fileList, setFileList] = useState <any>([]);
 

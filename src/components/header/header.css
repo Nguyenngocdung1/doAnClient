@@ -184,23 +184,12 @@
 .header-quantity{
     width: 100px;
 }
-.header-quanlity-number{
-    position: absolute;
-    top: -10px;
-    right: 0px;
-    width: 20px;
-    height: 20px;
-    background-color: red !important;
-    color: white;
-    border-radius: 50%;
-    z-index: 1000;
-}
+
 .header-in-number{
     position: absolute;
-    top: -10px;
-    right: 0px;
-    width: 20px;
-    height: 20px;
+    bottom: 12px;
+    width: 24px;
+    height: 24px;
     background-color: red !important;
     color: white;
     border-radius: 50%;

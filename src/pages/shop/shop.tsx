@@ -46,44 +46,11 @@ const Shop = (props: Props) => {
     
     return (
         <div>
-            <div className="container-fuild header-bottom">
-                <div className="container">
-                    <div className="d-flex justify-content-between">
-                        <div className="header-product-text">
-                            <h1 className="page-header-title clr" itemProp="headline">
-                                Simple Product 019
-                            </h1>
-                        </div>
-                        <div className="d-flex header-product-a pt-2">
-                            <div className="pe-1">
-                                <Link to="/">Home |</Link>
-                            </div>
-                            <div className="pe-1">
-                                <Link to="/">Product |</Link>
-                            </div>
-                            <div className="pe-1">
-                                <span> Shop </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             {/* End header-Bottom */}
             <div className="container">
                 <div className="d-flex">
-                    <div className="row col-3">
+                    <div className="row col-3" style={{ height: 1300 }}>
                         <div className="d-grid">
-                            <div className="a">
-                                <div className="categories-title mt-5">
-                                    <h3 style={{ textAlign: 'left' }}>Tác giả</h3>
-                                </div>
-                                {data1.authors.map((author: any) => (
-                                    <div key={author.id} className="categories-name mt-3">
-                                        <Link style={{ display: 'block', textAlign: 'left' }} to={'/' + author.slug}>{author.name}</Link>
-                                    </div>
-                                ))}
-
-                            </div>
                             {/* End Category */}
                             <div className="Filter mt-5">
                                 <h3 style={{ textAlign: 'left' }}>FILTER BY PRICE</h3>
@@ -107,15 +74,14 @@ const Shop = (props: Props) => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-9 ps-5">
+                    <div className="col-9 ps-5" style={{ height: 1300 }}>
                         <div className="mt-5">
                             {dataPage.length > 0 && dataPage.map((book: any) => (
                                 <Card hoverable key={book.id} className="row col-12 mt-3 align-items-center d-flex">
                                     {/* 1 sản phẩm */}
-
                                     <div className="row">
                                         <div className="col-4">
-                                            <img src={JSON.parse(book.image)[0]} alt="" width="100%" />
+                                            <img src={JSON.parse(book.image)[0]} alt="" width="200px" height="300px" style={{ objectFit: "cover" }} />
                                         </div>
                                         <div className="col-8">
                                             <div className="mt-5">

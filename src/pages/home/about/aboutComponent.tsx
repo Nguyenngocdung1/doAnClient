@@ -74,19 +74,24 @@ const AboutComponent = (props: Props) => {
                 </Col>
                 <Col span={8}>
                     <Row>
-                        {productPage.length > 0 && productPage.map((book) => (
-                            <Col key={book.id} span={12} style={{boxSizing: 'border-box'}}>
-                                <Link to={book.author.slug + "/" + book.slug} className="mx-2">
-                                    <img width="150" height="220" src={JSON.parse(book.image)} alt="" />
-                                    <Typography.Title level={5} style={{margin: 0}}>
-                                        {book.name}
-                                    </Typography.Title>
-                                    <Typography.Title level={4} style={{margin: 0}}>
-                                        {formatprice(book.price)}
-                                    </Typography.Title>
-                                </Link>
-                            </Col>
-                        ))}
+                        {productPage.length > 0 && productPage.map((book) => {
+                            if(book?.id){
+                                return (
+                                    <Col key={book.id} span={12} style={{boxSizing: 'border-box'}}>
+                                        <Link to={book.author.slug + "/" + book.slug} className="mx-2">
+                                            <img width="150" height="220" src={JSON.parse(book.image)} alt="" />
+                                            <Typography.Title level={5} style={{margin: 0}}>
+                                                {book.name}
+                                            </Typography.Title>
+                                            <Typography.Title level={4} style={{margin: 0}}>
+                                                {formatprice(book.price)}
+                                            </Typography.Title>
+                                        </Link>
+                                    </Col>
+                                )
+                            }
+                            return null;
+                        })}
                     </Row>
                 </Col>
             </Row>

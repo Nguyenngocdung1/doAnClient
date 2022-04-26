@@ -1,4 +1,19 @@
-import { BellOutlined, HeartOutlined, LogoutOutlined, ProfileOutlined, ShoppingOutlined, UserOutlined } from '@ant-design/icons';
+import {
+     BellOutlined,
+      HeartOutlined,
+       LogoutOutlined,
+        ProfileOutlined,
+         ShoppingOutlined,
+          UserOutlined,
+           HomeOutlined,
+            ShopOutlined,
+            EditFilled,
+            BookOutlined,
+            MenuOutlined,
+            InfoCircleOutlined,
+            PhoneOutlined,
+         }
+    from '@ant-design/icons';
 import { useQuery } from '@apollo/client';
 import { Button, Col, Dropdown, Input, Menu, Row, Spin, Typography } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
@@ -13,6 +28,30 @@ interface Props {
 
 }
 
+const responesiveWidth = 1100;
+
+function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+        width,
+        height,
+    };
+}
+
+function useWindowDimensions() {
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+  
+    useEffect(() => {
+      function handleResize() {
+        setWindowDimensions(getWindowDimensions());
+      }
+  
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+  
+    return windowDimensions;
+  }
 
 const Header = (props: Props) => {
     const dispatch = useDispatch()
@@ -20,6 +59,11 @@ const Header = (props: Props) => {
     const notifications = useSelector((state: any) => state.notifications.notifications);
     const user = useSelector((state: any) => state.auth.user)
     let total = 0;
+
+    const { width } = useWindowDimensions();
+    console.log(width);
+    
+
     if (carts.length > 0) {
         carts.forEach((cart: any) => {
             total += cart.book.price * cart.quantity
@@ -74,6 +118,9 @@ const Header = (props: Props) => {
     const handleLogout = () => {
         dispatch(logout({}))
     }
+
+    
+
     const menu = (
         <Menu>
             <Menu.Item key="1" icon={<ProfileOutlined />}>
@@ -165,6 +212,8 @@ const Header = (props: Props) => {
             return <p className="mt-4">Không tìm thấy sản phẩm nào</p>
         }
     }
+
+    
     return (
         <div className="header">
             <Row style={{ padding: '30px 40px', alignItems: 'center' }}>
@@ -195,27 +244,35 @@ const Header = (props: Props) => {
                 <Col span={10}>
                     <Row style={{ alignItems: 'center' }}>
                         <Col span={7}>
-                            <span className="header-in-number">{notifications.length}</span>
-                            <Dropdown.Button overlay={Notification} placement="bottomRight" icon={<BellOutlined />}>
+                            <Dropdown.Button overlay={Notification} placement="bottomRight" icon={
+                                <div>
+                                    <BellOutlined />
+                                    <span className="header-in-number">{notifications.length}</span>
+                                </div>
+                            }>
                                 <Link to="/user/notifications">
-                                    Thông báo
+                                    {width > responesiveWidth && <span>Thông báo</span>}
                                 </Link>
                             </Dropdown.Button>
                         </Col>
                         <Col span={9}>
-                            <span className="header-quanlity-number">{carts.length}</span>
-                            <Dropdown.Button overlay={cartView} placement="bottomRight" icon={<ShoppingOutlined />}>
+                            <Dropdown.Button overlay={cartView} placement="bottomRight" icon={
+                                <div>
+                                    <ShoppingOutlined />
+                                    <span className="header-in-number">{carts.length}</span>
+                                </div>
+                            }>
                                 <Link to="/cart">
-                                    Giỏ hàng của bạn
+                                {width > responesiveWidth && 'Giỏ hàng của bạn'}
                                 </Link>
                             </Dropdown.Button>
                         </Col>
                         <Col span={8}>
-                            {user?.name ? <Dropdown.Button style={{ height: '100%' }} overlay={menu} placement="bottomCenter" icon={<UserOutlined />}>
-                                {user.name}
+                            {width < responesiveWidth || user?.name ?
+                             <Dropdown.Button style={{ height: '100%' }} overlay={menu} placement="bottomCenter" icon={<UserOutlined />}>
+                                {width > responesiveWidth && user.name}
                             </Dropdown.Button> :
-
-                                <div className="d-flex">
+                                 <div className="d-flex">
                                     <Button type="primary" style={{ height: '40px' }}>
                                         <Link style={{ color: 'white' }} to="/login">Đăng nhập</Link>
                                     </Button>
@@ -233,7 +290,7 @@ const Header = (props: Props) => {
                 <Col span={3} className="menu-item">
                     <NavLink to="/" style={{ color: 'white', display: 'block' }}>
                         <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                            home
+                        {width < responesiveWidth ? <HomeOutlined style={{ width: '40px'}}/> : 'Trang chủ'}
                         </Typography.Title>
                     </NavLink>
                     <span className="spanhover"></span>
@@ -241,7 +298,15 @@ const Header = (props: Props) => {
                 <Col span={3} className="menu-item">
                     <NavLink to="/shop" style={{ color: 'white', display: 'block' }}>
                         <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                            shop
+                        {width < responesiveWidth ? <ShopOutlined style={{ width: '40px'}}/> : 'Cửa hàng'}
+                        </Typography.Title>
+                    </NavLink>
+                    <span className="spanhover"></span>
+                </Col>
+                <Col span={3} className="menu-item">
+                    <NavLink to="/category" style={{ color: 'white', display: 'block' }}>
+                        <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
+                        {width < responesiveWidth ? <MenuOutlined style={{ width: '40px'}}/> : 'Danh mục'}
                         </Typography.Title>
                     </NavLink>
                     <span className="spanhover"></span>
@@ -249,7 +314,7 @@ const Header = (props: Props) => {
                 <Col span={3} className="menu-item">
                     <NavLink to="/blog" style={{ color: 'white', display: 'block' }}>
                         <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                            BLOG
+                        {width < responesiveWidth ? <EditFilled style={{ width: '40px'}}/> : 'Bài viết'}
                         </Typography.Title>
                     </NavLink>
                     <span className="spanhover"></span>
@@ -257,23 +322,7 @@ const Header = (props: Props) => {
                 <Col span={3} className="menu-item">
                     <NavLink to="/audiobooks" style={{ color: 'white', display: 'block' }}>
                         <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                            Audiobooks
-                        </Typography.Title>
-                    </NavLink>
-                    <span className="spanhover"></span>
-                </Col>
-                <Col span={3} className="menu-item">
-                    <NavLink to="/chilren-books" style={{ color: 'white', display: 'block' }}>
-                        <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                            Chilren’s books
-                        </Typography.Title>
-                    </NavLink>
-                    <span className="spanhover"></span>
-                </Col>
-                <Col span={3} className="menu-item">
-                    <NavLink to="/usedbooks" style={{ color: 'white', display: 'block' }}>
-                        <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                            Usedbooks
+                        {width < responesiveWidth ? <BookOutlined style={{ width: '40px'}}/> : 'Sách điện tử'}
                         </Typography.Title>
                     </NavLink>
                     <span className="spanhover"></span>
@@ -281,7 +330,7 @@ const Header = (props: Props) => {
                 <Col span={3} className="menu-item">
                     <NavLink to="/about-us" style={{ color: 'white', display: 'block' }}>
                         <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                            About Us
+                        {width < responesiveWidth ? <InfoCircleOutlined style={{ width: '40px'}}/> : 'Giới thiệu'}
                         </Typography.Title>
                     </NavLink>
                     <span className="spanhover"></span>
@@ -289,7 +338,7 @@ const Header = (props: Props) => {
                 <Col span={3} className="menu-item">
                     <NavLink to="/contact-us" style={{ color: 'white', display: 'block' }}>
                         <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                            Contact Us
+                        {width < responesiveWidth ? <PhoneOutlined style={{ width: '40px'}}/> : 'Liên hệ'}
                         </Typography.Title>
                     </NavLink>
                     <span className="spanhover"></span>

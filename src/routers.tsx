@@ -18,7 +18,7 @@ import Register from "./pages/auth/register";
 import Blog from "./pages/blog/blog";
 import Shop from "./pages/shop/shop";
 import Audiobook from "./pages/audiobook/audiobook";
-import ChilrenBooks from "./pages/chilren-books/chilren-books";
+import Category from "./pages/category/category";
 import Usedbooks from './pages/usedbooks/usedbooks';
 import Concact from "./pages/concact/concact";
 import About from "./pages/about/about";
@@ -53,7 +53,7 @@ const Router: React.FC<Props> = (props) => {
           <Route path="/shop" element={<Shop />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/audiobooks" element={<Audiobook />} />
-          <Route path="/chilren-books" element={<ChilrenBooks />} />
+          <Route path="/category" element={<Category />} />
           <Route path="/usedbooks" element={<Usedbooks />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/contact-us" element={<Concact />} />

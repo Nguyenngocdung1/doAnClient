@@ -9,23 +9,6 @@ interface Props {
 const Blog = (props: Props) => {
     return (
         <div>
-  <div className="container-fuild header-bottom">
-    <div className="container">
-      <div className="d-flex justify-content-between">
-        <div className="header-product-text">
-          <h1 className="page-header-title clr" itemProp="headline">Blog</h1>
-        </div>
-        <div className="d-flex header-product-a">
-          <div className="pe-1">
-            <Link to="/">Home |</Link>
-          </div>
-          <div className="pe-1">
-            <Link to="/blog">Blog |</Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
   {/* End header-Bottom */}
   <div className="container mt-5">
     <div className="d-flex">

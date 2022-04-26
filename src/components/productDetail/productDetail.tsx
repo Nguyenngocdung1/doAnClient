@@ -97,17 +97,6 @@ const ProductDetail = (props: Props) => {
                                 {data.book.name}
                             </h1>
                         </div>
-                        <div className="d-flex header-product-a" style={{ marginTop: "10px" }}>
-                            <div className="pe-1">
-                                <p >Home |</p>
-                            </div>
-                            <div className="pe-1">
-                                <p >Product |</p>
-                            </div>
-                            <div className="pe-1">
-                                <span>{data.book.name} |</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -211,18 +200,10 @@ const ProductDetail = (props: Props) => {
                                     <div className="description">
                                         <p className="border-bottom border-4 border-warning">DESCRIPTION</p>
                                     </div>
-                                    <div className="reviews">
-                                        <p>REVIEWS</p>
-                                    </div>
-                                    <div className="aboutbrand">
-                                        <p>ABOUT BRANDS</p>
-                                    </div>
                                 </div>
                                 <div className="content-description">
                                     <div className=" mt-4">
-                                        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla augue nec est tristique auctor.
-                                            Ipsum metus feugiat sem, quis fermentum turpis eros eget velit. Donec ac tempus ante. Fusce ultricies massa massa. Fusce aliquam, purus eget sagittis vulputate, sapien libero hendrerit est, sed commodo augue nisi non neque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor, lorem et placerat vestibulum, metus nisi posuere nisl, in accumsan elit odio quis mi.
-                                            Cras neque metus, consequat et blandit et, luctus a nunc. Etiam gravida vehicula tellus, in imperdiet ligula euismod eget. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam erat mi, rutrum at sollicitudin rhoncus, ultricies posuere erat. Duis convallis, arcu nec aliquam consequat, purus felis vehicula felis, a dapibus enim lorem nec augue. Nunc facilisis sagittis ullamcorper.</span>
+                                        <span>{data.book.des}</span>
                                     </div>
                                 </div>
                             </div>
@@ -276,32 +257,37 @@ const ProductDetail = (props: Props) => {
                             </div>
                             <div className="d-grid justify-content-between">
                                 <div className="row">
-                                    {bookTopQuery.length > 0 && bookTopQuery.map((book) => (
-                                        <Card key={book.id} hoverable className="mb-2">
-                                            <Link to={"/" + book.author.slug + "/" + book.slug}className="d-flex col-12 mt-3">
-                                                <div className="me-2">
-                                                    <img src={JSON.parse(book.image)} alt="" width="100" />
-                                                </div>
-                                                <div className="fw-bold">
-                                                    <p >{book.name}</p>
-                                                    <div className="ratings ">
-                                                        <p><i className=" fa fa-star" /></p>
-                                                        <p title="2/5"><i className=" d fa fa-star" /></p>
-                                                        <p title="3/5"><i className=" fa fa-star" /></p>
-                                                        <p title="4/5"><i className=" fa fa-star" /></p>
-                                                        <p title="5/5"><i className=" fa fa-star" /></p>
-                                                    </div>
-                                                    <div className="price fw-bold ">
-                                                        <p >{formatprice(book.price)}</p>
-                                                    </div>
-                                                    <div className="price fw-bold ">
-                                                        <p >Tác giả: {book.author.name}</p>
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        </Card>
-
-                                    ))}
+                                    {bookTopQuery.length > 0 && bookTopQuery.map((book) => {
+                                        if(book?.id){
+                                            return (
+                                                <Card key={book.id} hoverable className="mb-2">
+                                                    <Link to={"/" + book.author.slug + "/" + book.slug}className="d-flex col-12 mt-3">
+                                                        <div className="me-2">
+                                                            <img src={JSON.parse(book.image)} alt="" width="100" />
+                                                        </div>
+                                                        <div className="fw-bold">
+                                                            <p >{book.name}</p>
+                                                            <div className="ratings ">
+                                                                <p><i className=" fa fa-star" /></p>
+                                                                <p title="2/5"><i className=" d fa fa-star" /></p>
+                                                                <p title="3/5"><i className=" fa fa-star" /></p>
+                                                                <p title="4/5"><i className=" fa fa-star" /></p>
+                                                                <p title="5/5"><i className=" fa fa-star" /></p>
+                                                            </div>
+                                                            <div className="price fw-bold ">
+                                                                <p >{formatprice(book.price)}</p>
+                                                            </div>
+                                                            <div className="price fw-bold ">
+                                                                <p >Tác giả: {book.author.name}</p>
+                                                            </div>
+                                                        </div>
+                                                    </Link>
+                                                </Card>
+        
+                                            )
+                                        }
+                                        return null;
+                                    })}
 
                                 </div>
                                 {/* End Sản phẩm nổi bật */}

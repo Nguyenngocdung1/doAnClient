@@ -8,23 +8,6 @@ interface Props {
 const About = (props: Props) => {
     return (
         <div>
-            <div className="container-fuild header-bottom">
-                <div className="container">
-                    <div className="d-flex justify-content-between">
-                        <div className="header-product-text">
-                            <h1 className="page-header-title clr" itemProp="headline">About Us</h1>
-                        </div>
-                        <div className="d-flex header-product-a">
-                            <div className="pe-1">
-                                <Link to="/">Home |</Link>
-                            </div>
-                            <div className="pe-1">
-                                <Link to="/about-us" >About us</Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             {/* End header-Bottom */}
             <div className="container mt-5">
                 <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2020/05/about-banner-1.jpg" alt="" width="100%" />

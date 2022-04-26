@@ -83,22 +83,22 @@ const Editbook: React.FC = (props: Props) => {
     return (
         <div>
             <Form style={{ overflow: 'auto' }} name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
-                <Form.Item name="name" label="Tên sách" rules={[{ required: true, message: 'Bạn phải nhập Tên sách' }]}>
+                <Form.Item name="name" label="Tên sách" >
                     <Input defaultValue={data1.book.name} />
                 </Form.Item>
-                <Form.Item name="des" label="Mô tả" rules={[{ required: true, message: 'Bạn phải nhập mô tả sản phẩm' }]}>
+                <Form.Item name="des" label="Mô tả">
                     <Input defaultValue={data1.book.des} />
                 </Form.Item>
-                <Form.Item name="price" label="Giá tiền" rules={[{ required: true, message: 'Bạn phải nhập giá tiền cho sản phẩm này' }]}>
+                <Form.Item name="price" label="Giá tiền" >
                     <Input type="number" defaultValue={Number(data1.book.price)} />
                 </Form.Item>
-                <Form.Item name="genre" label="Thể loại chuyện" rules={[{ required: true, message: 'Bạn phải nhập thể loại truyện' }]}>
+                <Form.Item name="genre" label="Thể loại chuyện" >
                     <Input defaultValue={data1.book.genre} />
                 </Form.Item>
-                <Form.Item name="image" label="Thêm ảnh">
+                {/* <Form.Item name="image" label="Thêm ảnh">
                     <Uploadimage imageData={data1.book.image} uploadImageState={uploadImageState} />
-                </Form.Item>
-                <Form.Item name="authorId" label="Tác giả" rules={[{ required: true, message: 'Bạn phải nhập thể loại truyện' }]}>
+                </Form.Item> */}
+                <Form.Item name="authorId" label="Tác giả" >
                     <Select defaultValue="lucy">
                         <Option value="lucy" disabled>Chọn tác giả</Option>
                         {data.authors.map((author: any) => (<Option key={author.id} value={author.id}>{author.name}</Option>))}
