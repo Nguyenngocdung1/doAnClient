@@ -23,6 +23,8 @@ import formatprice from '../../common/formatprice';
 import { logout } from '../../features/auths/authSlice';
 import { getBooks } from '../../graphql-client/query';
 import './header.css';
+import { getAuth, signOut } from "firebase/auth";
+
 const { Search } = Input;
 interface Props {
 
@@ -182,12 +184,14 @@ const Header = (props: Props) => {
         <Menu>
             <h4 className="my-2 text-center">Thông báo mới nhận</h4>
             <div className="header-scroll">
-                {notifications.length > 0 && notifications.map((item: any) => (
+                {notifications.length > 0 ? notifications.map((item: any) => (
                     <Link to="user/history" key={item.order.id} className="notification-item">
                         <img width="80" className='me-2' src="http://hanoimoi.com.vn/Uploads/image/News/Thumbnails/2021/5/Thumbnails25462021044620icon.png" alt="" />
                         <div>{item.message}</div>
                     </Link>
-                ))}
+                )) : (
+                    <div style={{ textAlign: "center" }}>Không có thông báo mới !</div>
+                )}
             </div>
             <Link to="/user/notifications" className="text-center d-block">Xem chi tiết</Link>
         </Menu>
@@ -204,7 +208,7 @@ const Header = (props: Props) => {
                     <div className="search-content">
                         <h6 className="search-heading">{book.name}</h6>
                         <p className="search-author m-0">Tác giả: {book.author.name}</p>
-                        <p className="search-author">Thể loại: {book.genre}</p>
+                        <p className="search-author">Thể loại: {book.genre.name}</p>
                     </div>
                 </Link>
             ))
@@ -315,14 +319,6 @@ const Header = (props: Props) => {
                     <NavLink to="/blog" style={{ color: 'white', display: 'block' }}>
                         <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
                         {width < responesiveWidth ? <EditFilled style={{ width: '40px'}}/> : 'Bài viết'}
-                        </Typography.Title>
-                    </NavLink>
-                    <span className="spanhover"></span>
-                </Col>
-                <Col span={3} className="menu-item">
-                    <NavLink to="/audiobooks" style={{ color: 'white', display: 'block' }}>
-                        <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                        {width < responesiveWidth ? <BookOutlined style={{ width: '40px'}}/> : 'Sách điện tử'}
                         </Typography.Title>
                     </NavLink>
                     <span className="spanhover"></span>

@@ -37,7 +37,6 @@ const Addbook: React.FC = (props: Props) => {
         return <p>error authors ...</p>
     }
     const onFinish = async(values: any) => {
-        // debugger;
         values.price = Number(values.price)
         values.quantity = Number(values.quantity);
         const storage = getStorage();
@@ -58,11 +57,10 @@ const Addbook: React.FC = (props: Props) => {
             });
         }
         values.image = JSON.stringify(listImageUrl);
-        // debugger;
         add(
             {
                 variables: values,
-                // refetchQueries: [{query: getBooks}]
+                refetchQueries: [{query: getBooks}]
             },
         )
     };

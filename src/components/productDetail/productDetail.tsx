@@ -29,7 +29,7 @@ const ProductDetail = (props: Props) => {
     if (loading || loading1) {
         return <Spin size="large" />
     }
-    if (error) {
+    if (error || error1) {
         return <p>error book ...</p>
     }
     console.log(data);
@@ -94,7 +94,7 @@ const ProductDetail = (props: Props) => {
                     <div className="d-flex justify-content-between aligns-items-center">
                         <div className="header-product-text py-2">
                             <h1 className="page-header-title clr" style={{ color: 'black', marginBottom: 0 }} itemProp="headline">
-                                {data.book.name}
+                                {data?.book?.name}
                             </h1>
                         </div>
                     </div>
@@ -107,7 +107,7 @@ const ProductDetail = (props: Props) => {
                         <div className="row">
                             <div className="col-5">
                                 <div className="product-img">
-                                    <img src={imageFocus ? imageFocus : images[0]} alt="" width="100%" />
+                                    <img style={{width: 300, height: 500, objectFit: "cover" }} src={imageFocus ? imageFocus : images[0]} alt="" width="100%" />
                                 </div>
 
                                 <div className="pt-2">
@@ -121,7 +121,7 @@ const ProductDetail = (props: Props) => {
                                             <SwiperSlide key={image} onClick={() => addImageFocus(image)}>
                                                 <div style={{ cursor: 'pointer' }}>
                                                     <div className="img-about-slide">
-                                                        <img width="100%" src={image} alt="" />
+                                                        <img style={{width: 70, height: 100, objectFit: "cover" }} width="100%" src={image} alt="" />
                                                     </div>
                                                 </div>
                                             </SwiperSlide>
@@ -131,13 +131,13 @@ const ProductDetail = (props: Props) => {
                             </div>
                             <div className="col-7">
                                 <div className="product-title">
-                                    <h1 style={{ color: 'black', textAlign: 'left' }}>{data.book.name}</h1>
+                                    <h1 style={{ color: 'black', textAlign: 'left' }}>{data?.book?.name}</h1>
                                 </div>
                                 <div className="product-price">
-                                    <span style={{ display: 'block', textAlign: 'left' }}>{formatprice(data.book.price)}</span>
+                                    <span style={{ display: 'block', textAlign: 'left' }}>{formatprice(data?.book?.price)}</span>
                                 </div>
                                 <div className="product-description mt-3">
-                                    <span style={{ display: 'block', textAlign: 'left' }}>{data.book.des}</span>
+                                    <span style={{ display: 'block', textAlign: 'left' }}>{data?.book?.des}</span>
                                 </div>
                                 <div className="d-flex align-items-center baseline mt-5">
                                     <div className="num-block skin-6">
@@ -171,10 +171,10 @@ const ProductDetail = (props: Props) => {
                                 </div>
                                 <div className="product-description-content mt-3 d-flex">
                                     <div>
-                                        <span>Thể loại: {data.book.genre}</span>
+                                        <span>Thể loại: {data.book?.genre?.name}</span>
                                     </div>
                                     <div className="mx-4">
-                                        <span>Tác giả: <p >{data.book.author.name}</p></span>
+                                        <span>Tác giả: <p >{data.book?.author.name}</p></span>
                                     </div>
                                     <div className="tag">
                                         <span>Tags: <p >Tag 0-1</p></span>
@@ -203,7 +203,7 @@ const ProductDetail = (props: Props) => {
                                 </div>
                                 <div className="content-description">
                                     <div className=" mt-4">
-                                        <span>{data.book.des}</span>
+                                        <span>{data?.book?.des}</span>
                                     </div>
                                 </div>
                             </div>
@@ -220,11 +220,11 @@ const ProductDetail = (props: Props) => {
                                         navigation
                                     >
                                         {dataBookQuery.length > 0 && dataBookQuery.map((book: any) => (
-                                            <SwiperSlide key={book.id}>
+                                            <SwiperSlide style={{ width: 200 }} key={book.id}>
                                                 <Card hoverable>
                                                     <Link to={"/" + data.book.author.slug + "/" + book.slug}className="product-relate-content">
                                                         <div className="text-center">
-                                                            <img width="100%" height="270" style={{objectFit: 'cover'}} src={JSON.parse(book.image)[0]} alt="" />
+                                                            <img width="100%" height="300" style={{objectFit: 'cover'}} src={JSON.parse(book.image)[0]} alt="" />
                                                         </div>
                                                         <div className="fw-bold mt-2">
                                                             <p>{book.name}</p>

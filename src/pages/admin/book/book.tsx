@@ -33,6 +33,10 @@ const columns = [
         dataIndex: 'des',
     },
     {
+        title: 'Số lượng',
+        dataIndex: 'quantity',
+    },
+    {
         title: 'Tên tác giả',
         dataIndex: 'author',
     },    
@@ -62,17 +66,19 @@ const Book: React.FC = (props: Props) => {
         }, 1000);
     };
     const data1: any[] | undefined = [];
-    if(data.books.length > 0){
+    if(data?.books.length > 0){
         for (let i = 0; i < data.books.length; i++) {
             const link = '/admin/editbook/' + data.books[i].slug
             const image = JSON.parse(data.books[i].image)[0]
-            const author = data.books[i].author.name
-            data1.push({
+            debugger;
+            const author = data?.books[i].author.name
+            data1?.push({
                 key: data.books[i].id,
                 name: data.books[i].name,
-                genre: data.books[i].genre,
+                genre: data.books[i].genre.name,
                 price: formatprice(data.books[i].price),
-                image: <img src={image} width="100" alt="" />,
+                image: <img width="150" height="200" src={image} style={{objectFit: "cover"}} alt="" />,
+                quantity: data.books[i].quantity,
                 des: data.books[i].des,
                 author: author,
                 btnEdit: <Button type="primary"><Link to={link}>Sửa sản phẩm</Link></Button>,

@@ -2,15 +2,19 @@ import {
     AppstoreOutlined, SettingOutlined, UserOutlined
 } from '@ant-design/icons';
 import { useQuery } from '@apollo/client';
-import { Col, Layout, Menu, Row, Spin } from 'antd';
+import { Col, Layout, Menu, Row, Spin, Button } from 'antd';
 import { Content, Header } from 'antd/lib/layout/layout';
 import React from "react";
 import { useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { toastError } from '../common/toasterror';
 import { getUserQuery } from '../graphql-client/query';
+import { logout } from '../features/auths/authSlice';
+import { useDispatch } from 'react-redux';
+
 const { SubMenu } = Menu;
 const LayoutAdmin: React.FC = () => {
+    const dispatch = useDispatch()
     const navigate = useNavigate();
     const user = useSelector((state: any) => state.auth.user)
     if(!user?.email){
@@ -35,10 +39,15 @@ const LayoutAdmin: React.FC = () => {
     const handleClick = (e: any) => {
         console.log('click ', e);
     };
+
+    const logoutAdmin = () => {
+        dispatch(logout({}))
+    }
+
     return (
         <Layout>
             <Header className="header">
-
+                <Button onClick={logoutAdmin}>Đăng xuất</Button>
             </Header>
             <Row>
                 <Col span={5}>
@@ -73,14 +82,6 @@ const LayoutAdmin: React.FC = () => {
                         <SubMenu key="sub6" icon={<SettingOutlined />} title="Đơn đặt hàng">
                             <Menu.Item key="10">
                                 <Link to="/admin/cart">Thống đơn đặt hàng</Link>
-                            </Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub4" icon={<SettingOutlined />} title="Doanh thu">
-                            <Menu.Item key="6">
-                                <Link to="/admin/books">Thống kê doanh thu</Link>
-                            </Menu.Item>
-                            <Menu.Item key="7">
-                                <Link to="/admin/books">Thống kê hóa đơn</Link>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu key="sub5" icon={<SettingOutlined />} title="Bình luận">

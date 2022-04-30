@@ -18,9 +18,9 @@ interface Props {
 const Addauthor: React.FC = (props: Props) => {
     const navigate = useNavigate();
     const [add, Mutation] = useMutation<any>(addSingleAuthor);
+    debugger;
     const onFinish = (values: any) => {
-        values.field = JSON.stringify(values.field)
-        values.phone = Number(values.phone)
+        values.age = Number(values.age)
         add(
             {
                 variables: values,
@@ -44,14 +44,11 @@ const Addauthor: React.FC = (props: Props) => {
                 <Form.Item name="name" label="Tên tác giả" rules={[{ required: true, message: 'Bạn phải nhập tên tác giả' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Bạn phải nhập tên email' }]}>
-                    <Input />
-                </Form.Item>
                 <Form.Item name="address" label="Địa chỉ" rules={[{ required: true, message: 'Bạn phải nhập địa chỉ' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="phone" label="Số điện thoại" rules={[{ required: true, message: 'Bạn phải nhập số điện thoại' }]}>
-                    <Input type="tel" />
+                <Form.Item name="age" label="Tuổi" rules={[{ required: true, message: 'Bạn phải nhập tuổi' }]}>
+                    <Input type="number" />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">

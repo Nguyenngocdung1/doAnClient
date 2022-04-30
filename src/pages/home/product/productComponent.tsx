@@ -67,7 +67,7 @@ const ProductComponent = (props: Props) => {
                                             <figcaption>
                                                 <h1>{book?.name}</h1>
                                                 <span>By {book?.author?.name}</span>
-                                                <p style={{color: "white"}}>
+                                                <p className="muti-text" style={{color: "white"}}>
                                                     {book?.des}
                                                 </p>
                                             </figcaption>

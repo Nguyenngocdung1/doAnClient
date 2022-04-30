@@ -187,10 +187,10 @@ const HistoryItem = (props: Props) => {
         } else if (isViewModal === lien_he_shop) {
             html = <div>
                 <h5>Thông tin liên hệ</h5>
-                <p>Tên cửa hàng: Cửa hàng sách Mạnh Dũng</p>
-                <p>Địa chỉ: Số 12 Đường Cầu Diễn, Phường Phúc Diễn, Quận Bắc Từ Liêm, Thành Phố Hà Nội</p>
-                <p>Số điện thoại: 0365727226</p>
-                <p>Website: <Link to="https://nhasachmanhdung.com">https://nhasachmanhdung.com</Link></p>
+                <p>Tên cửa hàng: Cửa hàng sách SkyBooks</p>
+                <p>Địa chỉ:  Số 83 Lý Nam Đế, Phường Cửa Đông, Hoàn Kiếm, Hà Nội</p>
+                <p>Số điện thoại: 024 3843 8220</p>
+                <p>Website: <a target="_blank" rel="noreferrer" href="http://skybooks.vn/">http://skybooks.vn/</a></p>
             </div>
         } else if (isViewModal === xem_danh_gia) {
             html = <div>

@@ -55,16 +55,13 @@ const Editauthor:React.FC = (props: Props) => {
             <h2>Sửa tác giả</h2>
             <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
                 <Form.Item name="name" label="Tên tác giả" rules={[{ required: true, message: 'Bạn phải nhập tên tác giả' }]}>
-                    <Input defaultValue={data.author.name} />
+                    <Input defaultValue={data?.author.name} />
                 </Form.Item>
-                <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Bạn phải nhập tên email' }]}>
-                    <Input defaultValue={data.author.email} />
+                <Form.Item name="age" label="Age" rules={[{ required: true, message: 'Bạn phải nhập tên tuổi' }]}>
+                    <Input defaultValue={data?.author.age} />
                 </Form.Item>
                 <Form.Item name="address" label="Địa chỉ" rules={[{ required: true, message: 'Bạn phải nhập địa chỉ' }]}>
-                    <Input defaultValue={data.author.address} />
-                </Form.Item>
-                <Form.Item name="phone" label="Số điện thoại" rules={[{ required: true, message: 'Bạn phải nhập số điện thoại' }]}>
-                    <Input defaultValue={data.author.phone} type="tel" />
+                    <Input defaultValue={data?.author.address} />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">

@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 const addSingleBook = gql`
     mutation CreateBook(
         $name: String,
-        $genreId: ID!,
+        $genreId: String,
         $des: String,
         $image: String, 
         $price: Int, 
@@ -17,12 +17,11 @@ const addSingleBook = gql`
 `
 
 const addSingleAuthor = gql`
-    mutation addSingleAuthorMutation($name: String, $address: String, $phone: Int, $email: String){
+    mutation addSingleAuthorMutation($name: String, $address: String, $age: Int){
         createAuthor(input: {
             name: $name,
             address: $address,
-            phone: $phone,
-            email: $email
+            age: $age,
         }){
             id
             name
@@ -30,19 +29,39 @@ const addSingleAuthor = gql`
     }
 `
 
+// const addSingleGenre = gql`
+//     mutation addSingleGenreMutation($name: String) {
+//         createGenre(input: {
+//             name: $name,
+//         }){
+//             id
+//             name
+//         }
+//     }
+// `
+
 const updateSingleAuthor = gql`
-    mutation UpdateAuthor($id: ID!, $name: String, $address: String, $phone: Int, $email: String){
+    mutation UpdateAuthor($id: ID!, $name: String, $address: String, $age: Int){
         updateAuthor(id: $id, input: {
             name: $name,
             address: $address,
-            phone: $phone,
-            email: $email
+            age: $age,
         }){
             id
             name
         }
     }
 `
+
+// const upadateSingleGenre = gql`
+//     mutation UpdateGenre($id: ID!, $name: String){
+//         updateGenre(id: $id, input: {
+//             name: $name,
+//     }){
+//         id
+//         name
+//     }
+// `
 
 const deleteAuthor = gql`
     mutation DeleteAuthor($id: ID!){
@@ -51,6 +70,8 @@ const deleteAuthor = gql`
         }
     }
 `
+
+// const deleteGenre = 
 
 const updateSingleBook = gql`
     mutation UpdateBook($id: ID!, $name: String, $genreId: ID!, $des: String, $image: String, $price: Int, $authorId: ID!,  $quantity: Int ){
@@ -131,8 +152,8 @@ const deleteStatusOrder = gql`
     }
 `
 const danhGiaOrder = gql`
-    mutation DanhGiaOrder($id: ID!, $comments: String, $danhgia: Int){
-        danhGiaOrder(id: $id, comments: $comments, danhgia: $danhgia){
+    mutation DanhGiaOrder($id: ID!, $comments: String, $rating: Int){
+        danhGiaOrder(id: $id, comments: $comments, rating: $rating){
             name
             listOrder
             date
@@ -140,14 +161,14 @@ const danhGiaOrder = gql`
     }
 ` 
 const addComment = gql`
-    mutation CreateComment($name: String, $email: String, $bookId: ID!, $avatar: String, $danhgia: Int, $comment: String){
+    mutation CreateComment( $bookId: ID!, $userId: ID!, $content: String, $icon: Int){
         createComment(input: {
-            name: $name, email: $email, avatar: $avatar, danhgia: $danhgia, bookId: $bookId, comment: $comment
+            bookId: $bookId, content: $content, userId: $userId, icon: $icon
         }){
-            name
-            email
-            avatar
-            comment
+            bookId
+            content
+            userId
+            icon
         }
     }
 ` 

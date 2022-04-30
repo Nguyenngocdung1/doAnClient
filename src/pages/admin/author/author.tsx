@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Table, Button, Spin} from 'antd';
 import { useQuery, useMutation } from '@apollo/client';
-import { getAuthors } from '../../../graphql-client/query';
+import { getAuthors, getBooks } from '../../../graphql-client/query';
 import { Link } from 'react-router-dom';
 import { deleteAuthor } from '../../../graphql-client/mutations';
 import { toastDefault } from '../../../common/toast';
@@ -15,12 +15,8 @@ const columns = [
         dataIndex: 'name',
     },
     {
-        title: 'Email',
-        dataIndex: 'email',
-    },
-    {
-        title: 'Số điện thoại',
-        dataIndex: 'phone',
+        title: 'Tuổi',
+        dataIndex: 'age',
     },
     {
         title: 'Địa chỉ',
@@ -63,8 +59,7 @@ const Author: React.FC = (props: Props) => {
             key: data.authors[i].id,
             name: data.authors[i].name,
             address: data.authors[i].address,
-            phone: data.authors[i].phone,
-            email: data.authors[i].email,
+            age: data.authors[i].age,
             btnEdit: <Button type="primary"><Link to={link}>Sửa tác giả</Link></Button>,
         });
     }
@@ -75,12 +70,12 @@ const Author: React.FC = (props: Props) => {
     };
 
     const onRemove = () => {
-        if(window.confirm('Are you sure you want to remove')){
+        if(window.confirm('Khi xóa tác giả, các tác phẩm của tác giả cũng bị xóa, bạn có muốn tiếp tục ?')){
             console.log('id', selectedRowKeys)
             selectedRowKeys.forEach(id => {
                 add({
                     variables: {id},
-                    refetchQueries: [{ query: getAuthors }]
+                    refetchQueries: [{ query: getAuthors }, {query: getBooks}]
                 },)
             })
             setSelectedRowKeys([])

@@ -60,8 +60,7 @@ const getSingleAuthor = gql`
             id
             name
             slug
-            address
-            phone
+            age
             email
             books {
                 id
@@ -81,9 +80,8 @@ const getAuthors = gql`
         authors {
             id
             name
+            age
             address
-            phone
-            email
             slug
         }
     }
@@ -152,7 +150,7 @@ const getOrderByEmail = gql`
             listOrder
             status
             date
-            danhgia
+            rating
             comments
         }
     }

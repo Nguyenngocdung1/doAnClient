@@ -132,38 +132,12 @@ function Login() {
             onFinish={onFinish}
             autoComplete="off"
           >
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[{ required: true, message: 'Please input your username!' }]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[{ required: true, message: 'Please input your password!' }]}
-            >
-              <Input.Password />
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 8, span: 12 }}>
-              <Button type="primary" htmlType="submit">
-                Đăng nhập
-              </Button>
-            </Form.Item>
           </Form>
           <Button
             style={{ width: "100%", marginBottom: 10 }}
             onClick={handleGgLogin}
           >
             Đăng nhập bằng Google
-          </Button>
-          <Button
-            style={{ width: "100%", marginBottom: 10 }}
-            onClick={handleFbLogin}
-          >
-            Đăng nhập bằng Facebook
           </Button>
         </Col>
       </Row>
