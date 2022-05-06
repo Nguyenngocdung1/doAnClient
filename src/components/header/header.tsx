@@ -221,6 +221,9 @@ const Header = (props: Props) => {
     return (
         <div className="header">
             <Row style={{ padding: '30px 40px', alignItems: 'center' }}>
+                <Col span={8}>
+                    <img width="200" src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/12/logo.png" alt="" />
+                </Col>
                 <Col span={6}>
                     <Search
                         placeholder="Tìm kiếm"
@@ -241,9 +244,7 @@ const Header = (props: Props) => {
                     </div> : null}
                 </Col>
 
-                <Col span={8}>
-                    <img width="200" src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/12/logo.png" alt="" />
-                </Col>
+                
 
                 <Col span={10}>
                     <Row style={{ alignItems: 'center' }}>
@@ -318,7 +319,7 @@ const Header = (props: Props) => {
                 <Col span={3} className="menu-item">
                     <NavLink to="/blog" style={{ color: 'white', display: 'block' }}>
                         <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                        {width < responesiveWidth ? <EditFilled style={{ width: '40px'}}/> : 'Bài viết'}
+                        {width < responesiveWidth ? <EditFilled style={{ width: '40px'}}/> : 'Bình luận'}
                         </Typography.Title>
                     </NavLink>
                     <span className="spanhover"></span>

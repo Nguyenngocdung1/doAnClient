@@ -62,34 +62,38 @@ const LayoutAdmin: React.FC = () => {
                                 <Link to="/admin/user">Thống kê người dùng</Link>
                             </Menu.Item>
                         </SubMenu>
-                        <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Tác giả">
-
+                        <SubMenu key="sub9" icon={<SettingOutlined />} title="Thể loại">
                             <Menu.Item key="2">
+                                <Link to="/admin/genre">Thống kê thể loại</Link>
+                            </Menu.Item>
+                            <Menu.Item key="9">
+                                <Link to="/admin/addgenre">Thêm thể loại</Link>
+                            </Menu.Item>
+                        </SubMenu>
+                        <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Tác giả">
+                            <Menu.Item key="3">
                                 <Link to="/admin/authors">Thống kê tác giả</Link>
                             </Menu.Item>
-                            <Menu.Item key="3">
+                            <Menu.Item key="4">
                                 <Link to="/admin/addauthor">Thêm tác giả</Link>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu key="sub3" icon={<SettingOutlined />} title="Sản phẩm sách">
-                            <Menu.Item key="4">
+                            <Menu.Item key="5">
                                 <Link to="/admin/books">Thống kê sách</Link>
                             </Menu.Item>
-                            <Menu.Item key="5">
+                            <Menu.Item key="6">
                                 <Link to="/admin/addbook">Thêm sách</Link>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu key="sub6" icon={<SettingOutlined />} title="Đơn đặt hàng">
                             <Menu.Item key="10">
-                                <Link to="/admin/cart">Thống đơn đặt hàng</Link>
+                                <Link to="/admin/cart">Thống kê đơn đặt hàng</Link>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu key="sub5" icon={<SettingOutlined />} title="Bình luận">
                             <Menu.Item key="8">
-                                <Link to="/admin/books">Thống kê bình luận</Link>
-                            </Menu.Item>
-                            <Menu.Item key="9">
-                                <Link to="/admin/books">Thống kê đánh giá</Link>
+                                <Link to="/admin/comments">Thống kê bình luận</Link>
                             </Menu.Item>
                         </SubMenu>
                     </Menu>

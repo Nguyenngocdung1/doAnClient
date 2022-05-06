@@ -53,24 +53,18 @@ const Shop = (props: Props) => {
                         <div className="d-grid">
                             {/* End Category */}
                             <div className="Filter mt-5">
-                                <h3 style={{ textAlign: 'left' }}>FILTER BY PRICE</h3>
+                                <h3 style={{ textAlign: 'left' }}>LỌC THEO GIÁ</h3>
                                 <div className="column column-50 mt-3">
-                                    <input onChange={handleChangeInput} value={inputPrice} type="range" id="rangeField" min={0} max={2000000} />
+                                    <input onChange={handleChangeInput} value={inputPrice} type="range" id="rangeField" min={0} max={1000000} />
                                 </div>
                                 <div className="d-flex align-items-center justify-content-between mt-5">
                                     <span style={{ fontSize: '18px', display: 'block', textAlign: 'left' }}>
-                                        Price: {formatprice(inputPrice)} - {formatprice(2000000)}
+                                        Price: {formatprice(inputPrice)} - {formatprice(1000000)}
                                     </span>
                                 </div>
                             </div>
                             <div className="banner-shop mt-5">
                                 <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2020/05/banner-shop.jpg" alt="" />
-                            </div>
-                            <div className="compare mt-5">
-                                <h5>COMPARE</h5>
-                                <div>
-                                    <span>No product to compare</span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -106,10 +100,6 @@ const Shop = (props: Props) => {
                                                 <Link to={'/' + book.author.slug + "/" + book.slug}>
                                                     <div className="d-flex ">
                                                         <p className="me-5"><Button type="primary">Xem chi tiết</Button> </p>
-                                                        <div className="ms-5">
-                                                            <i className="fas fa-exchange-alt pe-3" />
-                                                            <i className="far fa-heart" />
-                                                        </div>
                                                     </div>
                                                 </Link>
                                             </div>

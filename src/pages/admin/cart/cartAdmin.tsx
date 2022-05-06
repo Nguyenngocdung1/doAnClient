@@ -1,11 +1,11 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { Button, Spin, Table } from 'antd';
+import { Button, Spin, Table, Input } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import formatprice from '../../../common/formatprice';
 import { deleteStatusOrder, updateStatusOrder } from '../../../graphql-client/mutations';
 import { getOrders } from '../../../graphql-client/query';
-
+const { Search } = Input
 interface Props {
     
 }
@@ -52,6 +52,8 @@ const CartAdmin = (props: Props) => {
     const { loading, error, data } = useQuery(getOrders)
     const [add, Mutation] = useMutation<any>(updateStatusOrder);
     const [dele, Muta] = useMutation<any>(deleteStatusOrder);
+    const [keySearch, setKeySearch] = useState<string>('');
+    const inputSearchRef = React.useRef<any>("");
     // const [add, Mutation] = useMutation<any>(deleteBook);
     if (loading) {
         return <Spin size="large" />
@@ -77,6 +79,13 @@ const CartAdmin = (props: Props) => {
             variables: { id, status },
             refetchQueries: [{ query: getOrders }]
         })
+    }
+
+    const onSearch = (value: string) => console.log(value);
+
+    const handleChageSearch = (e: any) => {
+        const search = inputSearchRef.current.input.value;
+        setKeySearch(search);
     }
 
     const showBtnStatus = (status: number, id: string) => {
@@ -114,17 +123,19 @@ const CartAdmin = (props: Props) => {
         listOrder.forEach((item: any) => {
             total += item.quantity*item.book.price
         })
-        data1.push({
-            key: data.orders[i].id,
-            name: data.orders[i].name,
-            email: data.orders[i].email,
-            address: data.orders[i].address,
-            phone: data.orders[i].phone,
-            orderCount: listOrder.length,
-            total: formatprice(total),
-            status: showBtnStatus(data.orders[i].status, data.orders[i].id),
-            cartDetail: <Button type="primary"><Link to={"/admin/cartDetail/" + data.orders[i].id}>Xem chi tiết</Link></Button>
-        });
+        if(data.orders[i].email.includes(keySearch)){
+            data1.push({
+                key: data.orders[i].id,
+                name: data.orders[i].name,
+                email: data.orders[i].email,
+                address: data.orders[i].address,
+                phone: data.orders[i].phone,
+                orderCount: listOrder.length,
+                total: formatprice(total),
+                status: showBtnStatus(data.orders[i].status, data.orders[i].id),
+                cartDetail: <Button type="primary"><Link to={"/admin/cartDetail/" + data.orders[i].id}>Xem chi tiết</Link></Button>
+            });
+        }
     }
 
     const onSelectChange = (selectedRowKeys: any) => {
@@ -139,6 +150,14 @@ const CartAdmin = (props: Props) => {
     };
     return (
         <div>
+             <Search
+                placeholder="Tìm kiếm theo email"
+                allowClear
+                size="large"
+                onSearch={onSearch}
+                onChange={handleChageSearch}
+                ref={inputSearchRef}
+            />
             <div style={{ marginBottom: 16 }}>
                 <Button type="primary" onClick={start} disabled={!hasSelected} loading={false}>
                     Bỏ chọn

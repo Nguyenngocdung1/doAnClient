@@ -166,6 +166,18 @@ const getGenres = gql`
     }
 `
 
+const getComments = gql`
+    query getCommentsQuery($bookId: ID!){
+        comments(bookId: $bookId){
+            id
+            user
+            book
+            icon
+            content
+        }
+    }
+`
 
-export { getBooks, getAuthors, getSingleBook, getOrderByEmail,
+
+export { getBooks, getAuthors, getSingleBook, getOrderByEmail, getComments,
 getUsers, getSingleAuthor, getUserQuery, getOrders, getSingleOrder, getGenres}

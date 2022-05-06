@@ -112,6 +112,7 @@ function Register() {
         refetchQueries: [{ query: getUserQuery }]
       },
     )
+    toastDefault("Đăng ký thành công");
   };
 
   return (

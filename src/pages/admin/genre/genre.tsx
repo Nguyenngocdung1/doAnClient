@@ -1,47 +1,38 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { Table, Button, Spin, Input} from 'antd';
 import { useQuery, useMutation } from '@apollo/client';
-import { getAuthors, getBooks } from '../../../graphql-client/query';
-import { Link } from 'react-router-dom';
-import { deleteAuthor } from '../../../graphql-client/mutations';
+import { getGenres, getBooks } from '../../../graphql-client/query';
+import { deleteGenre } from '../../../graphql-client/mutations';
 import { toastDefault } from '../../../common/toast';
-const { Search } = Input;
-
+const { Search } = Input
 interface Props {
 
 }
 
 const columns = [
     {
-        title: 'Tác giả',
+        title: 'Thể loại',
         dataIndex: 'name',
     },
     {
-        title: 'Tuổi',
-        dataIndex: 'age',
-    },
-    {
-        title: 'Địa chỉ',
-        dataIndex: 'address',
-    },    
-    {
-        title: 'Action',
-        dataIndex: 'btnEdit',
+        title: 'Tác phẩm tiêu biểu',
+        dataIndex: 'books',
     },    
 ];
 
 
 
-const Author: React.FC = (props: Props) => {
+const Genre: React.FC = (props: Props) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string>>([])
+    const { loading: loading1, error: error1, data: data2 } = useQuery(getBooks)
+    const { loading, error, data: data3 } = useQuery(getGenres)
+    const [add, Mutation] = useMutation<any>(deleteGenre);
     const [keySearch, setKeySearch] = useState<string>('');
-    const { loading, error, data } = useQuery(getAuthors)
-    const [add, Mutation] = useMutation<any>(deleteAuthor);
-    const inputSearchRef = useRef<any>("");
-    if (loading) {
+    const inputSearchRef = React.useRef<any>("");
+    if (loading || loading1) {
         return <Spin size="large" />
     }
-    if (error) {
+    if (error || error1) {
         return <p>error authors ...</p>
     }
     const start = () => {
@@ -52,20 +43,18 @@ const Author: React.FC = (props: Props) => {
     if (Mutation.loading) {
         return <Spin size="large" />
     }
-    // if (Mutation.loading) {
-    //     toastDefault('Xóa tác giả thành công')
-    // }
 
     const data1: any[] | undefined = [];
-    for (let i = 0; i < data.authors.length; i++) {
-        if(data.authors[i].name.includes(keySearch)){
-            const link = '/admin/editauthor/' + data.authors[i].slug
+    for (let i = 0; i < data3?.genres.length; i++) {
+        const m = data2.books.filter((item: any) => item?.genre?.id === data3.genres[i].id);
+        if(data3.genres[i].name.includes(keySearch)){
             data1.push({
-                key: data.authors[i].id,
-                name: data.authors[i].name,
-                address: data.authors[i].address,
-                age: data.authors[i].age,
-                btnEdit: <Button type="primary"><Link to={link}>Sửa tác giả</Link></Button>,
+                key: data3.genres[i].id,
+                name: data3.genres[i].name,
+                books: m.map((item: any, index: number) => (
+                    index <= 1 ?
+                    <p key={item.id}>{item.name}</p> : '...'
+                ))
             });
         }
     }
@@ -76,16 +65,15 @@ const Author: React.FC = (props: Props) => {
     };
 
     const onRemove = () => {
-        if(window.confirm('Khi xóa tác giả, các tác phẩm của tác giả cũng bị xóa, bạn có muốn tiếp tục ?')){
-            console.log('id', selectedRowKeys)
+        if(window.confirm('Khi xóa thể loại, các tác phẩm của thể loại cũng bị xóa, bạn có muốn tiếp tục ?')){
             selectedRowKeys.forEach(id => {
                 add({
                     variables: {id},
-                    refetchQueries: [{ query: getAuthors }, {query: getBooks}]
+                    refetchQueries: [{ query: getGenres }, {query: getBooks}]
                 },)
             })
             setSelectedRowKeys([])
-            toastDefault('Xóa tác giả thành công')
+            toastDefault('Xóa thể loại thành công');
         }
     }
 
@@ -112,7 +100,7 @@ const Author: React.FC = (props: Props) => {
                 onChange={handleChageSearch}
                 ref={inputSearchRef}
             />
-            <div style={{ marginBottom: 16, paddingTop: 30 }}>
+            <div style={{ marginBottom: 16, padding: 20 }}>
                 <Button type="primary" onClick={start} disabled={!hasSelected} loading={false}>
                     Bỏ chọn
                 </Button>
@@ -127,4 +115,4 @@ const Author: React.FC = (props: Props) => {
         </div>
     )
 }
-export default Author
+export default Genre

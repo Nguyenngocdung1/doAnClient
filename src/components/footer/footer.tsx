@@ -21,8 +21,8 @@ const Footer = (props: Props) => {
                                 </div>
                             </Col>
                             <Col span={21}>
-                                <Typography.Title level={5} className="footer-text-h5">3 junly, 2021</Typography.Title>
-                                <Typography.Title level={5} className="footer-text-h5">Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est</Typography.Title>
+                                <Typography.Title level={5} className="footer-text-h5">Tên cửa hàng: Cửa hàng sách SkyBooks</Typography.Title>
+                                <Typography.Title level={5} className="footer-text-h5">Địa chỉ: Số 83 Lý Nam Đế, Phường Cửa Đông, Hoàn Kiếm, Hà Nội</Typography.Title>
                             </Col>
                         </Row>
                     </Col>
@@ -31,9 +31,6 @@ const Footer = (props: Props) => {
                             STAY CONNECTED
                         </Typography.Title>
                         <div className="footer-list-icon">
-                            <div className="footer-list-icon-hover">
-                                <i className="fab fa-twitter"></i>
-                            </div>
                             <div className="footer-list-icon-hover">
                                 <i className="fab fa-google-plus-g"></i>
                             </div>
@@ -56,19 +53,6 @@ const Footer = (props: Props) => {
             </div>
             <div className="footer-bootom">
                 <Row style={{ width: '1200px', margin: '0 auto' }}>
-                    <ul className="listMenu">
-                        <li className="list-menu-content">Home</li>
-                        <li className="footer-soc"></li>
-                        <li className="list-menu-content">Blog</li>
-                        <li className="footer-soc"></li>
-                        <li className="list-menu-content">New Arrivals</li>
-                        <li className="footer-soc"></li>
-                        <li className="list-menu-content">Best Seller</li>
-                        <li className="footer-soc"></li>
-                        <li className="list-menu-content">About Us</li>
-                        <li className="footer-soc"></li>
-                        <li className="list-menu-content">Contact Us</li>
-                    </ul>
                     <Col span={6}>
                         <Typography.Title level={3} style={{ color: 'white', textAlign: 'left' }}>
                             INFORMATION
@@ -108,13 +92,12 @@ const Footer = (props: Props) => {
                     </Col>
                     <Col span={6}>
                         <Typography.Title level={3} style={{ color: 'white', textAlign: 'left' }}>
-                            CONTACT US
+                            LIÊN HỆ VỚI CHÚNG TÔI
                         </Typography.Title>
                         <ul className="footer-content-list">
-                            <li>Address: 78 Carpenter Street Huntington, New York 11743</li>
-                            <li>Email: contact@example.com</li>
-                            <li>Phone: (329) 1833-2302</li>
-                            <li>(485) 9127-6014</li>
+                            <li>Tên cửa hàng: Cửa hàng sách SkyBooks</li>
+                            <li>Địa chỉ: Số 83 Lý Nam Đế, Phường Cửa Đông, Hoàn Kiếm, Hà Nội</li>
+                            <li>Số điện thoại: 024 3843 8220</li>
                         </ul>
                     </Col>
                 </Row>

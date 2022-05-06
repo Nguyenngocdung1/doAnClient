@@ -76,7 +76,6 @@ const History = (props: Props) => {
                 ))}
             </Row>
             {dataOrderFilter.length > 0 ? dataOrderFilter.map((data:any) => <div key={data.id}><HistoryItem order={data}/></div>) : null}
-            
         </div>
     )
 }

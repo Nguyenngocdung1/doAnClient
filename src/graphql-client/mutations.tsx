@@ -29,16 +29,16 @@ const addSingleAuthor = gql`
     }
 `
 
-// const addSingleGenre = gql`
-//     mutation addSingleGenreMutation($name: String) {
-//         createGenre(input: {
-//             name: $name,
-//         }){
-//             id
-//             name
-//         }
-//     }
-// `
+const addSingleGenre = gql`
+    mutation addSingleGenreMutation($name: String) {
+        createGenre(input: {
+            name: $name,
+        }){
+            id
+            name
+        }
+    }
+`
 
 const updateSingleAuthor = gql`
     mutation UpdateAuthor($id: ID!, $name: String, $address: String, $age: Int){
@@ -71,7 +71,13 @@ const deleteAuthor = gql`
     }
 `
 
-// const deleteGenre = 
+const deleteGenre = gql`
+    mutation DeleteGenre($id: ID!){
+        deleteGenre(id: $id){
+            name
+        }
+    }
+`
 
 const updateSingleBook = gql`
     mutation UpdateBook($id: ID!, $name: String, $genreId: ID!, $des: String, $image: String, $price: Int, $authorId: ID!,  $quantity: Int ){
@@ -183,4 +189,6 @@ const deleteComment = gql`
     }
 `
 
-export { addSingleBook, addSingleAuthor, updateSingleBook, signIn, updateSingleAuthor,  deleteAuthor, deleteBook, createOrder, updateStatusOrder, deleteStatusOrder, danhGiaOrder, logIn, addComment, deleteComment }
+export { addSingleBook, addSingleAuthor, updateSingleBook,
+    signIn, updateSingleAuthor,  deleteAuthor, deleteBook, createOrder, 
+    updateStatusOrder, deleteStatusOrder, danhGiaOrder, logIn, addComment, deleteComment, deleteGenre, addSingleGenre, }

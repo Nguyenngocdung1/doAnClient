@@ -1,178 +1,108 @@
-import { Button, Pagination } from 'antd';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Pagination, Card, Spin } from 'antd';
+import React, { useState } from 'react';
 import './index.css';
+import { useQuery } from '@apollo/client';
+import {getComments, getBooks } from '../../graphql-client/query';
+
 interface Props {
     
 }
 
 const Blog = (props: Props) => {
-    return (
-        <div>
-  {/* End header-Bottom */}
-  <div className="container mt-5">
-    <div className="d-flex">
-      <div className="col-8 ">
-        {/* Ket thuc */}
-        <div>
-          <div className="datetime ms-2 mt-2 fw-bold">
-            <span>JUNE 30,2018</span>
+    const [page, setPage] = useState(1);
+    const [ bookIdSelect, setBookIdSelect] = useState<string>('');
+    const { loading: loading1, error: error1, data: data1 } = useQuery(getComments, {
+      variables: {
+        bookId: "626827bb9ba0428ae4af3e13"
+      }
+    });
+    debugger;
+
+    const [inputPrice, setInputPrice] = useState(0)
+    const { loading, error, data } = useQuery(getBooks)
+    if (loading) {
+        return <Spin size="large" />
+    }
+    if (error) {
+        return <p>error authors ...</p>
+    }
+
+    const handlePage = (page: any) => {
+        setPage(page)
+    }
+
+    let dataFilter = data?.books;
+    if (inputPrice > 0) {
+        dataFilter = dataFilter.filter((data: any) => (inputPrice < data.price))
+    }
+    const dataPage = []
+    if (dataFilter && 3 * page <= dataFilter.length) {
+        for (let i = 3 * (page - 1); i < 3 * page; i++) {
+            dataPage.push(dataFilter[i])
+        }
+    } else {
+        for (let i = 3 * (page - 1); i < dataFilter.length; i++) {
+            dataPage.push(dataFilter[i])
+        }
+    }
+  return (
+  <div>   
+      {/* End header-Bottom */}
+        <div className="container mt-5">
+          <div className="mt-5">
+              {dataPage.length > 0 && dataPage.map((book: any) => (
+                  <Card hoverable key={book.id} className="row col-12 mt-3 align-items-center d-flex">
+                      {/* 1 sản phẩm */}
+                      <div className="row">
+                          <div className="col-4">
+                              <img src={JSON.parse(book.image)[0]} alt="" width="200px" height="300px" style={{ objectFit: "cover" }} />
+                          </div>
+                          <div className="col-8">
+                              <div className="mt-5">
+                                  <h5 style={{ display: 'block', textAlign: 'left' }}>{book.name}</h5>
+                              </div>
+                              <div className="description-detail mt-3">
+                                  <span style={{ display: 'block', textAlign: 'left' }}>{book.des}</span>
+                              </div>
+                        
+                          </div>
+                          <div className="d-flex">
+                            <div className="pe-3" style={{ padding: 10, marginLeft: 80}}>
+                              <i className="far fa-comment "> 0 Comments</i>
+                            </div>
+                          </div>
+                      </div>
+                      {/* Kết thúc */}
+
+                      <div>
+                        <div onClick={() => setBookIdSelect(book.id)} style={{ fontSize: '16', fontWeight: 'bold' }}>Bình luận</div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <div>
+                            <div style={{padding: '0 10px', fontSize: 16, fontWeight: 'bold'}}>Nguyễn Ngọc Dũng</div>
+                            <div >1 ngày trước</div>
+                          </div>
+                        </div>
+                        <div style={{ flex: 1, display: 'flex', padding: 20, borderRadius: 10, borderColor: '#f07c29', border: '1px solid', margin: 10}}>Sách rất hay và bổ ích</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '16', fontWeight: 'bold' }}>Bình luận</div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <div>
+                            <div style={{padding: '0 10px', fontSize: 16, fontWeight: 'bold'}}>Nguyễn Ngọc Dũng</div>
+                            <div >1 ngày trước</div>
+                          </div>
+                        </div>
+                        <div style={{ flex: 1, display: 'flex', padding: 20, borderRadius: 10, borderColor: '#f07c29', border: '1px solid', margin: 10}}>Rất cảm động</div>
+                      </div>
+                  </Card>
+              ))}
+              <div className="pagination" style={{ margin: '20px 0', display: 'flex', justifyContent: 'center' }}>
+                <Pagination onChange={handlePage} pageSize={3} defaultCurrent={page} total={dataFilter.length} />
+              </div>
           </div>
-          <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/06/blog7.jpg" alt="" width="100%" />
-        </div>
-        <div className="title-blog mt-4">
-          <h4>Sample post title with format Video</h4>
-        </div>
-        <div className="d-flex">
-          <div className=" pe-3">
-            <i className="far fa-user"> Admin </i>
-            <span> - </span>
-          </div>
-          <div className="pe-3">
-            <i className="far fa-comment "> 0 Comments</i>
-          </div>
-        </div>
-        <div className="mt-2">
-          <span>All children, except one, grow up. They soon know that they will grow up, and the way Wendy knew was this. One day when she was two years old she…</span>
-        </div>
-        <div className="button-blog mt-3 border-bottom pb-4">
-          <Button type="primary">CONTINUE READING &gt; </Button> 
-        </div>
-        {/* Ket thuc */}
-        <div className=" mt-4">
-          <div className="datetime ms-2 mt-2 fw-bold">
-            <span>JUNE 30,2018</span>
-          </div>
-          <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/06/blog6.jpg" alt="" width="100%" />
-        </div>
-        <div className="title-blog mt-4">
-          <h4>Sample post title with format Video</h4>
-        </div>
-        <div className="d-flex">
-          <div className=" pe-3">
-            <i className="far fa-user"> Admin </i>
-            <span> - </span>
-          </div>
-          <div className="pe-3">
-            <i className="far fa-comment "> 0 Comments</i>
-          </div>
-        </div>
-        <div className="mt-2">
-          <span>All children, except one, grow up. They soon know that they will grow up, and the way Wendy knew was this. One day when she was two years old she…</span>
-        </div>
-        <div className="button-blog mt-3 border-bottom pb-4">
-          <Button type="primary">CONTINUE READING &gt; </Button> 
-        </div>
-        <div className="mt-3">
-          <div className="datetime ms-2 mt-2 fw-bold">
-            <span>JUNE 30,2018</span>
-          </div>
-          <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/06/blog1.jpg" alt="" width="100%" />
-        </div>
-        <div className="title-blog mt-4">
-          <h4>Sample post title with format Video</h4>
-        </div>
-        <div className="d-flex">
-          <div className=" pe-3">
-            <i className="far fa-user"> Admin </i>
-            <span> - </span>
-          </div>
-          <div className="pe-3">
-            <i className="far fa-comment "> 0 Comments</i>
-          </div>
-        </div>
-        <div className="mt-2">
-          <span>All children, except one, grow up. They soon know that they will grow up, and the way Wendy knew was this. One day when she was two years old she…</span>
-        </div>
-        <div className="button-blog mt-3 border-bottom pb-4">
-          <Button type="primary">CONTINUE READING &gt; </Button> 
-        </div>
-        <Pagination style={{margin: "20px 0px"}} defaultCurrent={1} total={50} />
-      </div>
-      <div className="col-4 ps-4">
-        <div>
-          <input type="search" placeholder="Search..." className="p-2" style={{outline: 'none', borderRadius: '5px', width: '100%'}} />
-        </div>
-        <div className=" mt-4">
-          <h4>RENCENT POSTS</h4>
-          {/*  */}
-          <div className="d-flex pb-5">
-            <div className="col-4 mt-2">
-              <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/06/blog1.jpg" alt="" width="100%" />
-            </div>
-            <div className="ps-3">
-              <span>Sample post title with format Video</span>
-              <p className="text-secondary">JUNE 30,2018</p>
-            </div>
-          </div>
-          <div className="d-flex pb-5">
-            <div className="col-4 mt-2">
-              <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/06/blog1.jpg" alt="" width="100%" />
-            </div>
-            <div className="ps-3">
-              <span>Sample post title with format Video</span>
-              <p className="text-secondary">JUNE 30,2018</p>
-            </div>
-          </div>
-          <div className="d-flex pb-5">
-            <div className="col-4 mt-2">
-              <img src="https://skybook.woovina.net/demo-01/wp-content/uploads/2018/06/blog1.jpg" alt="" width="100%" />
-            </div>
-            <div className="ps-3">
-              <span>Sample post title with format Video</span>
-              <p className="text-secondary">JUNE 30,2018</p>
-            </div>
-          </div>
-          {/* Ket thuc */}
-        </div>
-        <div className="Archive mt-3">
-          <h3>ARCHIVE</h3>
-          <div>
-            <span>June 2018</span>
-          </div>
-        </div>
-        <div className="mt-5">
-          <h3>RENCENT COMMENTS</h3>
-          <div className="mt-2 pb-2">
-            <span>admin on Simple Product 005</span>
-          </div>
-          <div className="mt-2 pb-2">
-            <span>admin on Simple Product 005</span>
-          </div>
-          <div className="mt-2 pb-2">
-            <span>admin on Simple Product 005</span>
-          </div>
-          <div className="mt-2 pb-2">
-            <span>admin on Simple Product 005</span>
-          </div>
-          <div className="mt-2 pb-2">
-            <span>admin on Simple Product 005</span>
-          </div>
-        </div>
-        <div className="Archive mt-5 ">
-          <h3>META</h3>
-          <div>
-            <span>Register</span>
-          </div>
-          <div>
-            <span>Log in</span>
-          </div>
-          <div>
-            <span>Entried Feed</span>
-          </div>
-          <div>
-            <span>Comment Feed</span>
-          </div>
-          <div>
-            <span>Wordpress.org</span>
-          </div>
-        </div>
       </div>
     </div>
-  </div>
-</div>
-
-    )
+  )
 }
 
 export default Blog

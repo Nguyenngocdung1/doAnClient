@@ -4,6 +4,9 @@ import LayoutAdmin from "./layouts/layoutAdmin";
 import LayoutWebsite from "./layouts/layoutWebSite";
 import Addauthor from "./pages/admin/author/addauthor";
 import Author from "./pages/admin/author/author";
+import Genre from "./pages/admin/genre/genre";
+import AddGenre from "./pages/admin/genre/addGenre";
+
 import Addbook from "./pages/admin/book/addbook";
 import Book from "./pages/admin/book/book";
 import Home from "./pages/home/home";
@@ -30,6 +33,7 @@ import HistoryDetail from "./pages/user/history/historyDetail";
 import UserPage from './pages/user/user';
 import Profile from "./pages/user/profile/profile";
 import AddComment from "./pages/admin/comment/addComment";
+import Notification from "./pages/user/notification/index";
 
 
 
@@ -63,6 +67,7 @@ const Router: React.FC<Props> = (props) => {
             <Route path="profile" element={<Profile />} />
             <Route path="history" element={<History />} />
             <Route path="history/:id" element={<HistoryDetail />} />
+            <Route path="notifications" element={<Notification />} />
           </Route>    
         </Route>
 
@@ -73,6 +78,8 @@ const Router: React.FC<Props> = (props) => {
           <Route path="dashboard" element={<div>Admin Dashboard</div>} />
           <Route path="user" element={<User />} />
           <Route path="authors" element={<Author />} />
+          <Route path="genre" element={<Genre />} />
+          <Route path="addgenre" element={<AddGenre />} />
           <Route path="addauthor" element={<Addauthor />} />
           <Route path="editauthor/:slug" element={<Editauthor />} />
           <Route path="books" element={<Book />} />

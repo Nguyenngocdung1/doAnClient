@@ -84,7 +84,6 @@ const Category = (props: Props) => {
                     dataSource={dataPage1}
                     renderItem={(author: any) => (
                     <List.Item>
-                        <Avatar shape="square" size={64} icon={<UserOutlined />} />
                         <Card title={author?.address}>
                             <Button onClick={() => addAuthorFilter(author.id)}>{author?.name}</Button>
                         </Card>
@@ -111,7 +110,6 @@ const Category = (props: Props) => {
                     dataSource={dataPage2}
                     renderItem={(genres: any) => (
                     <List.Item>
-                        <Avatar shape="square" size={64} icon={<BookOutlined />} />
                         <Card title={genres?.name}>
                             <Button onClick={() => addGenreFilter(genres.id)}>{genres?.name}</Button>
                         </Card>

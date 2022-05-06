@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import '../../common/firebase/index';
 import { toastDefault } from '../../common/toast';
+import { toastError } from '../../common/toasterror';
 import { login } from '../../features/auths/authSlice';
 import { logIn } from "../../graphql-client/mutations";
 import { getUserQuery } from "../../graphql-client/query";
@@ -83,6 +84,7 @@ function Login() {
   const handleGgLogin = () => {
     signInWithPopup(auth, provider2)
       .then((result) => {
+        debugger;
         const credential: any = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         // The signed-in user info.
@@ -94,12 +96,16 @@ function Login() {
               variables: { name: displayName, email },
               refetchQueries: [{ query: getUserQuery }]
             },
-          )
+          ).catch(res => {
+            const errors = res.graphQLErrors.map((error: any) => error.message);
+            toastError(`Đăng nhập thất bại! ${errors}`);
+          }) 
         } else {
           navigate("/login")
         }
       })
       .catch((error) => {
+        debugger;
         console.log(error);
       });
   };

@@ -1,11 +1,12 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { Button, Spin, Table } from 'antd';
+import { Button, Spin, Table, Input } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import formatprice from '../../../common/formatprice';
 import { toastDefault } from '../../../common/toast';
 import { deleteBook } from '../../../graphql-client/mutations';
 import { getBooks} from '../../../graphql-client/query';
+const { Search } = Input
 
 interface Props {
 
@@ -50,9 +51,11 @@ const columns = [
 
 const Book: React.FC = (props: Props) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string>>([])
+    const [keySearch, setKeySearch] = useState<string>('');
     const { loading, error, data } = useQuery(getBooks)
     const [add, Mutation] = useMutation<any>(deleteBook);
     const [page, setPage] = useState({current: 1, pageSize: 3})
+    const inputSearchRef = React.useRef<any>("");
     
     if (loading) {
         return <Spin size="large" />
@@ -72,19 +75,29 @@ const Book: React.FC = (props: Props) => {
             const image = JSON.parse(data.books[i].image)[0]
             debugger;
             const author = data?.books[i].author.name
-            data1?.push({
-                key: data.books[i].id,
-                name: data.books[i].name,
-                genre: data.books[i].genre.name,
-                price: formatprice(data.books[i].price),
-                image: <img width="150" height="200" src={image} style={{objectFit: "cover"}} alt="" />,
-                quantity: data.books[i].quantity,
-                des: data.books[i].des,
-                author: author,
-                btnEdit: <Button type="primary"><Link to={link}>Sửa sản phẩm</Link></Button>,
-            });
+            if(data.books[i].name.includes(keySearch)) {
+                data1?.push({
+                    key: data.books[i].id,
+                    name: data.books[i].name,
+                    genre: data.books[i].genre?.name,
+                    price: formatprice(data.books[i].price),
+                    image: <img width="150" height="200" src={image} style={{objectFit: "cover"}} alt="" />,
+                    quantity: data.books[i].quantity,
+                    des: data.books[i].des,
+                    author: author,
+                    btnEdit: <Button type="primary"><Link to={link}>Sửa sản phẩm</Link></Button>,
+                });
+            }
         }
     }
+
+    const onSearch = (value: string) => console.log(value);
+
+    const handleChageSearch = (e: any) => {
+        const search = inputSearchRef.current.input.value;
+        setKeySearch(search);
+    }
+
 
     const onSelectChange = (selectedRowKeys: any) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -115,7 +128,15 @@ const Book: React.FC = (props: Props) => {
       };
     return (
         <div>
-            <div style={{ marginBottom: 16 }}>
+             <Search
+                placeholder="Tìm kiếm"
+                allowClear
+                size="large"
+                onSearch={onSearch}
+                onChange={handleChageSearch}
+                ref={inputSearchRef}
+            />
+            <div style={{ marginBottom: 16, padding: 20 }}>
                 <Button type="primary" onClick={start} disabled={!hasSelected} loading={false}>
                     Bỏ chọn
                 </Button>

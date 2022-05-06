@@ -2,7 +2,6 @@ import { useMutation } from '@apollo/client';
 import { Avatar, Button, Col, Input, Modal, Rate, Row } from 'antd';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import formatprice from '../../../common/formatprice';
 import { toastDefault } from '../../../common/toast';
 import { addNotification } from '../../../features/notifications/notificationSlide';
@@ -121,6 +120,7 @@ const HistoryItem = (props: Props) => {
             html = <div className="d-flex align-items-center justify-content-between">
                 <Button type="primary" onClick={() => showModal(lien_he_shop)}>Liên hệ shop</Button>
                 <Button onClick={() => handleRemoveOrder(id)} danger>Hủy đơn hàng</Button>
+                <Button>Xuất Hóa Đơn</Button>
             </div>
         } else if (status === 3) {
             html = <div className="d-flex align-items-center justify-content-between">

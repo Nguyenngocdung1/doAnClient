@@ -176,6 +176,7 @@ const Cart = (props: Props) => {
                 <Form.Item
                     label="Email"
                     name="email"
+                    initialValue={email}
                     rules={[{ required: true, message: 'Please input your email!' }]}
                 >
                     <Input />
