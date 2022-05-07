@@ -1,9 +1,11 @@
-import { Pagination, Card, Spin } from 'antd';
+import { Pagination, Card, Spin,Button, Input, Form } from 'antd';
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 import './index.css';
 import { useQuery } from '@apollo/client';
 import {getComments, getBooks } from '../../graphql-client/query';
-
+import { addComments } from '../../graphql-client/mutations';
+import { useSelector } from 'react-redux';
 interface Props {
     
 }
@@ -11,13 +13,18 @@ interface Props {
 const Blog = (props: Props) => {
     const [page, setPage] = useState(1);
     const [ bookIdSelect, setBookIdSelect] = useState<string>('');
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [add, Mutation] = useMutation<any>(addComments);
+
+    const user = useSelector((state: any) => state.auth.user);
+
     const { loading: loading1, error: error1, data: data1 } = useQuery(getComments, {
       variables: {
-        bookId: "626827bb9ba0428ae4af3e13"
+        bookId: bookIdSelect
       }
     });
-    debugger;
-
+    console.log("sadsadsa", data1);
+    
     const [inputPrice, setInputPrice] = useState(0)
     const { loading, error, data } = useQuery(getBooks)
     if (loading) {
@@ -45,6 +52,22 @@ const Blog = (props: Props) => {
             dataPage.push(dataFilter[i])
         }
     }
+
+  const onFinish = (values: any) => {
+    alert("Chức năng đang phát triển")
+    // values.icon = 1;
+    // values.bookId = bookIdSelect;
+    // values.userId = user.id;
+    // debugger;
+    // add(
+    //   {
+    //     variables: values,
+    //     refetchQueries: [{ query: getComments }]
+    //   }
+    // )
+  }
+
+  console.log(dataPage);
   return (
   <div>   
       {/* End header-Bottom */}
@@ -68,32 +91,47 @@ const Blog = (props: Props) => {
                           </div>
                           <div className="d-flex">
                             <div className="pe-3" style={{ padding: 10, marginLeft: 80}}>
-                              <i className="far fa-comment "> 0 Comments</i>
                             </div>
                           </div>
                       </div>
                       {/* Kết thúc */}
+                        <div>
+                          {bookIdSelect === book.id &&
+                          <div>
+                            <div>Viết bình luận cho tác phẩm {book.name}</div>
+                           <div style={{ display: 'flex', width: '100%' }}>
+                           <Form style={{ width: "100%" }} onFinish={onFinish} autoComplete="off">
+                              <Form.Item style={{ width: '100%' }} name="content" rules={[{ required: true, message: 'Bạn phải nhập bình luận' }]}>
+                                  <Input />
+                              </Form.Item>
+                              <Form.Item>
+                                  <Button type="primary" htmlType="submit">
+                                      Bình luận
+                                  </Button>
+                              </Form.Item>
+                            </Form>
+                             <Button onClick={() => setBookIdSelect("")}>Đóng</Button>
+                             </div>
+                          </div>}
+                          <Button onClick={() => setBookIdSelect(book.id)} style={{ fontSize: '16', fontWeight: 'bold', margin: 10 }}> Xem bình luận</Button>
+                          {bookIdSelect === book.id && data1?.comments?.map((cmt: any) => (
+                            <>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <div>
+                                  <div style={{padding: '0 10px', fontSize: 16, fontWeight: 'bold'}}>Nguyễn Ngọc Dũng</div>
+                                </div>
+                              </div>
+                              <div style={{ display: "flex"}}>
+                                <div style={{ flex: 1, display: 'flex', padding: 20, borderRadius: 10, borderColor: '#fff', border: '1px solid', margin: 10}}>{cmt.content}</div>
+                                <Button>Xóa</Button>
+                              </div>
+                            </>
+                          ))}
 
-                      <div>
-                        <div onClick={() => setBookIdSelect(book.id)} style={{ fontSize: '16', fontWeight: 'bold' }}>Bình luận</div>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <div>
-                            <div style={{padding: '0 10px', fontSize: 16, fontWeight: 'bold'}}>Nguyễn Ngọc Dũng</div>
-                            <div >1 ngày trước</div>
-                          </div>
+                          
                         </div>
-                        <div style={{ flex: 1, display: 'flex', padding: 20, borderRadius: 10, borderColor: '#f07c29', border: '1px solid', margin: 10}}>Sách rất hay và bổ ích</div>
-                      </div>
-                      <div>
-                        <div style={{ fontSize: '16', fontWeight: 'bold' }}>Bình luận</div>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <div>
-                            <div style={{padding: '0 10px', fontSize: 16, fontWeight: 'bold'}}>Nguyễn Ngọc Dũng</div>
-                            <div >1 ngày trước</div>
-                          </div>
-                        </div>
-                        <div style={{ flex: 1, display: 'flex', padding: 20, borderRadius: 10, borderColor: '#f07c29', border: '1px solid', margin: 10}}>Rất cảm động</div>
-                      </div>
+                      
+                     
                   </Card>
               ))}
               <div className="pagination" style={{ margin: '20px 0', display: 'flex', justifyContent: 'center' }}>

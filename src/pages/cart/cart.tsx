@@ -11,6 +11,8 @@ import { addNotification } from '../../features/notifications/notificationSlide'
 import { createOrder } from '../../graphql-client/mutations';
 import { getOrderByEmail } from '../../graphql-client/query';
 import './cart.css';
+import {toastError} from '../../common/toasterror';
+
 interface Props {
 
 }
@@ -119,25 +121,34 @@ const Cart = (props: Props) => {
 
 
     const onFinish = (values: any) => {
-        values.phone = Number(values.phone)
-        const data = {
-            ...values,
-            listOrder: JSON.stringify(selectedRowKeys),
-            status: 1
+        const regExp = /[a-zA-Z]/g;
+        if(regExp.test(values.phone) || Number(values.phone) > 2147483647){
+            toastError("Số điện thoại chưa đúng ");
+        } else {
+            values.phone = Number(values.phone)
+            const data = {
+                ...values,
+                listOrder: JSON.stringify(selectedRowKeys),
+                status: 1
+            }
+            selectedRowKeys.forEach((cart: any) => {
+                dispatch(removeCart(cart.book.id))
+            })
+            setTotal(0);
+            add({
+                variables: data,
+                refetchQueries: [{query: getOrderByEmail, variables: {email}}]
+            },).catch(res => {
+                const errors = res.graphQLErrors.map((error: any) => error.message);
+                toastError(`Đặt hàng thất bại số điện thoại chưa đúng! ${errors}`);
+            }) 
+            setSelectedRowKeys([])
+            setTimeout(() => {
+                toastDefault('Đặt hàng thành công')
+            }, 1000)
         }
-        selectedRowKeys.forEach((cart: any) => {
-            dispatch(removeCart(cart.book.id))
-        })
-        setTotal(0)
-        add({
-            variables: data,
-            refetchQueries: [{query: getOrderByEmail, variables: {email}}]
-        },)
-        setSelectedRowKeys([])
-        setTimeout(() => {
-            toastDefault('Đặt hàng thành công')
-        }, 1000)
     };
+
     return (
         <div className="giohang">
             <h3 className="my-4">Giỏ hàng</h3>
@@ -193,7 +204,7 @@ const Cart = (props: Props) => {
                     name="phone"
                     rules={[{ required: true, message: 'Please input your phone!' }]}
                 >
-                    <Input type="number" />
+                    <Input type="phone" />
                 </Form.Item>
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                     <Button htmlType="submit" danger style={{ marginLeft: 20 }} type="primary" disabled={!hasSelected} loading={false}>

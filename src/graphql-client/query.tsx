@@ -170,10 +170,16 @@ const getComments = gql`
     query getCommentsQuery($bookId: ID!){
         comments(bookId: $bookId){
             id
-            user
-            book
-            icon
+            book {
+                id
+                name
+            }
+            user {
+                name
+                email
+            }
             content
+            icon
         }
     }
 `

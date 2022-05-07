@@ -184,7 +184,7 @@ const Header = (props: Props) => {
         <Menu>
             <h4 className="my-2 text-center">Thông báo mới nhận</h4>
             <div className="header-scroll">
-                {notifications.length > 0 ? notifications.map((item: any) => (
+                {(user?.email && notifications.length > 0) ? notifications.map((item: any) => (
                     <Link to="user/history" key={item.order.id} className="notification-item">
                         <img width="80" className='me-2' src="http://hanoimoi.com.vn/Uploads/image/News/Thumbnails/2021/5/Thumbnails25462021044620icon.png" alt="" />
                         <div>{item.message}</div>

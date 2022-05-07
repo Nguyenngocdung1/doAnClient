@@ -40,6 +40,22 @@ const addSingleGenre = gql`
     }
 `
 
+const addComments = gql`
+    mutation CreateComment( $bookId: ID!, $userId: String, $content: String, $icon: Int){
+        createComment(input: {
+            bookId: $bookId,
+            content: $content,
+            userId: $userId,
+            icon: $icon
+        }){
+            bookId
+            content
+            userId
+            icon
+        }
+    }
+` 
+
 const updateSingleAuthor = gql`
     mutation UpdateAuthor($id: ID!, $name: String, $address: String, $age: Int){
         updateAuthor(id: $id, input: {
@@ -52,16 +68,6 @@ const updateSingleAuthor = gql`
         }
     }
 `
-
-// const upadateSingleGenre = gql`
-//     mutation UpdateGenre($id: ID!, $name: String){
-//         updateGenre(id: $id, input: {
-//             name: $name,
-//     }){
-//         id
-//         name
-//     }
-// `
 
 const deleteAuthor = gql`
     mutation DeleteAuthor($id: ID!){
@@ -166,18 +172,6 @@ const danhGiaOrder = gql`
         }
     }
 ` 
-const addComment = gql`
-    mutation CreateComment( $bookId: ID!, $userId: ID!, $content: String, $icon: Int){
-        createComment(input: {
-            bookId: $bookId, content: $content, userId: $userId, icon: $icon
-        }){
-            bookId
-            content
-            userId
-            icon
-        }
-    }
-` 
 
 const deleteComment = gql`
     mutation DeleteComment($id: ID!){
@@ -188,7 +182,24 @@ const deleteComment = gql`
         }
     }
 `
-
+const updateStatusComments = gql`
+    mutation UpdateCommentStatus ( $icon: Int){
+        updateCommentStatus(icon: $icon){
+            id
+            user {
+                id
+                email
+                name
+            }
+            book {
+                id
+                name
+            }
+            icon
+            content
+        }
+    }
+`
 export { addSingleBook, addSingleAuthor, updateSingleBook,
     signIn, updateSingleAuthor,  deleteAuthor, deleteBook, createOrder, 
-    updateStatusOrder, deleteStatusOrder, danhGiaOrder, logIn, addComment, deleteComment, deleteGenre, addSingleGenre, }
+    updateStatusOrder, deleteStatusOrder, danhGiaOrder, logIn, addComments, deleteComment, deleteGenre, addSingleGenre, updateStatusComments }
