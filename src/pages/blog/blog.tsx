@@ -23,6 +23,8 @@ const Blog = (props: Props) => {
         bookId: bookIdSelect
       }
     });
+    debugger;
+
     console.log("sadsadsa", data1);
     
     const [inputPrice, setInputPrice] = useState(0)
@@ -54,17 +56,16 @@ const Blog = (props: Props) => {
     }
 
   const onFinish = (values: any) => {
-    alert("Chức năng đang phát triển")
-    // values.icon = 1;
-    // values.bookId = bookIdSelect;
-    // values.userId = user.id;
-    // debugger;
-    // add(
-    //   {
-    //     variables: values,
-    //     refetchQueries: [{ query: getComments }]
-    //   }
-    // )
+    // alert("Chức năng đang phát triển");
+    values.icon = 1;
+    values.bookId = bookIdSelect;
+    values.userId = user.id;
+    add(
+      {
+        variables: values,
+        refetchQueries: [{ query: getComments }]
+      }
+    )
   }
 
   console.log(dataPage);
@@ -96,6 +97,21 @@ const Blog = (props: Props) => {
                       </div>
                       {/* Kết thúc */}
                         <div>
+                          <Button onClick={() => setBookIdSelect(book.id)} style={{ fontSize: '16', fontWeight: 'bold', margin: 10 }}> Xem bình luận</Button>
+                          {bookIdSelect === book.id && data1?.comments?.map((cmt: any) => (
+                            <>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <div>
+                                  <div style={{padding: '0 10px', fontSize: 16, fontWeight: 'bold'}}>Nguyễn Ngọc Dũng</div>
+                                </div>
+                              </div>
+                              <div style={{ display: "flex"}}>
+                                <div style={{ flex: 1, display: 'flex', padding: 20, borderRadius: 10, borderColor: '#fff', border: '1px solid', margin: 10}}>{cmt.content}</div>
+                                <Button>Xóa</Button>
+                              </div>
+                            </>
+                          ))}
+
                           {bookIdSelect === book.id &&
                           <div>
                             <div>Viết bình luận cho tác phẩm {book.name}</div>
@@ -113,21 +129,6 @@ const Blog = (props: Props) => {
                              <Button onClick={() => setBookIdSelect("")}>Đóng</Button>
                              </div>
                           </div>}
-                          <Button onClick={() => setBookIdSelect(book.id)} style={{ fontSize: '16', fontWeight: 'bold', margin: 10 }}> Xem bình luận</Button>
-                          {bookIdSelect === book.id && data1?.comments?.map((cmt: any) => (
-                            <>
-                              <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <div>
-                                  <div style={{padding: '0 10px', fontSize: 16, fontWeight: 'bold'}}>Nguyễn Ngọc Dũng</div>
-                                </div>
-                              </div>
-                              <div style={{ display: "flex"}}>
-                                <div style={{ flex: 1, display: 'flex', padding: 20, borderRadius: 10, borderColor: '#fff', border: '1px solid', margin: 10}}>{cmt.content}</div>
-                                <Button>Xóa</Button>
-                              </div>
-                            </>
-                          ))}
-
                           
                         </div>
                       

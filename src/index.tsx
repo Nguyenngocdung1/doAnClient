@@ -14,7 +14,7 @@ import persistor, { store } from './store';
 // khởi tạo apollo client
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: 'http://localhost:8866/graphql',
+  uri: 'http://localhost:9000/graphql',
 })
 
 

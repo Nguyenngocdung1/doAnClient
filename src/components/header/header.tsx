@@ -252,7 +252,7 @@ const Header = (props: Props) => {
                             <Dropdown.Button overlay={Notification} placement="bottomRight" icon={
                                 <div>
                                     <BellOutlined />
-                                    <span className="header-in-number">{notifications.length}</span>
+                                    {user?.email && <span className="header-in-number">{notifications.length}</span>}
                                 </div>
                             }>
                                 <Link to="/user/notifications">
@@ -312,14 +312,6 @@ const Header = (props: Props) => {
                     <NavLink to="/category" style={{ color: 'white', display: 'block' }}>
                         <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
                         {width < responesiveWidth ? <MenuOutlined style={{ width: '40px'}}/> : 'Danh mục'}
-                        </Typography.Title>
-                    </NavLink>
-                    <span className="spanhover"></span>
-                </Col>
-                <Col span={3} className="menu-item">
-                    <NavLink to="/blog" style={{ color: 'white', display: 'block' }}>
-                        <Typography.Title style={{ margin: 0, zIndex: 2, color: 'white' }} level={5} >
-                        {width < responesiveWidth ? <EditFilled style={{ width: '40px'}}/> : 'Bình luận'}
                         </Typography.Title>
                     </NavLink>
                     <span className="spanhover"></span>

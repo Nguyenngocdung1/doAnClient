@@ -175,8 +175,30 @@ const getComments = gql`
                 name
             }
             user {
+                id
                 name
                 email
+                avatar
+            }
+            content
+            icon
+        }
+    }
+`
+
+const getAllComments = gql`
+    query getAllCommentsQuery{
+        comment{
+            id
+            book {
+                id
+                name
+            }
+            user {
+                id
+                name
+                email
+                avatar
             }
             content
             icon
@@ -186,4 +208,4 @@ const getComments = gql`
 
 
 export { getBooks, getAuthors, getSingleBook, getOrderByEmail, getComments,
-getUsers, getSingleAuthor, getUserQuery, getOrders, getSingleOrder, getGenres}
+getUsers, getSingleAuthor, getUserQuery, getOrders, getSingleOrder, getGenres, getAllComments}

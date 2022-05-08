@@ -1,7 +1,8 @@
 import { useQuery } from '@apollo/client';
-import { Button, Card, Spin } from 'antd';
+import { Button, Card, Spin, Form, Input } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useMutation } from '@apollo/client';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { A11y, Navigation, Pagination, Scrollbar } from 'swiper';
@@ -9,30 +10,49 @@ import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
 import formatprice from '../../common/formatprice';
 import { toastDefault } from '../../common/toast';
 import { addToCart } from '../../features/cart/cartSlide';
-import { getBooks, getSingleBook } from '../../graphql-client/query';
+import { getBooks, getSingleBook, getComments } from '../../graphql-client/query';
 import './productDetail.css';
+import { addComments, deleteComment } from '../../graphql-client/mutations';
+import { useSelector } from 'react-redux';
+const { TextArea } = Input;
 interface Props {
 
 }
 
 const ProductDetail = (props: Props) => {
     const { slugProduct } = useParams()
+    const [value1, setValue] = useState('');
     const dispatch = useDispatch()
     const [count, setCount] = useState(1)
+
+    const [form] = Form.useForm();
+
+    const [isCmt, setIsCmt] = useState(false);
     const [imageFocus, setImageFocus] = useState<any>('')
     const { loading, error, data } = useQuery(getSingleBook, {
         variables: {
             slug: slugProduct,
         }
     })
+
+    const user = useSelector((state: any) => state.auth.user);
+   
+    const [add, Mutation] = useMutation<any>(addComments);
+    const [add1, Mutation2] = useMutation<any>(deleteComment);
+
     const { loading: loading1, error: error1, data: data1 } = useQuery(getBooks)
+    const { loading: loading2, error: error2, data: data2 } = useQuery(getComments, {
+        variables: {
+          bookId: data?.book?.id
+        }
+      });
+
     if (loading || loading1) {
         return <Spin size="large" />
     }
     if (error || error1) {
         return <p>error book ...</p>
     }
-    console.log(data);
     const handleChange = (e: any) => {
         setCount(e.target.value)
     }
@@ -86,6 +106,37 @@ const ProductDetail = (props: Props) => {
         setCount(1)
         toastDefault("Thêm sách vào giỏ hàng thành công")
     }
+
+    const onRemove = (id: any, idUser: any) => {
+        debugger;
+        if(idUser !== user.id) {
+            alert("Bạn không thể xóa bình luận không phải của bạn")
+        } else {
+            if(window.confirm('Bạn có chắc chắn muốn xóa bình luận này ?')){
+                add1({
+                    variables: {id},
+                    refetchQueries: [{ query: getComments, variables: { bookId: data?.book?.id } }]
+                },)
+                toastDefault('Xóa bình luận thành công')
+            }
+        }
+    }
+
+    const onFinish = (values: any) => {
+        // alert("Chức năng đang phát triển");
+        values.icon = 1;
+        values.bookId = data?.book?.id;
+        values.userId = user.id;
+        add(
+          {
+            variables: values,
+            refetchQueries: [{ query: getComments, variables: { bookId: data?.book?.id } }]
+          }
+        )
+        setValue("");
+        toastDefault('Bình luận thành công')
+        form.resetFields()
+      }
 
     return (
         <div>
@@ -194,6 +245,46 @@ const ProductDetail = (props: Props) => {
                                     </div>
                                 </div>
                             </div>
+                            <Button onClick={() => setIsCmt(!isCmt)} style={{ width: 200, margin: 25}}>{!isCmt ? 'Xem bình luận' : 'Đóng bình luận'}</Button>
+                            {isCmt && (
+                                <div>
+                                    { data2.comments?.length > 0 ? (
+                                        data2?.comments.map((cmt: any) => (
+                                            <>
+                                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                <div style={{display: 'flex'}}>
+                                                    <img src={cmt.user.avatar} style={{ width: 40, height: 40, borderRadius: 20}} />
+                                                    <div style={{padding: '0 10px', fontSize: 16, fontWeight: 'bold'}}>Nguyễn Ngọc Dũng</div>
+                                                </div>
+                                            </div>
+                                            <div style={{ display: "flex"}}>
+                                                <span style={{ wordWrap:'break-word', flex: 1, maxWidth: 700, overflow: 'hidden', display: 'flex', padding: 20, borderRadius: 10, backgroundColor: '#f2f2f2', margin: 10}}>{cmt.content}</span>
+                                                <Button style={{ margin: 30 }} onClick={() => onRemove(cmt.id, cmt.user.id)}>Xóa bình luận</Button>
+                                            </div>
+                                            </>
+                                        ))
+                                    ) : (
+                                        <span style={{ fontSize: 20 ,color: '#737373'}}>Chưa có bình luận nào !!</span>
+                                    )}
+
+                                    <div>
+                                    <div>Viết bình luận cho tác phẩm {data?.book?.name}</div>
+                                    <div style={{ display: 'flex', width: '100%' }}>
+                                    <Form style={{ width: "100%" }} onFinish={onFinish} autoComplete="off">
+                                        <Form.Item style={{ width: '100%' }} name="content" rules={[{ required: true, message: 'Bạn phải nhập bình luận' }]}>
+                                            <TextArea defaultValue={value1} />
+                                        </Form.Item>
+                                        <Form.Item>
+                                            <Button type="primary" htmlType="submit">
+                                                Bình luận
+                                            </Button>
+                                        </Form.Item>
+                                        </Form>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             {/* End content-product */}
                             <div className="container mt-5">
                                 <div className="d-flex justify-content-evenly border-top pt-4">

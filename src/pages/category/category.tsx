@@ -16,7 +16,10 @@ const Category = (props: Props) => {
     const { loading: loading1, error: error1, data: data1 } = useQuery(getAuthors);
     const { loading: loading2, error: error2, data: data2 } = useQuery(getGenres);
     const { loading: loading3, error: error3, data: data3 } = useQuery(getBooks);
+
     const [dataFilter, setDataFilter] = useState(data3?.books);
+    
+    debugger;
 
     if (loading1 || loading2 || loading3) {
         return <Spin size="large" />
@@ -31,12 +34,12 @@ const Category = (props: Props) => {
 
     let dataFilter1 = data1?.authors;
     const dataPage1 = []
-    if (dataFilter1 && ((3 * page1) <= dataFilter1.length)) {
-        for (let i = 3 * (page1 - 1); i < 3 * page1; i++) {
+    if (dataFilter1 && ((6 * page1) <= dataFilter1.length)) {
+        for (let i = 6 * (page1 - 1); i < 6 * page1; i++) {
             dataPage1.push(dataFilter1[i])
         }
     } else {
-        for (let i = 3 * (page1 - 1); i < dataFilter1.length; i++) {
+        for (let i = 6 * (page1 - 1); i < dataFilter1.length; i++) {
             dataPage1.push(dataFilter1[i])
         }
     }
@@ -47,12 +50,12 @@ const Category = (props: Props) => {
     }
     let dataFilter2 = data2?.genres;
     const dataPage2 = []
-    if (dataFilter2 && ((3 * page2) <= dataFilter2.length)) {
-        for (let i = 3 * (page2 - 1); i < 3 * page2; i++) {
+    if (dataFilter2 && ((6 * page2) <= dataFilter2.length)) {
+        for (let i = 6 * (page2 - 1); i < 6 * page2; i++) {
             dataPage2.push(dataFilter2[i])
         }
     } else {
-        for (let i = 3 * (page2 - 1); i < dataFilter2.length; i++) {
+        for (let i = 6 * (page2 - 1); i < dataFilter2.length; i++) {
             dataPage2.push(dataFilter2[i])
         }
     }
@@ -67,86 +70,75 @@ const Category = (props: Props) => {
 
     return (
         <div>
-            <div className="container">
-                <div className="categories-title mt-5">
-                    <h3 style={{ textAlign: 'left' }}>Tác giả</h3>
-                </div>
-                <List
-                    grid={{
-                        gutter: 16,
-                        xs: 1,
-                        sm: 2,
-                        md: 4,
-                        lg: 4,
-                        xl: 6,
-                        xxl: 3,
-                    }}
-                    dataSource={dataPage1}
-                    renderItem={(author: any) => (
-                    <List.Item>
-                        <Card title={author?.address}>
-                            <Button onClick={() => addAuthorFilter(author.id)}>{author?.name}</Button>
-                        </Card>
-                    </List.Item>
-                    )}
-                />
-                 <div className="pagination1" style={{ margin: '20px 0', display: 'flex', justifyContent: 'center' }}>
-                    <Pagination onChange={handlePage1} pageSize={3} defaultCurrent={page1} total={dataFilter1.length} />
-                </div>
-
-                <div className="categories-title mt-5">
-                    <h3 style={{ textAlign: 'left' }}>Thể loại</h3>
-                </div>
-                <List
-                    grid={{
-                        gutter: 16,
-                        xs: 1,
-                        sm: 2,
-                        md: 4,
-                        lg: 4,
-                        xl: 6,
-                        xxl: 3,
-                    }}
-                    dataSource={dataPage2}
-                    renderItem={(genres: any) => (
-                    <List.Item>
-                        <Card title={genres?.name}>
-                            <Button onClick={() => addGenreFilter(genres.id)}>{genres?.name}</Button>
-                        </Card>
-                    </List.Item>
-                    )}
-                />
-                 <div className="pagination2" style={{ margin: '20px 0', display: 'flex', justifyContent: 'center' }}>
-                    <Pagination onChange={handlePage2} pageSize={3} defaultCurrent={page2} total={dataFilter2.length} />
-                </div>
-
-                <div className="categories-title mt-5">
-                    <h3 style={{ textAlign: 'left' }}>Sách</h3>
-                </div>
+            <div className="container"  style={{display: "flex"}}>
                 <Col span={32}>
-                    <Row>
-                        {dataFilter?.length > 0 ? dataFilter?.map((book: any) => {
-                            if(book?.id){
-                                return (
-                                    <Col key={book.id} span={6} style={{boxSizing: 'border-box'}}>
-                                        <Link to={ "/" + book.author.slug + "/" + book.slug} className="mx-2">
-                                            <img width="150" height="220" src={JSON.parse(book.image)} alt="" />
-                                            <Typography.Title level={5} style={{margin: 0}}>
-                                                {book.name}
-                                            </Typography.Title>
-                                            <Typography.Title level={4} style={{margin: 0}}>
-                                                {formatprice(book.price)}
-                                            </Typography.Title>
-                                        </Link>
-                                    </Col>
-                                )
-                            }
-                            return null;
-                        }) : (
-                            <div style={{ padding: 10, border: "1px solid" , borderColor: '#ccc'}}> ----- Chưa có sách nào ------ <Empty /> </div>
+                    <div className="categories-title mt-5">
+                        <h3 style={{ textAlign: 'left' }}>Tác giả</h3>
+                    </div>
+                    <List
+                        dataSource={dataPage1}
+                        renderItem={(author: any) => (
+                        <List.Item>
+                            <Button style={{ backgroundColor: '#f2f2f2', width: 250, height: 50, borderRadius: 10, fontSize: 20 }} onClick={() => addAuthorFilter(author.id)}>{author?.name}</Button>
+                        </List.Item>
                         )}
-                    </Row>
+                    />
+                    <div className="pagination1" style={{ margin: '20px 0', display: 'flex', justifyContent: 'center' }}>
+                        <Pagination onChange={handlePage1} pageSize={6} defaultCurrent={page1} total={dataFilter1.length} />
+                    </div>
+
+                    <div className="categories-title mt-5">
+                        <h3 style={{ textAlign: 'left' }}>Thể loại</h3>
+                    </div>
+                    <List
+                        dataSource={dataPage2}
+                        renderItem={(genres: any) => (
+                        <List.Item>
+                            <Button style={{ backgroundColor: '#f2f2f2', width: 250, height: 50, borderRadius: 10, fontSize: 20 }} onClick={() => addGenreFilter(genres.id)}>{genres?.name}</Button>
+                        </List.Item>
+                        )}
+                    />
+                    <div className="pagination2" style={{ margin: '20px 0', display: 'flex', justifyContent: 'center' }}>
+                        <Pagination onChange={handlePage2} pageSize={6} defaultCurrent={page2} total={dataFilter2.length} />
+                    </div>
+
+                    <div className="categories-title mt-5">
+                        <h3 style={{ textAlign: 'left' }}>Sách</h3>
+                    </div>
                 </Col>
+                <div style={{ height: 800, overflow: 'auto', width: 2500}}>
+                    {dataFilter?.length > 0 ? dataFilter?.map((book: any) => {
+                        if(book?.id){
+                            return (
+                                <Col key={book.id} span={32} style={{boxSizing: 'border-box'}}>
+                                    <Link to={ "/" + book.author.slug + "/" + book.slug} className="mx-2">
+                                    <div className="row">
+                                        <div className="col-4">
+                                            <img src={JSON.parse(book.image)[0]} alt="" width="200px" height="300px" style={{ objectFit: "cover" }} />
+                                        </div>
+                                        <div className="col-8">
+                                            <div className="mt-5">
+                                                <h5 style={{ display: 'block', textAlign: 'left' }}>{book.name}</h5>
+                                            </div>
+                                            <div className="description-detail mt-3">
+                                                <span style={{ display: 'block', textAlign: 'left' }}>{book.des}</span>
+                                            </div>
+                                        
+                                        </div>
+                                        <div className="d-flex">
+                                            <div className="pe-3" style={{ padding: 10, marginLeft: 80}}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </Link>
+                                </Col>
+                            )
+                        }
+                        return null;
+                    }) : (
+                        <div style={{ padding: 10, border: "1px solid" , borderColor: '#ccc'}}> ----- Chưa có sách nào ------ <Empty /> </div>
+                    )}
+                </div>
             </div>
         </div>
     )

@@ -18,7 +18,6 @@ import Login from "./pages/auth/login";
 import Editauthor from "./pages/admin/author/editauthor";
 import User from './pages/admin/user/user';
 import Register from "./pages/auth/register";
-import Blog from "./pages/blog/blog";
 import Shop from "./pages/shop/shop";
 import Audiobook from "./pages/audiobook/audiobook";
 import Category from "./pages/category/category";
@@ -55,7 +54,6 @@ const Router: React.FC<Props> = (props) => {
           <Route path="/register" element={<Register />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path="/blog" element={<Blog />} />
           <Route path="/audiobooks" element={<Audiobook />} />
           <Route path="/category" element={<Category />} />
           <Route path="/usedbooks" element={<Usedbooks />} />

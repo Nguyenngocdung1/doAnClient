@@ -12,7 +12,7 @@ const Footer = (props: Props) => {
                 <Row style={{ width: '1200px', margin: '0 auto' }}>
                     <Col span={12}>
                         <Typography.Title level={3} className="text-footer-h3">
-                            LATES TWEETS
+                            ĐỊA CHỈ
                         </Typography.Title>
                         <Row>
                             <Col span={3} >
@@ -28,24 +28,17 @@ const Footer = (props: Props) => {
                     </Col>
                     <Col span={12}>
                         <Typography.Title level={3} className="text-footer-h3">
-                            STAY CONNECTED
+                            LIÊN HỆ VỚI SKYBOOKS
                         </Typography.Title>
                         <div className="footer-list-icon">
                             <div className="footer-list-icon-hover">
-                                <i className="fab fa-google-plus-g"></i>
+                                <a target="_blank" href="https://www.facebook.com/Skybooks.vn"><i className="fab fa-facebook-f"></i></a>
                             </div>
                             <div className="footer-list-icon-hover">
-                                <i className="fab fa-facebook-f"></i>
+                                <a target="_blank" href="https://we-love-skybooks.tumblr.com"><i className="fab fa-telegram-plane"></i></a>
                             </div>
                             <div className="footer-list-icon-hover">
-                                <i className="fab fa-youtube"></i>
-                            </div>
-                            <div className="footer-list-icon-hover">
-                                <i className="fab fa-telegram-plane"></i>
-                            </div>
-
-                            <div className="footer-list-icon-hover">
-                                <i className="fab fa-instagram"></i>
+                                <a target="_blank" href="https://www.instagram.com/skybooks/"><i className="fab fa-instagram"></i></a>
                             </div>
                         </div>
                     </Col>
@@ -53,44 +46,8 @@ const Footer = (props: Props) => {
             </div>
             <div className="footer-bootom">
                 <Row style={{ width: '1200px', margin: '0 auto' }}>
-                    <Col span={6}>
-                        <Typography.Title level={3} style={{ color: 'white', textAlign: 'left' }}>
-                            INFORMATION
-                        </Typography.Title>
-                        <ul className="footer-content-list">
-                            <li>About Us</li>
-                            <li>Delivery Information</li>
-                            <li> Privacy & Policy</li>
-                            <li>Terms & Conditions</li>
-                            <li>Manufactures</li>
-                        </ul>
-                    </Col>
 
-                    <Col span={6}>
-                        <Typography.Title level={3} style={{ color: 'white', textAlign: 'left' }}>
-                            OUR SERVICES
-                        </Typography.Title>
-                        <ul className="footer-content-list">
-                            <li>Orders Returns</li>
-                            <li>Search Terms</li>
-                            <li>Advanced Search</li>
-                            <li>Affiliates</li>
-                            <li>Wholesales</li>
-                        </ul>
-                    </Col>
-                    <Col span={6}>
-                        <Typography.Title level={3} style={{ color: 'white', textAlign: 'left' }}>
-                            MY ACCOUNT
-                        </Typography.Title>
-                        <ul className="footer-content-list">
-                            <li>My Account</li>
-                            <li>My Cart</li>
-                            <li>Login</li>
-                            <li>Wishlist</li>
-                            <li>Perchases</li>
-                        </ul>
-                    </Col>
-                    <Col span={6}>
+                    <Col span={18}>
                         <Typography.Title level={3} style={{ color: 'white', textAlign: 'left' }}>
                             LIÊN HỆ VỚI CHÚNG TÔI
                         </Typography.Title>
