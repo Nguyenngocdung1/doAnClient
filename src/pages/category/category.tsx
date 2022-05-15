@@ -17,8 +17,9 @@ const Category = (props: Props) => {
     const { loading: loading2, error: error2, data: data2 } = useQuery(getGenres);
     const { loading: loading3, error: error3, data: data3 } = useQuery(getBooks);
 
-    const [dataFilter, setDataFilter] = useState(data3?.books);
-    
+    const [dataFilter, setDataFilter] = useState(() => {
+        return data3?.books;
+    });
     debugger;
 
     if (loading1 || loading2 || loading3) {
@@ -61,13 +62,15 @@ const Category = (props: Props) => {
     }
 
     const addGenreFilter = (idGenre: any) => {
-        setDataFilter(data3?.books.filter((item: any) => item.genre.id === idGenre));
+         setDataFilter(data3?.books.filter((item: any) => (
+             item.genre && item.genre.id === idGenre
+         )));
     }
 
     const addAuthorFilter = (idAuthor: any) => {
-        setDataFilter(data3?.books.filter((item: any) => item.author.id === idAuthor))
+         setDataFilter(data3?.books.filter((item: any) => item?.author?.id === idAuthor))
     }
-
+    debugger;
     return (
         <div>
             <div className="container"  style={{display: "flex"}}>
@@ -106,12 +109,12 @@ const Category = (props: Props) => {
                         <h3 style={{ textAlign: 'left' }}>Sách</h3>
                     </div>
                 </Col>
-                <div style={{ height: 800, overflow: 'auto', width: 2500}}>
+                <div style={{ height: 1000, overflow: 'auto', width: 2500}}>
                     {dataFilter?.length > 0 ? dataFilter?.map((book: any) => {
                         if(book?.id){
                             return (
                                 <Col key={book.id} span={32} style={{boxSizing: 'border-box'}}>
-                                    <Link to={ "/" + book.author.slug + "/" + book.slug} className="mx-2">
+                                    <Link to={ "/" + book?.author?.slug + "/" + book?.slug} className="mx-2">
                                     <div className="row">
                                         <div className="col-4">
                                             <img src={JSON.parse(book.image)[0]} alt="" width="200px" height="300px" style={{ objectFit: "cover" }} />

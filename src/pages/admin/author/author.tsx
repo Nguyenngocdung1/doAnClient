@@ -24,10 +24,6 @@ const columns = [
         title: 'Địa chỉ',
         dataIndex: 'address',
     },    
-    {
-        title: 'Action',
-        dataIndex: 'btnEdit',
-    },    
 ];
 
 
@@ -65,7 +61,6 @@ const Author: React.FC = (props: Props) => {
                 name: data.authors[i].name,
                 address: data.authors[i].address,
                 age: data.authors[i].age,
-                btnEdit: <Button type="primary"><Link to={link}>Sửa tác giả</Link></Button>,
             });
         }
     }

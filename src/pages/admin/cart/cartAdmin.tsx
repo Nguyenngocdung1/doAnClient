@@ -3,7 +3,7 @@ import { Button, Spin, Table, Input } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import formatprice from '../../../common/formatprice';
-import { deleteStatusOrder, updateStatusOrder } from '../../../graphql-client/mutations';
+import { deleteStatusOrder, updateStatusOrder, updateSingleQuantityBook } from '../../../graphql-client/mutations';
 import { getOrders } from '../../../graphql-client/query';
 const { Search } = Input
 interface Props {
@@ -51,6 +51,7 @@ const CartAdmin = (props: Props) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string>>([])
     const { loading, error, data } = useQuery(getOrders)
     const [add, Mutation] = useMutation<any>(updateStatusOrder);
+    const [updatequan, MuQuan ] = useMutation<any>(updateSingleQuantityBook);
     const [dele, Muta] = useMutation<any>(deleteStatusOrder);
     const [keySearch, setKeySearch] = useState<string>('');
     const inputSearchRef = React.useRef<any>("");
@@ -123,6 +124,7 @@ const CartAdmin = (props: Props) => {
         listOrder.forEach((item: any) => {
             total += item.quantity*item.book.price
         })
+        debugger;
         if(data.orders[i].email.includes(keySearch)){
             data1.push({
                 key: data.orders[i].id,

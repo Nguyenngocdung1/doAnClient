@@ -53,7 +53,7 @@ const AboutComponent = (props: Props) => {
                             if(book?.id){
                                 return (
                                     <Col key={book.id} span={12} style={{boxSizing: 'border-box'}}>
-                                        <Link to={book.author.slug + "/" + book.slug} className="mx-2">
+                                        <Link to={book?.author?.slug + "/" + book?.slug} className="mx-2">
                                             <img width="150" height="220" src={JSON.parse(book.image)} alt="" />
                                             <Typography.Title level={5} style={{margin: 0}}>
                                                 {book.name}

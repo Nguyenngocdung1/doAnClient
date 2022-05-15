@@ -57,6 +57,7 @@ const Addbook: React.FC = (props: Props) => {
             });
         }
         values.image = JSON.stringify(listImageUrl);
+        debugger;
         add(
             {
                 variables: values,

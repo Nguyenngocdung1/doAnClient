@@ -97,7 +97,7 @@ const Shop = (props: Props) => {
                                                 <span style={{ display: 'block', textAlign: 'left' }}>{book.des}</span>
                                             </div>
                                             <div className="addtocard-detail border-bottom mt-4 pb-2">
-                                                <Link to={'/' + book.author.slug + "/" + book.slug}>
+                                                <Link to={'/' + book?.author?.slug + "/" + book?.slug}>
                                                     <div className="d-flex ">
                                                         <p className="me-5"><Button type="primary">Xem chi tiết</Button> </p>
                                                     </div>

@@ -93,8 +93,17 @@ const deleteGenre = gql`
 `
 
 const updateSingleBook = gql`
-    mutation UpdateBook($id: ID!, $name: String, $genreId: ID!, $des: String, $image: String, $price: Int, $authorId: ID!,  $quantity: Int ){
+    mutation UpdateBook($id: ID!, $name: String, $genreId: String, $des: String, $image: String, $price: Int, $authorId: ID!,  $quantity: Int ){
         updateBook(id: $id, input: {name: $name, genreId: $genreId, price: $price, authorId: $authorId, image: $image, des: $des, quantity: $quantity}){
+            id
+            name
+        }
+    }
+`
+
+const updateSingleQuantityBook = gql`
+    mutation UpdateQuantityBook($id: ID!, $count: Int ){
+        UpdateQuantityBook(id: $id, input: {count: $count}){
             id
             name
         }
@@ -216,6 +225,6 @@ const updateStatusComments = gql`
         }
     }
 `
-export { addSingleBook, addSingleAuthor, updateSingleBook,
+export { addSingleBook, addSingleAuthor, updateSingleBook, 
     signIn, updateSingleAuthor,  deleteAuthor, deleteBook, createOrder, 
-    updateStatusOrder, deleteStatusOrder, danhGiaOrder, logIn, addComments, deleteComment, deleteGenre, addSingleGenre, updateStatusComments }
+    updateStatusOrder, deleteStatusOrder, danhGiaOrder, logIn, addComments, deleteComment, deleteGenre, addSingleGenre, updateStatusComments, updateSingleQuantityBook }

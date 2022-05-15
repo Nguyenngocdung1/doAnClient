@@ -6,6 +6,7 @@ import formatprice from '../../../common/formatprice';
 import { toastDefault } from '../../../common/toast';
 import { deleteBook } from '../../../graphql-client/mutations';
 import { getBooks} from '../../../graphql-client/query';
+import './form.css';
 const { Search } = Input
 
 interface Props {
@@ -74,7 +75,7 @@ const Book: React.FC = (props: Props) => {
             const link = '/admin/editbook/' + data.books[i].slug
             const image = JSON.parse(data.books[i].image)[0]
             debugger;
-            const author = data?.books[i].author.name
+            const author = data?.books[i].author?.name
             if(data.books[i].name.includes(keySearch)) {
                 data1?.push({
                     key: data.books[i].id,
@@ -83,7 +84,7 @@ const Book: React.FC = (props: Props) => {
                     price: formatprice(data.books[i].price),
                     image: <img width="150" height="200" src={image} style={{objectFit: "cover"}} alt="" />,
                     quantity: data.books[i].quantity,
-                    des: data.books[i].des,
+                    des: <div className={"text-des-book"}>{data.books[i].des}</div>,
                     author: author,
                     btnEdit: <Button type="primary"><Link to={link}>Sửa sản phẩm</Link></Button>,
                 });

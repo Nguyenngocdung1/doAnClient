@@ -9,6 +9,7 @@ import { A11y, Navigation, Pagination, Scrollbar } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
 import formatprice from '../../common/formatprice';
 import { toastDefault } from '../../common/toast';
+import { toastError} from '../../common/toasterror'
 import { addToCart } from '../../features/cart/cartSlide';
 import { getBooks, getSingleBook, getComments } from '../../graphql-client/query';
 import './productDetail.css';
@@ -43,10 +44,10 @@ const ProductDetail = (props: Props) => {
     const { loading: loading1, error: error1, data: data1 } = useQuery(getBooks)
     const { loading: loading2, error: error2, data: data2 } = useQuery(getComments, {
         variables: {
-          bookId: data?.book?.id
+          bookId: data === undefined ? "627cf2ab4dee2185d2e8312c" : data.book.id
         }
       });
-
+      debugger;
     if (loading || loading1) {
         return <Spin size="large" />
     }
@@ -88,23 +89,31 @@ const ProductDetail = (props: Props) => {
     console.log("dataBookQuery",dataBookQuery);
     
     const handleClickAdd = () => {
-        const cart = {
-            quantity: Number(count),
-            book: {
-                slug: data.book.slug,
-                name: data.book.name,
-                id: data.book.id,
-                price: data.book.price,
-                author: {
-                    name: data.book.author.name,
-                    slug: data.book.author.slug
-                },
-                image: JSON.parse(data.book.image)[0]
+        const m = data.book.quantity;
+        debugger;
+        if(count > m) {
+            setCount(1)
+            toastError("quá số lượng trong kho !!")
+        } else {
+            const cart = {
+                quantity: Number(count),
+                book: {
+                    slug: data.book.slug,
+                    name: data.book.name,
+                    id: data.book.id,
+                    price: data.book.price,
+                    author: {
+                        name: data.book.author.name,
+                        slug: data.book.author.slug
+                    },
+                    image: JSON.parse(data.book.image)[0]
+                }
             }
+            dispatch(addToCart(cart))
+            setCount(1)
+            toastDefault("Thêm sách vào giỏ hàng thành công")
         }
-        dispatch(addToCart(cart))
-        setCount(1)
-        toastDefault("Thêm sách vào giỏ hàng thành công")
+        
     }
 
     const onRemove = (id: any, idUser: any) => {
@@ -190,6 +199,9 @@ const ProductDetail = (props: Props) => {
                                 <div className="product-description mt-3">
                                     <span style={{ display: 'block', textAlign: 'left' }}>{data?.book?.des}</span>
                                 </div>
+                                <div className="price fw-bold ">
+                                                                <p >Số lượng có: {data?.book?.quantity}</p>
+                                                            </div>
                                 <div className="d-flex align-items-center baseline mt-5">
                                     <div className="num-block skin-6">
                                         <div className="num-in me-3 d-flex align-items-center">
@@ -225,7 +237,7 @@ const ProductDetail = (props: Props) => {
                                         <span>Thể loại: {data.book?.genre?.name}</span>
                                     </div>
                                     <div className="mx-4">
-                                        <span>Tác giả: <p >{data.book?.author.name}</p></span>
+                                        <span>Tác giả: <p >{data?.book?.author?.name}</p></span>
                                     </div>
                                     <div className="tag">
                                         <span>Tags: <p >Tag 0-1</p></span>
@@ -253,7 +265,7 @@ const ProductDetail = (props: Props) => {
                                             <>
                                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                                 <div style={{display: 'flex'}}>
-                                                    <img src={cmt.user.avatar} style={{ width: 40, height: 40, borderRadius: 20}} />
+                                                    {/* <img src={cmt.user.avatar} style={{ width: 40, height: 40, borderRadius: 20}} /> */}
                                                     <div style={{padding: '0 10px', fontSize: 16, fontWeight: 'bold'}}>Nguyễn Ngọc Dũng</div>
                                                 </div>
                                             </div>
@@ -327,6 +339,7 @@ const ProductDetail = (props: Props) => {
                                                             <p title="4/5"><i className=" fa fa-star" /></p>
                                                             <p title="5/5"><i className=" fa fa-star" /></p>
                                                         </div>
+                                                        
                                                             <div className="price fw-bold text-center">
                                                                 <p>{formatprice(book.price)}</p>
                                                             </div></div>
@@ -352,7 +365,7 @@ const ProductDetail = (props: Props) => {
                                         if(book?.id){
                                             return (
                                                 <Card key={book.id} hoverable className="mb-2">
-                                                    <Link to={"/" + book.author.slug + "/" + book.slug}className="d-flex col-12 mt-3">
+                                                    <Link to={"/" + book?.author?.slug + "/" + book?.slug}className="d-flex col-12 mt-3">
                                                         <div className="me-2">
                                                             <img src={JSON.parse(book.image)} alt="" width="100" />
                                                         </div>
@@ -368,6 +381,7 @@ const ProductDetail = (props: Props) => {
                                                             <div className="price fw-bold ">
                                                                 <p >{formatprice(book.price)}</p>
                                                             </div>
+                                                            
                                                             <div className="price fw-bold ">
                                                                 <p >Tác giả: {book.author.name}</p>
                                                             </div>

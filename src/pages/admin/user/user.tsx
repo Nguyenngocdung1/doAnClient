@@ -54,10 +54,10 @@ const User: React.FC = (props: Props) => {
         if(data.users[i].email.includes(keySearch)) {
             const showRole = data.users[i].role === 1 ? <div>   
             <Button type="primary" disabled>Admin</Button>
-            <Button type="primary" onClick={() => RemoveAdmin(data.users[i].id)}danger>Remove admin</Button>
+            {/* <Button type="primary" onClick={() => RemoveAdmin(data.users[i].id)}danger>Remove admin</Button> */}
             </div> : <div>
                 <Button type="primary" disabled>User</Button>
-                <Button onClick={() => UpdateAdmin(data.users[i].id)} type="primary" danger>Update admin</Button>
+                {/* <Button onClick={() => UpdateAdmin(data.users[i].id)} type="primary" danger>Update admin</Button> */}
             </div>
             data1.push({
                 key: data.users[i].id,

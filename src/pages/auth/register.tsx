@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import '../../common/firebase/index';
 import { toastDefault } from '../../common/toast';
+import { toastError } from '../../common/toasterror'
 import { login, register } from '../../features/auths/authSlice';
 import { signIn } from "../../graphql-client/mutations";
 import { getUserQuery } from "../../graphql-client/query";
@@ -115,6 +116,10 @@ function Register() {
     toastDefault("Đăng ký thành công");
   };
 
+  const loginFB = () => {
+    toastError("Chức năng đang phát triển")
+  }
+
   return (
     <div>
       <Row justify="center" style={{ height: 800 }}>
@@ -128,7 +133,7 @@ function Register() {
           </Button>
           <Button
             style={{ width: "100%", marginBottom: 10 }}
-            onClick={handleFbLogin}
+            onClick={loginFB}
           >
             Đăng ký bằng Facebook
           </Button>

@@ -12,7 +12,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import '../../../common/firebase/index';
 import { toastDefault } from '../../../common/toast';
 import { updateSingleBook } from '../../../graphql-client/mutations';
-import { getAuthors, getBooks, getSingleBook } from '../../../graphql-client/query';
+import { getAuthors, getBooks, getSingleBook, getGenres } from '../../../graphql-client/query';
 import Uploadimage from '../uploadimage';
 import './form.css';
 
@@ -28,6 +28,7 @@ const Editbook: React.FC = (props: Props) => {
             slug: slug,
         }
     })
+    debugger;
     const navigate = useNavigate();
     const [add, Mutation] = useMutation<any>(updateSingleBook);
     const [imageFile, setImageFile] = useState<any>([]);
@@ -35,6 +36,7 @@ const Editbook: React.FC = (props: Props) => {
         setImageFile(image)
     }, [])
     const { loading, error, data } = useQuery(getAuthors)
+    const { loading: loading2, error: error2, data: data2 } = useQuery(getGenres)
     if (loading || loading1) {
         return <Spin size="large" />
     }
@@ -45,25 +47,16 @@ const Editbook: React.FC = (props: Props) => {
     const onFinish = async (values: any) => {
         values.price = Number(values.price)
         values.id = data1.book.id
-        const storage = getStorage();
-        const uploadImagePromise = (image: any) => {
-            return new Promise(function (resolve, reject) {
-                const storageRef = ref(storage, `images/${image.name}`);
-                const uploadTask = uploadBytesResumable(storageRef, image);
-                uploadBytes(storageRef, image).then(async () => {
-                    const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                    resolve(downloadUrl);
-                });
-            });
-        };
-        const listImageUrl: string[] = [];
-        for (let i = 0; i < imageFile.length; i++) {
-            await uploadImagePromise(imageFile[i].originFileObj).then((response: any) => {
-                listImageUrl.push(response)
-            });
-        }
-        values.image = JSON.stringify(listImageUrl);
+        
+        if(values.name === undefined) values.name = data1.book.name;
+        if(values.des === undefined) values.des = data1.book.des;
+        if(isNaN(values.price)) values.price = data1.book.price;
+        if(values.quantity === undefined) values.quantity = data1.book.quantity;
+        if(values.genreId === undefined) values.genreId = data1.book.genre.id;
+        if(values.authorId === undefined) values.authorId = data1.book.author.id;
+        if(values.image === undefined) values.image = data1.book.image;
         console.log(values);
+        debugger;
         add(
             {
                 variables: values,
@@ -93,14 +86,14 @@ const Editbook: React.FC = (props: Props) => {
                     <Input type="number" defaultValue={Number(data1.book.price)} />
                 </Form.Item>
                 <Form.Item name="quantity" label="Số lượng" >
-                    <Input type="number" defaultValue={Number(data1.book.price)} />
+                    <Input type="number" defaultValue={Number(data1.book.quantity)} />
                 </Form.Item>
-                <Form.Item name="genre" label="Thể loại chuyện" >
-                    <Input defaultValue={data1.book.genre} />
+                <Form.Item name="genreId" label="Thể loại chuyện">
+                    <Select defaultValue="lucy">
+                        <Option value="lucy" disabled>Chọn thể loại</Option>
+                        {data2?.genres.map((genre: any) => (<Option key={genre.id} value={genre.id}>{genre.name}</Option>))}
+                    </Select>
                 </Form.Item>
-                {/* <Form.Item name="image" label="Thêm ảnh">
-                    <Uploadimage imageData={data1.book.image} uploadImageState={uploadImageState} />
-                </Form.Item> */}
                 <Form.Item name="authorId" label="Tác giả" >
                     <Select defaultValue="lucy">
                         <Option value="lucy" disabled>Chọn tác giả</Option>
