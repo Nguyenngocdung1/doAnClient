@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import formatprice from '../../../common/formatprice';
 import { toastDefault } from '../../../common/toast';
 import { getSingleOrder } from '../../../graphql-client/query';
+import { updateSingleQuantityBook } from '../../../graphql-client/mutations';
 interface Props {
 
 }
@@ -39,6 +40,7 @@ const columns = [
 const CartDetail = (props: Props) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string>>([])
     const { id } = useParams()
+
     const { loading, error, data: data1 } = useQuery(getSingleOrder, {
         variables: {
             id: id,

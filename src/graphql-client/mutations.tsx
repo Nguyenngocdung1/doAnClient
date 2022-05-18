@@ -41,11 +41,11 @@ const addSingleGenre = gql`
 `
 
 const addComments = gql`
-    mutation CreateComment( $bookId: String, $userId: String, $content: String, $icon: Int){
+    mutation CreateComment( $bookId: String, $email: String, $content: String, $icon: Int){
         createComment(input: {
             bookId: $bookId,
             content: $content,
-            userId: $userId,
+            email: $email,
             icon: $icon
         }){
             id

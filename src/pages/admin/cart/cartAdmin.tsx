@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import formatprice from '../../../common/formatprice';
 import { deleteStatusOrder, updateStatusOrder, updateSingleQuantityBook } from '../../../graphql-client/mutations';
-import { getOrders } from '../../../graphql-client/query';
+import { getOrders, getBooks } from '../../../graphql-client/query';
 const { Search } = Input
 interface Props {
     
@@ -50,9 +50,10 @@ const columns = [
 const CartAdmin = (props: Props) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<Array<string>>([])
     const { loading, error, data } = useQuery(getOrders)
+    const { loading: loading1, error: error1, data: databook } = useQuery(getBooks);
     const [add, Mutation] = useMutation<any>(updateStatusOrder);
-    const [updatequan, MuQuan ] = useMutation<any>(updateSingleQuantityBook);
     const [dele, Muta] = useMutation<any>(deleteStatusOrder);
+    const [updatequan, MuQuan ] = useMutation<any>(updateSingleQuantityBook);
     const [keySearch, setKeySearch] = useState<string>('');
     const inputSearchRef = React.useRef<any>("");
     // const [add, Mutation] = useMutation<any>(deleteBook);
@@ -67,13 +68,33 @@ const CartAdmin = (props: Props) => {
             setSelectedRowKeys([]);
         }, 1000);
     };
-    const handleRemoveOrder = (id: string) => {
-        if (window.confirm("Bạn có muốn hủy đơn hàng hay không ?")) {
-            dele({
-                variables: { id },
-                refetchQueries: [{ query: getOrders }]
+    const handleRemoveOrder = (_id: string) => {
+        const orderDetail = data.orders
+        let listChoose = '';
+        for(let i = 0; i<= orderDetail.length; i++) {
+            if(orderDetail[i].id === _id) {
+                listChoose = orderDetail[i].listOrder
+                break;
+            }
+        }
+        console.log(listChoose);
+        const _listOrder = JSON.parse(listChoose);
+        for(let i = 0; i < _listOrder.length; i++) {
+            const slmua = _listOrder[i].quantity;
+            const idBook = _listOrder[i].book.id;
+            debugger;
+            updatequan({
+                variables: { id: idBook, input: {count: 500} },
+                refetchQueries: [{ query: getBooks }]
             })
         }
+        debugger;
+        // if (window.confirm("Bạn có muốn hủy đơn hàng hay không ?")) {
+        //     dele({
+        //         variables: { _id },
+        //         refetchQueries: [{ query: getOrders }]
+        //     })
+        // }
     }
     const handleUpdateOrder = (id: string, status: number) => {
         add({
@@ -124,7 +145,6 @@ const CartAdmin = (props: Props) => {
         listOrder.forEach((item: any) => {
             total += item.quantity*item.book.price
         })
-        debugger;
         if(data.orders[i].email.includes(keySearch)){
             data1.push({
                 key: data.orders[i].id,

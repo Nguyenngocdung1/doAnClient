@@ -135,7 +135,7 @@ const ProductDetail = (props: Props) => {
         // alert("Chức năng đang phát triển");
         values.icon = 1;
         values.bookId = data?.book?.id;
-        values.userId = user.id;
+        values.email = user.email;
         add(
           {
             variables: values,
@@ -265,7 +265,7 @@ const ProductDetail = (props: Props) => {
                                             <>
                                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                                 <div style={{display: 'flex'}}>
-                                                    {/* <img src={cmt.user.avatar} style={{ width: 40, height: 40, borderRadius: 20}} /> */}
+                                                    <img src={cmt.user.avatar} style={{ width: 40, height: 40, borderRadius: 20}} />
                                                     <div style={{padding: '0 10px', fontSize: 16, fontWeight: 'bold'}}>Nguyễn Ngọc Dũng</div>
                                                 </div>
                                             </div>
